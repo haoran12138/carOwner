@@ -1,32 +1,43 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <login />
   </div>
 </template>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<script>
+import login from "@/views/login";
+export default {
+  name: "app",
+  components: {
+    login
   }
+};
+</script>
+<style lang="scss">
+* {
+  box-sizing: border-box;
+}
+#app {
+  font-family: PingFangSC-Semibold, PingFang SC;
+}
+.input-icon {
+  width: 32px;
+  height: 32px;
+  margin-bottom: -8px;
+}
+.mform {
+  .van-field {
+    border-bottom: 1px solid #ebedf0;
+  }
+}
+.time-down {
+  .van-count-down {
+    color: #d3d4d9;
+  }
+}
+input::-webkit-input-placeholder,
+input::-moz-placeholder,
+input:-moz-placeholder,
+input:-ms-input-placeholder {
+  color: #d3d4d9;
 }
 </style>
