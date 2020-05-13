@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+import "enums/enum.proto";
+import "common/commons.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.system";
+
+//查询正常日志列表 url = "system/console/oplog/queryOplog"
+message QueryOplogReq {
+    int64 oplogId = 1; //id
+    string oprAccount = 2; //操作人账号
+    string serverName = 3; //服务名 SYSTEM MSG USER ORDER MATCH CAR ARTICLE ACT
+    int64 spendTime = 4; //耗时大于  单位ms
+    int64 beginDate = 5; //起始时间
+    int64 endDate = 6; //结束时间
+    string code = 7; //响应code
+    PageReq pageReq = 8;
+}
+
+message QueryOplogRes {
+    int64 oplogId = 1; //id
+    string ip = 2; //ip
+    string oprAccount = 3; //操作人账号
+    string path = 4; //访问路径
+    string serverName = 5; //服务名
+    int64 spendTime = 6; //耗时
+    int64 createTime = 7; //生成时间
+}
+
+//查询错误日志列表 url = "system/console/oplog/queryExlog"
+message QueryExlogReq {
+    int64 exlogId = 1; //id
+    string serverName = 2; //服务名
+    int64 beginDate = 3; //起始时间
+    int64 endDate = 4; //结束时间
+    PageReq pageReq = 5;
+    string flag = 6; //处理状态
+    string code = 7; //响应code
+}
+
+message QueryExlogRes {
+    int64 exlogId = 1; //id
+    string ip = 2; //ip
+    string oprAccount = 3; //操作人账号
+    string path = 4; //访问路径
+    string serverName = 5; //服务名
+    int64 spendTime = 6; //耗时
+    int64 createTime = 7; //生成时间
+    string status = 8; //处理状态
+    string code = 9; //响应code
+}
+
+//错误日志详情 url = "system/console/oplog/exlogDetail"
+message ExlogDetailReq {
+    int64 exlogId = 1; //id
+}
+
+message ExlogDetailRes {
+    int64 exlogId = 1; //id
+    string ip = 2; //ip
+    string oprAccount = 3; //操作人账号
+    string path = 4; //访问路径
+    string serverName = 5; //服务名
+    int64 spendTime = 6; //耗时
+    int64 createTime = 7; //生成时间
+    string status = 8; //处理状态
+    string code = 9; //响应code
+    string exMsg = 10; //错误信息
+}
+
+//更改错误日志状态 url = "system/console/oplog/updStatus"
+message UpdExlogStatusReq {
+    int64 exlogId = 1; //id
+    string flag = 2; // Y已处理 N未处理
+}

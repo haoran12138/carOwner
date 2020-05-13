@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+import "enums/enum.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.system";
+
+
+
+
+
+
+//查询标签列表 url = "system/console/tag/queryTagList"
+message QueryTagListReq {
+    string tagName = 1; //标签名称 example="宝马最新款"
+    TagType tagType = 2; //标签类型 example="OPERATIONAL运营 ADVERT广告"
+    PageReq pageReq = 3;
+}
+
+
+message QueryTagListRes {
+    int32 tagId = 1; //id
+    string tagName = 2; //标签名称 example="宝马最新款"
+    string tagType = 3;  //标签类型 example="OPERATIONAL运营 ADVERT广告"
+}
+
+
+//新增标签 url = "system/console/tag/add"
+message AddTagReq {
+    string tagName = 1; //标签名称 example="宝马最新款"
+    TagType tagType = 2; //标签类型 example="OPERATIONAL运营 ADVERT广告"
+}
+
+
+
+//修改标签 url = "system/console/tag/upd"
+message UpdTagReq {
+    int32 tagId = 1; //id
+    string tagName = 2; //标签名称 example="宝马最新款"
+    TagType tagType = 3; //标签类型 example="OPERATIONAL运营 ADVERT广告"
+}
+
+
+//删除标签 url = "system/console/tag/del"
+message DelTagReq {
+    int32 tagId = 1; //id
+}
+
+
+//获取标签 url = "system/tag/getTags"
+message GetTagsRes {
+    int32 tagId = 1; //id
+    string tagName = 2; //标签名称 example="宝马最新款"
+    string tagType = 3; //标签类型 example="OPERATIONAL运营 ADVERT广告"
+}
+
+
+
+
+
+
+

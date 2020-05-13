@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+import "enums/enum.proto";
+import "user/base.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.user";
+
+
+
+//关注 url = "/user/black/blackUser"
+message BlackUserReq {
+    string userId = 1; // 用户id example = "3ed27ad.1"
+    Flag flag = 2;//Y拉黑 N取消拉黑
+}
+
+
+
+// 拉黑列表 url = "/user/black/blackList"
+message BlackListReq {
+    string userName = 1; //用户名 example = "jfcx"
+}
+
+
+message BlackListRes {
+    BaseUserInfo user = 1;
+    string sex = 2; //性别 example = "male男 female女"
+}
+
+
+
+
+
+
+
+
+
+

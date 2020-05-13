@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.order";
+
+
+
+
+//首页订单 url = "/order/searchOrder/list/home"
+message MainQueryOrderReq {
+     string carBrand = 1; //品牌 example = "宝马 多个,号分割"
+     string userId = 2; //用户id example = "13312345678"
+     PageReq pageReq =3;
+}
+
+
+
+//后台订单列表查询 url = "/order/searchOrder/orderList"
+message OrderOperQueryReq {
+    string orderId=1; //订单id example = "JFSO1223456464"
+    string status=2; //状态 待付定金tobepaid 已付定金paid 待车主支付保证金tobemp 待确认tobe 已确认confirm 已取车pickup 已还车return 待退押金refund 已完成finish
+    int64 beginDate=3; //开始时间 example = "1582009999999"
+    int64 endDate=4; //结束时间 example = "1582009999999"
+    PageReq pageReq =5;
+}
+
+
+//后台订单列表查询
+message OrderConsoleListRes {
+    string searchId=1; //寻车id example = "JFSO2019112057863484"
+    int64  createTime=2; //创建时间 example = "1582009999999"
+    int64 rentStartTime=3; //租车起始时间 example = "1582009999999"
+    string rentUser=4; //租车用户 example = "13661825172"
+    string carBrand=5; //品牌 example = "宝马 多个,号分割"
+    string veType=6; //车型 example = "911"
+    string carColor=7; //车辆颜色 example = "黑色"
+    int32 rentDay=8; //租车天数 example = "3"
+    double earnestAmt=9; //定金
+    string useType=10; //租车目的 example = "自驾selfdrive 婚庆商务wedding 静态展示exhibition"
+    string useRegion=11; //使用地区 example = "上海 长宁"
+    string carStatus=12; //状态 example = "待付定金tobepaid 已付定金paid 待车主支付保证金tobemp 待确认tobe 已确认confirm 已取车pickup 已还车return 待退押金refund 已完成finish"
+}
+
+
+
+//寻车订单列表 url = "/order/searchOrder/useList"
+message UseOrderReq{
+    string status=2; //状态 example = "待付定金tobepaid 已付定金paid 待车主支付保证金tobemp"
+    PageReq pageReq =4;
+}
+
+
+
+
+//后台订单列表查询 url = "/order/searchOrder/orderList"
+message UseOrderListRes {
+    string searchId=1; //寻车id example = "JFSO2019112057863484"
+    string carBrand=2; //品牌 example = "宝马 多个,号分割"
+    string veType=3; //车型 example = "911"
+    string carColor=4; //车辆颜色 example = "黑色"
+    string useType=5; //租车目的 example = "自驾selfdrive 婚庆商务wedding 静态展示exhibition"
+    string localIdent=6; //本地标识 example = "y n none"
+    int64 rentStartTime=7; //租车起始时间 example = "1582009999999"
+    int64 rentEndTime=8; //租车结束时间 example = "1582009999999"
+    int32 rentDay=9; //租车天数 example = "3"
+    int64 createTime=10; //创建时间 example = "1582009999999"
+    string useRegion=11; //使用地区 example = "上海 长宁"
+    double rentAmt=12; //车辆租金
+    double depositAmt=13; //车辆押金
+    double violationAmt=14; //违章押金
+    double deliveryAmt=15; //送车费用
+    double vehicleAmt=16; //还车费用
+    double earnestAmt=17; //定金
+    string orderDesc=18; //备注 example = "一定要黑色"
+    string carStatus=19; //状态 example = "待付定金tobepaid 已付定金paid 待车主支付保证金tobemp 待确认tobe 已确认confirm 已取车pickup 已还车return 待退押金refund 已完成finish"
+}
+
+
+
+
+
+
+

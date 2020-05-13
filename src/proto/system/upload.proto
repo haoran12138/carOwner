@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.system";
+
+
+//图片上传 url = "system/upload/uploadFile"
+message UploadFileRes {
+    string url = 1; //图片路径 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+}
+
+
+
+
+
+
+
+

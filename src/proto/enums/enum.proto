@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.enums";
+
+enum ArtType {
+    PHOTO = 0; //图文
+    LONGER = 1; //长文
+    VIDEO = 2; //视屏
+}
+
+enum FollowType {
+    MAIN = 0; //首页
+    HEAD = 1; //头像
+    ARTICLE = 2; //文章
+    FVIDEO = 3; //视频
+    HOME = 4; //主页
+    MSG = 5; //消息
+}
+
+
+enum MsgType {
+    SYSTEM = 0; //系统
+    ACT_PUSH = 1; //活动推送
+    ART_PUSH = 2; //图文推送
+    VIDEO_PUSH = 3; //视频推送
+    TOPIC_PUSH = 4; //话题推送
+    ARTCOLLECT = 5; //收藏
+    COMMENTLIKE = 6; //评论点赞
+    FOLLOW = 7; //关注
+    COMMENT = 8; //评论
+    AT = 9; //@通知
+    CHECK = 10; //审核
+    ART_SEND = 11;//发送文章
+}
+
+enum ReadMsgType{
+    PUSHMSG = 0; //推送
+    NOTIFYMSG = 1; //通知
+    BELIKE = 2;//被喜欢
+    NEWFOLLOW = 3;//关注
+    COMENTAT = 4;//评论和关注
+    ARTCHECK = 5;//审核
+}
+
+enum Flag{
+    Y = 0; //通过
+    N = 1;  //未审核
+    R = 2; //拒绝 互关
+    A = 3; // activate 状态待发布(机器人work)/文章草稿
+    D = 4; //文章删除
+}
+
+enum ScoreType{
+    S_ARTICLE = 0;//文章
+    S_COMMENT = 1;//评论
+}
+
+enum TagType{
+    OPERATIONAL = 0;//运营
+    ADVERT = 1;//广告
+}
+
+enum OprStatusType{
+    NORMAL = 0;//正常
+    LOCK = 1;//锁定
+}
+
+
+enum OffsetType{
+    PERCENT = 0;//百分比
+    PLUS = 1;//加减
+}
+
+enum UserType {
+    USER = 0; //普通用户
+    MASTER = 1; //内部用户
+    ROBOT = 2;//机器人
+}
+
+enum TopFlagType {
+    F = 0; //非置顶
+    T = 1; //置顶
+    B = 2; //沉底
+}
+
+
+enum ShowType {
+    L_COMMENT = 0; //喜欢评论
+    L_ARTICLE = 1;//喜欢文章
+    C_COMMENT = 2;//回复评论
+    C_ARTICLE = 3;//回复文章
+    AT_USER = 4;//AT用户
+}
+
+

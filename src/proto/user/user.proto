@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.user";
+
+//用户证件认证添加 url = "user/userCertificate/save"
+message UserCertificateAddReq{
+    string userId = 1;
+    string name = 2;
+    string idCardNum = 3;
+    string idCardFront = 4;
+    string idCardBack = 5;
+    string validityPeriod = 6;
+    string drivingFront = 7;
+    string drivingBack = 8;
+    string quasiDrivingVehicle = 9;
+    int64 createTime = 10;
+}
+
+//用户证件认证修改 url = "user/userCertificate/upd"
+message UserCertificateUpdReq{
+    string userId = 1;
+    string name = 2;
+    string idCardNum = 3;
+    string idCardFront = 4;
+    string idCardBack = 5;
+    string validityPeriod = 6;
+    string drivingFront = 7;
+    string drivingBack = 8;
+    string quasiDrivingVehicle = 9;
+    int64 createTime = 10;
+}
+
+//用户证件认证删除 url = "user/userCertificate/del"
+message UserCertificateDelReq{
+    string userId = 1;
+    string name = 2;
+    string idCardNum = 3;
+    string idCardFront = 4;
+    string idCardBack = 5;
+    string validityPeriod = 6;
+    string drivingFront = 7;
+    string drivingBack = 8;
+    string quasiDrivingVehicle = 9;
+    int64 createTime = 10;
+}
+
+//用户证件认证查询 url = "user/userCertificate/queryUserCertificateList"
+message UserCertificateQueryReq{
+    string userId = 1;
+    string name = 2;
+    string idCardNum = 3;
+    string idCardFront = 4;
+    string idCardBack = 5;
+    string validityPeriod = 6;
+    string drivingFront = 7;
+    string drivingBack = 8;
+    string quasiDrivingVehicle = 9;
+    int64 createTime = 10;
+}
+
+message UserCertificateQueryRes{
+    string userId = 1;
+    string name = 2;
+    string idCardNum = 3;
+    string idCardFront = 4;
+    string idCardBack = 5;
+    string validityPeriod = 6;
+    string drivingFront = 7;
+    string drivingBack = 8;
+    string quasiDrivingVehicle = 9;
+    int64 createTime = 10;
+}
+
+
+
+
+
+
+
+
+
+
+
+

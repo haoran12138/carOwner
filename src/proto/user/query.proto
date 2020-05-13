@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+import "user/base.proto";
+import "article/query.proto";
+import "enums/enum.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.user";
+
+
+//获取用户信息 url = "user/info/getUserInfo"
+message UserOrderInfoRes {
+    string userId = 4; //userId
+    string mobile = 1; //手机号 example = "18688888888"
+    int32 mCount = 2; //车主待确认、待支付
+    int32 useCount = 3; //租车用户待支付
+}
+
+
+//他人用户中心 url = "user/info/otherCenter"
+message OtherCenterReq {
+    string userId = 1; //用户id example = "13312345678"
+}
+
+
+message OtherCenterRes{
+    UserDetailInfo userDetailInfo = 1;
+    UserArtRes userArtRes = 2;
+    string followFlag = 3;  //关注状态 example = " Y已关 N未关 R互关 "
+    repeated FollowUserInfo interUser = 4;//感兴趣的用户
+    string accid = 5;//他人im账号id
+}
+
+
+//用户中心 url = "user/info/userCenter"
+message UserCenterRes{
+    UserDetailInfo userDetailInfo = 1;
+    UserArtRes userArtRes = 2;
+}
+
+
+//我的中心 url = "user/info/myCenter"
+message MyCenterRes{
+    BaseUserInfo userInfo = 1;
+    CountList countList = 2;
+    SumList sumList = 3;
+    string userStatusType = 4;//用户审核状态 0等待审核 1已审核 2未通过 3已拉黑 4未提交审核
+    string idCard = 5; //身份证号码
+    string name = 6;//用户真实姓名
+}
+
+
+//查询用户列表 url = "user/console/queryUserList"
+message QueryUserListReq {
+    string userId = 1; //用户id example = "13312345678"
+    string userName = 2; //名称 example = "jfcx"
+    string type = 4; //类型 example = " USER MASTER"
+    int64 cBeginDate = 5; //创建起始时间 example = "1581999999999"
+    int64 cEndDate = 6; //创建结束时间 example = "1581999999999"
+    int64 lBeginDate = 7; //最后登录起始时间 example = "1581999999999"
+    int64 lEndDate = 8; //最后登录结束时间 example = "1581999999999"
+    PageReq pageReq = 9;
+}
+
+
+message QueryUserListRes {
+    string userId = 1; //用户id example = "13312345678"
+    string userName = 2; //名称 example = "jfcx"
+    string headPic = 3; //头像 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    string type = 4; //类型 example = " USER MASTER"
+    int64 createTime = 5; //创建时间 example = "1581999999999"
+    int64 updateTime = 6; //更新时间 example = "1581999999999"
+    int64 lastLoginTime = 7; //最后登录时间 example = "1581999999999"
+    string mobile = 8; //手机号
+}
+
+
+//查询IM用户信息  url = "info/getImUser"
+message ImUserInfoRes {
+    string accid = 1; //im唯一标识：0c519aa40b8b4965b574729f634814e6
+    string points = 2; //token：c32e2fe52b93fc63c485e8773f85a97b
+}
+
+
+
+
+
+

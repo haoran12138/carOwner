@@ -1,0 +1,154 @@
+syntax = "proto3";
+
+import "common/commons.proto";
+import "article/comment.proto";
+import "enums/enum.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.article";
+
+
+message BaseTopic {
+    string topicId = 1; //话题id example="TOPIC000001"
+    string topicName = 2; //话题名称 example="飓风出行"
+}
+
+
+
+message BaseTopicInfo {
+    string topicId = 1; //活动id
+    string topicName = 2; //话题名称
+    string topicTitle = 6;//话题标题
+    string topicPicUrl = 3; //话题缩略图
+    int64 topicPart = 4; //参与人数
+    string flag = 7; //是否参与
+}
+
+
+//管理后台新增话题 url = "article/console/addTopic"
+message AddTopicReq {
+    string topicName = 1; //话题名称 example="飓风出行"
+    string topicTitle = 2; //话题标题 example="声浪计划"
+    string topicUrl = 3; //话题封面  example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    string topicIcon = 4; //话题缩略图  example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    Flag topicStatus = 5; //话题状态 example="Y(上线)/N(下线)"
+}
+
+
+//管理后台发布/下线话题 url = "article/console/updStatus"
+message UpdStatusReq {
+    string topicId = 1; //话题id example="TOPIC000001"
+    Flag topicStatus = 2; //话题状态 example="Y(上线)/N(下线)"
+}
+
+
+//管理后台更新话题 url = "article/console/updTopic"
+message UpdTopicReq {
+    string topicId = 1; //话题id example="TOPIC000001"
+    string topicName = 2; //话题名称 example="飓风出行"
+    string topicTitle = 3; //话题标题 example="声浪计划"
+    string topicUrl = 4; //话题封面  example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    string topicIcon = 5; //话题缩略图  example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+}
+
+
+//管理后台删除话题 url = "article/console/delTopic"
+message DelTopicReq {
+    string topicId = 1; //话题id example="TOPIC000001"
+}
+
+
+//管理后台查找话题 url = "article/console/queryTopic"
+message QueryTopicReq {
+    string topicId = 1; //话题id example="TOPIC000001"
+    string topicName = 2; //话题名称 example = "飓风出行"
+    Flag topicStatus = 3; //话题状态 example="Y(上线)/N(下线)"
+    int64 beginDate = 4; //创建时间 example = "1582009999999"
+    int64 endDate = 5; //更新时间 example = "1583009999999"
+    PageReq pageReq = 6;
+}
+
+message QueryTopicRes {
+    string topicId = 1; //话题id example="TOPIC000001"
+    string topicName = 2; //话题名称 example = "飓风出行"
+    string topicTitle = 3; //话题标题 example = "声浪计划"
+    string topicStatus = 4; //话题状态 example="Y(上线)/N(下线)"
+    int64 createTime = 5; //创建时间 example = "1582009999999"
+    int64 updateTime = 6; //更新时间 example = "1583009999999"
+    string topicUrl = 7; //话题封面  example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    int64 topicPart = 8; //参与人数 example = "9"
+}
+
+
+//管理后台话题详情 url = "article/console/topicDetail"
+message TopicDetailReq {
+    string topicId = 1; //话题id example="TOPIC000001"
+}
+
+
+message TopicDetailRes {
+    string topicId = 1; //话题id example="TOPIC000001"
+    string topicName = 2; //话题名称 example = "飓风出行"
+    string topicTitle = 3; //话题标题 example = "声浪计划"
+    string topicStatus = 4; //话题状态 example="Y(上线)/N(下线)"
+    int64 createTime = 5; //创建时间 example = "1582009999999"
+    int64 updateTime = 6; //更新时间 example = "1583009999999"
+    string topicUrl = 7; //话题封面  example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    int64 topicPart = 8; //参与人数 example = "9"
+    int64 topicRead = 9; //阅读人数
+    string topicIcon = 10; //话题缩略图 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+}
+
+
+//话题选择列表 url = "article/topic/topicList"
+message TopicListReq {
+    string topicName = 1; //话题名称 example = "飓风出行"
+    PageReq pageReq = 2;
+}
+
+
+message TopicListRes {
+    string topicId = 1; //话题id example="TOPIC000001"
+    string topicName = 2; //话题名称 example = "飓风出行"
+    string topicUrl = 7; //话题缩略图  example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    int64 topicPart = 8; //参与人数 example = "9"
+}
+
+
+//获取话题页话题详情 url = "article/topic/topicInfo"
+message TopicInfoReq {
+    string topicId = 1; //话题id example="TOPIC000001"
+}
+
+message TopicInfoRes {
+    string topicId = 1; //话题id example="TOPIC000001"
+    string topicName = 2; //话题名称 example = "飓风出行"
+    string topicTitle = 3; //话题标题 example = "声浪计划"
+    string topicUrl = 4; //话题封面  example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    int64 topicPart = 5; //参与人数 example = "9"
+    int64 topicRead = 6; //阅读人数 example = "9"
+    string flag = 7; //是否已加入话题 example = "Y N"
+}
+
+
+//话题内最新文章 url = "article/topic/latestArt"
+message LatestArtReq {
+    string topicId = 1; //话题id example="TOPIC000001"
+    PageReq pageReq = 2;
+}
+
+//话题内最热文章 url = "article/topic/hotArt"
+message HotArtReq {
+    string topicId = 1; //话题id example="TOPIC000001"
+    PageReq pageReq = 2;
+}
+
+
+message TopicNameListRes {
+    string topicId = 1; //话题id example="TOPIC000001"
+    string topicName = 2; //话题名称 example = "飓风出行"
+}
+
+
+
+
+

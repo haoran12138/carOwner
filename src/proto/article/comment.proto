@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+import "user/base.proto";
+import "common/commons.proto";
+import "enums/enum.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.article";
+
+message ListComment {
+    string userName = 1; //评论用户 example="jfcx123"
+    string content = 2; //评论内容 example="这车好帅"
+    int64 timestamp = 3; //评论时间 example = "1582009999999"
+    string commentId = 4; //评论id example = "CM202002264382391242"
+    string userId = 5;
+}
+
+message RootComment {
+    BaseUserInfo commUser = 1;
+    BaseUserInfo replyUser = 7;
+    int64 timestamp = 2; //评论时间 example = "1582009999999"
+    string content = 3; //评论内容 example="这车好帅"
+    int32 points = 4; //点赞数 example="9"
+    string commentId = 5; //评论id example = "CM202002264382391242"
+    string rootCommentId = 6;//根评论id
+    string flag = 8;//点赞标识 example=" Y N "
+}
+
+message CommentInfo {
+    BaseUserInfo fromUser = 1; //评论用户
+    BaseUserInfo toUserName = 2; //回复用户
+    string content = 3; //评论内容 example="这车好帅"
+    int64 timestamp = 4; //评论时间 example = "1582009999999"
+    string commentId = 5; //评论id example = "CM202002264382391242"
+}
+
+//发表评论 url = "/article/comment/pubComment" return CommentInfo
+message PubComment {
+    string artId = 1; //文章id example="ART20200212438703069"
+    string toUserId = 2; //回复用户 example="3ed27ad.1"
+    string content = 3; //评论内容 example="这车好帅"
+    string rootCommentId =4; //根评论id example = "CM202002264382391242"
+}
+
+//全部评论 url = "/article/comment/commentListAll" return CommentInfo
+message CommentAllReq {
+    string artId = 1; //文章id example="ART20200212438703069"
+    PageReq pageReq = 2;
+}
+
+message CommentAllRes{
+    map<string,CommentList> map = 1;
+    int32 count= 2;
+    PageRes pageRes = 3;
+}
+
+message CommentList{
+    repeated RootComment rootComment = 1;
+    Flag flag = 2;
+}
+
+//全部子评论 url = "/article/comment/childCommentList" return CommentInfo
+message ChildCommentAllReq {
+    string commentId = 1;//根评论id example="CM202002264382391242"
+    PageReq pageReq = 2;
+}
+
+

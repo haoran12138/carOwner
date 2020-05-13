@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.common";
+
+message DepositTxnEntity {
+    string abnormalDesc = 1; //异常描述 example = "车辆异常"
+    double refundAmt = 2; //定损金额 example = "500"
+    string userId = 3; //操作用户id example = "3ed27ad.1"
+    string refundType = 4; //退款账号类型 example = "支付宝alipay 银行bank"
+    string refundAcc = 5; //退款账号 example = "1234567"
+    string refundName = 6; //退款用户名 example = "jf123456"
+    string operatorName = 7; //操作员 example = "jf123456"
+    int64 createTime = 8; //创建时间 example = "1582009999999"
+    int64 updateTime = 9; //更新时间 example = "1582009999999"
+    int32 seqNo = 10; //版本号 example = "1"
+    string orderId = 11; //订单id example = "JFSO1223456464"
+    string vehicleType = 12; //退款类型 example = "保证金margin 车辆押金deposit 违章illegal"
+    string bankName = 14; //开户行 example = "上海建行长宁支行"
+}
+
+message BuryPointEntityKey {
+    string modelName = 1; //模块名称
+    string buryType = 2;  //埋点类型 example = "pv uv dau mau gmv"
+}
+
+message BuryPointEntity {
+    string modelPath = 1; //模块path example = "/searchOrder/byId/use"
+    string buryChl = 2; //渠道 example = "wechat"
+    string buryService = 3; //服务 example = "user order system car"
+    int32 buryCount = 4; //合计
+    int64 createTime = 5; //创建时间 example = "1582009999999"
+    int64 updateTime = 6; //更新时间 example = "1582009999999"
+    string modelName = 7; //模块名称
+    string buryType = 8; //埋点类型 example = "pv uv dau mau gmv"
+}
+
+
+message DepositTxnEntityKey {
+    string orderId = 1; //订单id example = "JFSO1223456464"
+    string vehicleType = 2; //退款类型 example = "保证金margin 车辆押金deposit 违章illegal"
+}
+
+message TxnTrailEntity {
+    string txnNo = 1; //交易流水号 example = "JFTXN201912256671478"
+    double payAmt = 2; //支付金额 example = "5000"
+    string userId = 3; //支付用户id example = "13312345678"
+    string txnChl = 4; //渠道 example = "wechat微信 线下转账transfer"
+    string txnType = 5; //支付类型 example = "寻车押金deposit 车主保证金bond"
+    string orderId = 6; //支付订单号 example = "JFSO1223456464"
+    string prepayId = 7; //第三方流水号
+    string timeStamp = 8; //第三方时间戳
+    string nonceStr = 9; //第三方随机字符串
+    string signType = 10; //第三方签名方式
+    string paySign = 11; //第三方支付签名
+    string txnStatus = 12; //支付状态 example = "success error"
+    int64 createTime = 13; //创建时间 example = "1582009999999"
+    int64 updateTime = 14; //更新时间 example = "1582009999999"
+    string txnDesc = 15; //备注
+    int32 seqNo = 16; //版本号 example = "1"
+}
+
+message CarOrderMap {
+    string searchId = 1; //寻车id example = "JFSO2019112057863484"
+    string veType = 2; //车型 example = "911"
+    string carColor = 3; //车辆颜色 example = "黑色"
+    string useType = 4; //租车目的 example = "自驾selfdrive 婚庆商务wedding 静态展示exhibition"
+    string localIdent = 5; //本地标识 example = "y n none"
+    int64 rentStartTime = 6; //租车起始时间 example = "1582009999999"
+    int64 rentEndTime = 7; //租车结束时间 example = "1582009999999"
+    int32 rentDay = 8; //租车天数 example = "3"
+    string useRegion = 9; //使用地区 example = "上海 长宁"
+    string carStatus = 10; //状态 待付定金tobepaid 已付定金paid 待车主支付保证金tobemp 待确认tobe 已确认confirm 已取车pickup 已还车return 待退押金refund 已完成finish
+    string carBrand = 11; //品牌 example = "宝马 多个,号分割"
+    string orderDesc = 12; //备注 example = "一定要黑色"
+    string carActual = 13; //实际车型 example = "宝马 911 黑色"
+    int64 createTime = 14; //创建时间 example = "1582009999999"
+}
+
+
+message UserGarageEntity {
+    string carBrand = 1; //品牌 example = "宝马 多个,号分割"
+    string veType = 2; //车型 example = "911"
+    string carColor = 3; //车辆颜色 example = "黑色"
+    string carPic = 4; //车辆图片 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    string rentAmtInterval = 5; //租金单价区间 example = "3000-5000"
+    int64 createTime = 6; //创建时间 example = "1582009999999"
+    int64 updateTime = 7; //更新时间 example = "1582009999999"
+    string userId = 8; //用户id example = "13312345678"
+    string carLicense = 9; //车牌号 example = "沪A123456"
+}
+
+

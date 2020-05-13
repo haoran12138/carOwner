@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package jfCloud_proto;
+import "article/collect.proto";
+import "article/query.proto";
+import "article/info.proto";
+import "user/base.proto";
+option java_package = "com.jf.cloud.proto.feign";
+
+
+message BaseBeLike{
+    string sendUserId = 1;
+    string eventId = 2;
+}
+
+message BeLikes{
+    repeated BaseBeLike beLike = 1;
+}
+
+message PicCountRes {
+    int32 count = 2; //图片总数
+}
+
+
+message UserCreateTimeRes {
+    int64 createTime = 1; //创建时间
+}
+
+
+message UserArtAndCollCountRes {
+    UserArtRes userArtRes = 1;
+    int32 collectCount = 2; //文章被收藏数
+}
+
+
+//关注用户的id
+message FollowFriendIdsRes {
+    string userId = 1; // 用户id example = "3ed27ad.1"
+}
+
+//用户关注状态
+message CheckUserFollowRes {
+    string flag = 1; // 关注状态 example = "Y N R"
+}
+
+//用户发布文章数
+message PubCountRes {
+    int32 pubCount = 1; //发布数 example = "99"
+}
+
+
+//用户城市
+message UserCity{
+    string city = 1; //市
+}
+
+
+message ComAndArtPicRes {
+    FollowUserInfo fromUserInfo = 1;
+    string rootContent = 2;
+    string content = 3;
+    string artPic = 4;
+    string commentId = 5;
+    string artContent = 6;
+    string artId = 7;
+    string artType = 8;
+}
+
+
+message UserAndPicRes{
+    FollowUserInfo userInfo =1;
+    string artPic =2;
+    string artId = 3;
+    string artContent = 4;
+    string artType = 5;
+}

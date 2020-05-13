@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+import "enums/enum.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.kafka";
+option java_outer_classname = "KafkaProto";
+
+message CarWxTemplate {
+    string userId = 1; //用户id example = "13312345678"
+    string searchId = 2; //寻车id example = "JFSO2019112057863484"
+    string templateName = 3; //模板名 example = "NEW_ORDER"
+}
+
+
+message RemindMsg{
+    string sendUserId =1; //发送用户id example = "13312345678"
+    string receiveUserId =2; //接收用户id example = "13312345678"
+    MsgType remindType = 3;
+    string eventId = 4; //事件id example = "ART20200212438703069"
+    string remindContent = 5; //消息内容 example = "你好"
+    int64 createTime = 6; //创建时间 example = "1582009999999"
+}
+
+message OplogTemplate{
+    int64 id = 1; //id
+    string ip = 2; //ip
+    string oprAccount = 3; //操作员账号
+    string path = 4; //访问路径
+    string serverName = 5; //访问服务
+    string code = 6; //返回状态码
+    int64 spendTime = 7; //处理耗时
+    int64 createTime = 8; //创建时间
+    string reserve = 9; //预留字段
+}
+
+
+message ExLogTemplate{
+    int64 oplogId = 1; //oplogid
+    string exMsg = 2; //错误信息
+    string status = 3;
+}
+
+message UserReviewTemplate{
+    string userId = 1;
+    string type = 2;
+}

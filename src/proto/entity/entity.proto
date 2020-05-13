@@ -1,0 +1,14 @@
+
+syntax = "proto3";
+
+
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.entity";
+
+
+message TagEntity {
+    string tagId = 1;
+    string tagName = 2;
+    string tagType = 3;
+}
+

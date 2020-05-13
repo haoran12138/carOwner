@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+import "common/commons.proto";
+
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.user";
+
+//获取token url = "/user/sp/getToken"
+message TokenReq {
+    string userId = 1; //用户id example = "3ed27ad.1"
+}
+
+message TokenRes {
+    string token = 1;
+    int64 expires = 2; //过期时间 example = "1582009999999"
+    string imAccid = 3; //im唯一标识：0c519aa40b8b4965b574729f634814e6
+    string imToken = 4; //token：c32e2fe52b93fc63c485e8773f85a97b
+    string userId = 5; //用户id
+}

@@ -1,0 +1,128 @@
+syntax = "proto3";
+
+import "common/commons.proto";
+import "car/info.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.car";
+
+
+//全部车辆品牌 url = "/car/info/brandList"
+message CarBrandReq {
+    int64 brandId = 1; //品牌id  example = "188"
+    string brandName = 2; //车辆品牌名  example = "宝马"
+    int32 hojfBrand = 3; //热门品牌标志位
+    PageReq pageReq = 4;
+}
+
+message CarBrandRes {
+    int64 brandId = 1; //车辆品牌id example = "188"
+    string brandName = 2; //车辆品牌名  example = "宝马"
+    int32 hojfBrand = 3; //热门品牌标志位
+    string brandImg = 4; //品牌图标 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+}
+
+//品牌对应全部车型 url = "/car/info/modelList"
+message CarModelReq {
+    int64 modelId = 1; //车型id example = "30"
+    string modelName = 2; //车型名 example = "730Li"
+    string brandName = 3; //品牌名 example = "宝马"
+    int32 minRent = 4; //最小租金 example = "100"
+    int32 maxRent = 5; //最大租金 example = "1000"
+    PageReq pageReq = 6;
+}
+
+
+message CarModelRes {
+    int64 modelId = 1; //车型id example = "30"
+    string modelName = 2; //车型名 example = "730Li"
+    int32 rent  = 3; //车辆价格 example = "5000"
+    string modelImg = 4; //车辆图片 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    string brandName = 5; //品牌名 example = "宝马"
+}
+
+
+//全部车辆颜色 url = "/car/info/colorList"
+message CarColorReq {
+    int64 colorId = 1; //车辆颜色id example = "1"
+    string colorName = 2; //车辆颜色 example = "黑色"
+    PageReq pageReq = 3;
+}
+
+
+message CarColorRes {
+    int64 colorId = 1; //车辆颜色id example = "1"
+    string colorName = 2; //车辆颜色 example = "黑色"
+}
+
+//车辆图片 url = "/car/info/getCarPicUrl"
+message CarPicUrlReq {
+    string model = 1; //车型 example = "730Li"
+    int64 brandId = 2; //车辆品牌id example = "188"
+}
+
+//车辆图片 url = "/car/info/getCarPicUrl"
+message CarPicUrlRes {
+    string picUrl = 1; //车辆图片 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+}
+
+
+//品牌对应车型 url = "/car/console/modelNames"
+message ModelNameReq {
+    int64 brandId = 1; //车辆品牌id example = "188"
+}
+
+
+message ModelNameRes {
+    string modelName = 1; //车型名 example = "宝马5系"
+}
+
+
+//车型对应二级车型 url = "/car/console/modelSubNames"
+message ModelSubNameReq {
+    string modelName = 1; //车辆品牌id example = "188"
+}
+
+
+message ModelSubNameRes {
+    int64 id = 1; //车型id example = "30"
+    string modelSubName = 2; //二级车型名 example = "730Li"
+}
+
+
+//查询车型价格日历 url = "/car/info/queryRentCal"
+message BaseRentReq {
+    int64 modelId = 1; //车型id example = "1"
+    int64 brandId = 2; //品牌id example = "1"
+    int32 beginDay = 3; //开始时间 example = "20200101"
+    int32 endDay = 4; //结束时间 example = "20200101"
+}
+
+message QueryRentCalRes {
+    int32 baseRent = 1; //基础租金 example = "500"
+    repeated OffsetRent offsetRent = 2;
+}
+
+
+//查询日历操作日志 url = "/car/info/queryCalOpr"
+message QueryCalOprReq {
+    int32 id = 1; //id example = "1"
+    int64 modelId = 2; //车型id example = "1"
+    int64 brandId = 3; //品牌id example = "1"
+    string oprAccount = 4; //操作人账号 example="13838384388"
+    int32 beginDay = 5; //日历起始时间 example="20200101"
+    int32 endDay = 6; //日历结束时间 example="20200101"
+    int32 beginCtime = 7; //操作起始时间 example = "1582009999999"
+    int32 endCtime = 8; //操作结束时间 example = "1582009999999"
+    PageReq pageReq = 9;
+}
+
+message QueryCalOprRes {
+    int32 id = 1; //id example = "1"
+    int64 modelName = 2; //车型名 example = "730Li"
+    int64 brandName = 3; //车辆品牌名  example = "宝马"
+    int32 day = 4;  //日期 example = "20200101"
+    string offsetType = 5; //偏移类型 example = "percent百分比 plus数值"
+    int32 offsetValue = 6; //偏移值 example = "500"
+    string oprAccount = 7; //操作人账号 example="13838384388"
+    int64 createTime = 8; //操作时间 example = "1582009999999"
+}

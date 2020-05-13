@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+import "common/entity.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.order";
+
+message CarOrderEntity {
+    string searchId=1; //寻车id example = "JFSO2019112057863484"
+    string rentUser=2; //租车用户 example = "13661825172"
+    string masterUser=3; //车主 example = "13661825172"
+    string carBrand=4; //品牌 example = "宝马 多个,号分割"
+    string veType=5; //车型 example = "911"
+    string carColor=6; //车辆颜色 example = "黑色"
+    string useType=7; //租车目的 example = "自驾selfdrive 婚庆商务wedding 静态展示exhibition
+    string localIdent=8; //本地标识 example = "y n none"
+    int64 rentStartTime=9; //租车起始时间 example = "1582009999999"
+    int64 rentEndTime=10; //租车结束时间 example = "1582009999999"
+    int32 rentDay=11; //租车天数 example = "3"
+    string useRegion=12; //使用地区 example = "上海 长宁"
+    string carStatus=13; //状态 待付定金tobepaid 已付定金paid 待车主支付保证金tobemp 待确认tobe 已确认confirm 已取车pickup 已还车return 待退押金refund 已完成finish
+    double unitAmt=14; //租金单价
+    double rentAmt=15; //车辆租金
+    double depositAmt=16; //车辆押金
+    double retDepAmt=17; //退车辆押金
+    double violationAmt=18; //违章押金
+    double retVioAmt=19; //退违章押金
+    double deliveryAmt=20; //车辆押金
+    double vehicleAmt=21; //还车费用
+    double earnestAmt=22; //定金
+    double tailAmt=23; //尾款
+    double damageAmt=24; //车损金
+    double bondAmt=25; //保证金
+    double rentTotalAmt=26; //发起方合计费用
+    double masterTotalAmt=27; //车主合计费用
+    int64 createTime=28; //创建时间 example = "1582009999999"
+    int64 updateTime=29; //更新时间 example = "1582009999999"
+    string orderDesc=30; //备注 example = "一定要黑色"
+    int32 seqNo=31; //版本号 example = "1"
+    string carActual=32; //实际车型 example = "宝马 911 黑色"
+    string pickupAddress=33; //送车地址 example = "上海市长宁区XXX路XX号"
+    string retAddress=34; //还车地址 example = "上海市长宁区XXX路XX号"
+}
+
+//后台根据订单查详情 url = "order/searchOrder/details/{searchId}"
+message CarOrderDescDTO{
+    CarOrderEntity carOrderEntity=1;
+    DepositTxnEntity depTxnEntity=2;
+    DepositTxnEntity masterTxnEntity=3;
+    bool retdepDeposit=4;
+}

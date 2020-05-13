@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.system";
+
+message BuryPointRes{
+    repeated BuryPointDTO dauList=1;
+    repeated BuryPointDTO mauList=2;
+    repeated BuryPointDTO pvList=3;
+    repeated BuryPointDTO uvList=4;
+    int32 dayUser=5; //日用户
+    int32 totalUser=6; //总用户
+    int32 dayOrderTotal=7; //日订单
+    int32 allOrderTotal=8; //总订单
+}
+
+message BuryPointDTO{
+    string modelName=1; //模块名
+    string buryType=2; //埋点类型 example = "pv uv dau mau gmv"
+    int32 buryCount=3; //合计
+}

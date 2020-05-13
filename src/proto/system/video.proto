@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.system";
+
+
+//查询视频列表 url = "system/console/video/queryVideoList"
+message QueryVideoListReq {
+    string fileName = 1; //视频标题
+    PageReq pageReq = 2;
+}
+
+
+message QueryVideoListRes {
+    string fileId = 1; //视频id
+    string fileName = 2; //视频标题
+    string coverUrl = 3; //封面图
+    int64 createTime = 4; //创建时间
+    int64 updateTime = 5; //更新时间
+    string tVideoUrl = 6; //转码后播放地址
+    string tSize = 7; //转码后大小
+    string tDuration = 8; //转码后时长
+    string tFormat = 9; //转码后格式
+    string tResolutionRatio = 10; //转码后分辨率
+}
+
+
+//修改视频列信息 url = "system/console/video/updVideo"
+message UpdVideoReq {
+    string fileId = 1;
+    string fileName = 2; //视频标题
+    string coverUrl = 3; //封面图
+}
+
+
+
+

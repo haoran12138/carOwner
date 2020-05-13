@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.common";
+
+
+message Result {
+    int32 code = 1; //状态码 example = "998"
+    string msg = 2; //响应信息 example = "用户不存在"
+    string excption = 3; //异常
+    repeated google.protobuf.Any data = 4; //响应数据
+    PageRes page = 5; //分页信息
+}
+
+
+message CacheData {
+    repeated google.protobuf.Any data = 4;
+    PageRes page = 5; //分页信息
+}
+
+//用于乐观锁
+message Sequence {
+    int64 timestamp = 1; //时间戳
+    int64 sequence = 2; //全局id
+}
+
+message PageReq {
+    int32 pageSize = 1; //页条数
+    int32 pageNum = 2; //页码
+}
+
+message PageRes {
+    int32 pageSize = 1; //页条数
+    int32 pageNum = 2; //页码
+    int64 totalSize = 3; //总条数
+    int32 totalPages = 4; //总页数
+}
+

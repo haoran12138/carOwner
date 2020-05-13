@@ -1,0 +1,206 @@
+syntax = "proto3";
+
+import "common/commons.proto";
+import "article/comment.proto";
+import "article/info.proto";
+import "car/info.proto";
+import "act/info.proto";
+import "user/base.proto";
+import "article/collect.proto";
+import "article/topic.proto";
+import "enums/enum.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.article";
+
+// 文章审核(后台功能)
+// 查询列表 /article/console/query
+message ArticleQueryReq {
+    string artId = 1; //文章id example ="ART20200217438213546"
+    string artType = 2; //文章类别photo图文,longer长文 example ="photo"
+    int64 beginDate = 3; //开始时间 创建时间 example = "1582009999999"
+    int64 endDate = 4; //结束时间 创建时间 example = "1583009999999"
+    string checkIdent = 5;//审核标识 example = "Y N R"
+    string status = 6;//上下线状态 example = "Y上线 N下线"
+    string pubUserId = 7;//发布人id
+    Flag isMaster = 8; //是否为管理员
+    PageReq pageReq = 9; //分页
+}
+
+
+message ArticleQueryRes {
+    string artId = 1; //文章id  example ="ART20200217438213546"
+    string title = 2; //文章标题 example="原来自己有车是这种感觉"
+    string artType = 3; //文章类别photo图文,longer长文 example ="photo"
+    string carBrand = 4; //品牌 example = "宝马 多个,号分割"
+    string veType = 5; //型号 example="911"
+    string pubUserId = 6; //发布用户id example = "13323456789"
+    string checkIdent = 7; //审核标识 example = "Y N R A"
+    string pubRegion = 8; //发布地区 example = "上海 长宁"
+    string atIds = 9; //at用户id example = "13323456789 多个,号分割"
+    string partTopic = 10; //话题id example="TOPIC000001"
+    string partTitle = 11; //话题标题 example="飓风出行"
+    int64 createTime = 12; //创建时间 example = "1582009999999"
+    int64 updateTime = 13; //更新时间 example = "1583009999999"
+    string artContent = 14; //文章的内容 example="这车好帅"
+    string artReason = 15; //审核失败原因
+    string status = 16; //上下线状态 example="Y上线 N下线"
+}
+
+
+
+// 查询置顶文章列表 /article/console/queryTopArt
+message QueryTopArtReq {
+    string artId = 1; //文章id example ="ART20200217438213546"
+    string pubUserId = 2;//发布人id
+    TopFlagType flag = 3;//T置顶 B沉底 F同时查沉底及置顶
+    PageReq pageReq = 4; //分页
+}
+
+
+message QueryTopArtRes {
+    string artId = 1; //文章id  example ="ART20200217438213546"
+    string title = 2; //文章标题 example="原来自己有车是这种感觉"
+    string artType = 3; //文章类别photo图文,longer长文 example ="photo"
+    string carBrand = 4; //品牌 example = "宝马 多个,号分割"
+    string veType = 5; //型号 example="911"
+    string pubUserId = 6; //发布用户id example = "13323456789"
+    string pubRegion = 7; //发布地区 example = "上海 长宁"
+    string atIds = 8; //at用户id example = "13323456789 多个,号分割"
+    string partTopic = 9; //话题id example="TOPIC000001"
+    string partTitle = 10; //话题标题 example="飓风出行"
+    int64 createTime = 11; //创建时间 example = "1582009999999"
+    int64 updateTime = 12; //更新时间 example = "1583009999999"
+    string artContent = 13; //文章的内容 example="这车好帅"
+    int64 topTime = 14;// 置顶时间
+    string userName = 15;// 用戶名
+}
+
+
+
+//发现-关注的页面 url = "/article/info/attArtQuery"
+message AttArtRes {
+    repeated BaseArticle article = 1; //关注的好友的文章
+    repeated FollowUserInfo userInfo = 2; //可能感兴趣的用户
+    PageRes page = 3; //文章列表分页
+}
+
+
+//发现-推荐的页面 url = "/article/info/recommendQuery"
+message RecommendRes {
+    repeated BaseArticle article = 1; //文章列表
+    repeated BaseActInfo act = 2; //活动列表
+    PageRes page = 3; //文章列表分页
+}
+
+//发现-热门的页面 url = "/article/info/hotQuery"
+message HotRes {
+    repeated BaseArticle article = 1; //文章列表
+    repeated BaseTopicInfo topic = 2; //话题列表
+    PageRes page = 3; //文章列表分页
+}
+
+
+//文章详情 url = "/article/info/articleDetail"
+message ArticleDetailReq {
+    string artId = 1; //文章id example="ART20200212438703069"
+}
+
+message ArticleDetailRes {
+    string artId = 1; //文章id
+    FollowUserInfo userInfo = 2; //用户信息
+    int64 pubTime = 3; //发布时间 example = "1582009999999"
+    string pubRegion = 4; //发布地区 example = "上海 长宁"
+    string artPicUrl = 5; //文章图片 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    string artContent = 6; //文章的内容 example="这车好帅"
+    string carBrand = 7; //发布的品牌 example="宝马"
+    string veType = 8; //发布的型号 example="911"
+    string partTopic = 9; //参与话题 example="TOPIC000001"
+    string topicName = 10; //话题名称 example="飓风出行"
+    RentalCarInfo rentalCarInfo = 11; //租车信息
+    int64 commentCount = 12; //评论总数 example="9"
+    LikeUserInfo likeUser = 13; //喜欢的用户列表
+    repeated RootComment comment = 14; //评论列表
+    int32 rootCount = 19; //根评论数 example="1"
+    repeated RelatedRecommend relatedRecommend = 15; //相关推荐
+    string likeIdent = 16; //是否已赞 ( Y N )
+    string artTitle = 17; //文章标题
+    string artType = 18; //文章类型
+    string checkIdent = 20;//审核状态
+}
+
+
+//他人文章列表 url = "/article/info/otherArt"
+message OtherArtReq {
+    string userId = 1; //用户id example = "13312345678"
+    PageReq page = 2;
+}
+
+
+message UserArtRes {
+    repeated BaseUserArt baseUserArt = 1;
+    int32 totalCount = 2; //用户发布文章总数 example = 99
+    int32 videoCount = 3;  //用户发布视频文章数 example = 20;
+    PageRes page = 4; //列表分页
+}
+
+
+//他人视频文章列表 url = "/article/info/otherVideoArt"
+message OtherVideoArtReq {
+    string userId = 1; //用户id example = "3ed27ad.1"
+    PageReq page = 2;
+}
+
+
+//查询草稿  url = "/article/info/queryDraft"
+message QueryDraftsRes {
+    repeated BaseDraft baseDrafts = 1;
+    int32 totalCount = 2; //草稿总数 example = 99
+    int32 videoCount = 3;  //视频数 example = 20;
+    PageRes page = 4; //列表分页
+}
+
+
+//任务列表请求  /article/console/robot/work/getList
+message WorkListReq {
+    string workId = 1;  //任务id
+    string title = 2;   //任务标题
+    string workType = 3; //选择任务模式(0随机 1指定)
+    string artId = 4;   //文章id
+    string status =5;   ////任务状态 Y结束 N未开始 R进行中 A待发布
+    PageReq page = 6; //列表分页
+}
+
+//任务列表返回  /article/console/robot/work/getList
+message WorkListRes {
+    string workId = 1;  //任务id
+    string title = 2;   //任务标题
+    string workType = 3; //选择任务模式(0随机 1指定)
+    string work = 4;    //工作类型（4位0/1）,评论/收藏/点赞/点文章下评论的赞
+    int32 robNum = 5;   //机器人数量
+    int32 interval = 6; //执行间隔时间
+    int32 times = 7;    //执行批次
+    int64 startTime = 8;//任务开始时间
+    int64 endTime = 9;  //任务结束时间
+    string status = 10; //任务状态 Y结束 N未开始 R进行中 A待发布
+}
+
+//机器人数量返回 /article/console/robot/getRobNu
+message RobotNum {
+    int32 all = 1; //总量
+    int32 used = 2;//占用
+    int32 free = 3;//可用
+}
+
+//评论类型返回
+message AllRCTypeRes{
+    string type = 1; //评论模板类型
+}
+
+
+
+
+
+
+
+
+

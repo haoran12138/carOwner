@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package jfCloud_proto;
+import "enums/enum.proto";
+option java_package = "com.jf.cloud.proto.article";
+
+message BaseLikeClick{
+    string acId = 1;
+    Flag flag = 2; //Y N
+    string pubUserId = 3;
+}
+//点赞 url = "/article/like/click"
+message BatchLikeReq {
+    repeated BaseLikeClick likeClick = 1;
+}

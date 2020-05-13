@@ -1,0 +1,114 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+import "system/base.proto";
+import "user/token.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.system";
+
+
+
+//登录 url = "system/console/login"
+message OprLoginReq {
+    string account = 1; //账号 example="13838384388"
+    string password = 2; //密码 md5加密 32位
+}
+
+message OprLoginRes {
+    TokenRes tokenRes = 1;
+    repeated BaseFunc baseFunc = 2;
+    string account = 3;
+}
+
+//登出 url = "system/console/logout"
+//无参数
+
+
+//查询用户列表 url = "system/console/opr/queryOprList"
+message QueryOprListReq {
+    string account = 1; //账号 example="13838384388"
+    PageReq pageReq = 2;
+}
+
+
+message QueryOprListRes {
+    string oprName = 1; //名称 example="飓风出行"
+    string department = 2;  //部门 example="技术部"
+    string status = 3; //状态 example="NORMAL正常 LOCK锁定"
+    int64 createTime = 4; //创建时间 example = "1582009999999"
+    int64 updateTime = 5; //更新时间 example = "1582009999999"
+    int64 lastLoginTime = 6; //最后登录时间 example = "1582009999999"
+    string description = 7; //备注
+    string account = 8;//账号 example="13838384388"
+    string headImg = 9;//头像 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+}
+
+
+//增加用户 url = "system/console/opr/addOpr"
+message AddOprReq {
+    string oprName = 1; //名称 example="飓风出行"
+    string password = 2;  //密码 必须大于等于6位 example="123456"
+    string department = 3; //部门 example="技术部"
+    string status = 4; //状态 example="NORMAL正常 LOCK锁定"
+    string description = 5; //备注
+    string account = 6;//账号 example="13838384388"
+    string headImg = 7;//头像 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+}
+
+
+
+//用户详情 url = "system/console/opr/oprDetail"
+message OprDetailReq {
+    string account = 1; //账号
+}
+
+
+message OprDetailRes {
+    string oprName = 1; //名称 example="飓风出行"
+    string department = 2;  //部门 example="技术部"
+    string status = 3; //状态 example="NORMAL正常 LOCK锁定"
+    int64 createTime = 4; //创建时间 example = "1582009999999"
+    int64 updateTime = 5; //更新时间 example = "1582009999999"
+    int64 lastLoginTime = 6; //最后登录时间 example = "1582009999999"
+    string description = 7; //备注
+    string account = 8;//账号 example="13838384388"
+    repeated BaseFunc baseFunc = 9;
+    string headImg = 10;//头像  example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+}
+
+
+//修改用户 url = "system/console/opr/updOpr"
+message UpdOprReq {
+    string account = 1; //账号
+    string oprName = 2; //名称 example="飓风出行"
+    string department = 3; //部门 example="技术部"
+    string status = 4; //状态 example="NORMAL正常 LOCK锁定"
+    string description = 5; //备注
+    repeated int32 funcIds = 6; //功能id
+    string headImg = 7;//头像  example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+}
+
+//删除用户 url = "system/console/opr/delOpr"
+message DelOprReq {
+    string account = 1; //账号
+}
+
+
+//修改密码 url = "system/console/opr/updPw"
+message UpdPwReq {
+    string oldPassword = 1; //旧密码 md5加密 32位
+    string newPassword = 2; //新密码 md5加密 32位
+}
+
+
+//重置密码 url = "system/console/opr/resetPw"
+message ResetPwReq {
+    string account = 1; //账号
+    string newPassword = 2; //新密码 md5加密 32位
+}
+
+
+
+
+

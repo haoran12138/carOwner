@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.car";
+
+
+message CarBrandEntity {
+    int64 id = 1 ; //车辆品牌id example = "188"
+    string brand = 2; //车辆品牌名 example = "宝马"
+    int32 hojfBrand = 3; //热门品牌标志位
+    string brandImg = 4 ; //品牌图标 example = "http://image.jufengchaopao.com/20181204191110-uploadFile"
+}
+
+message CarModelEntity {
+    int64 id = 1; //车型id example = "30"
+    string model = 2; //车型名 example = "730Li"
+    int64 brandId = 3; //车辆品牌id example = "188"
+    int32 rent  = 4; //车辆价格 example = "5000"
+    string modelImg = 5; //车辆图片 example = "http://image.jufengchaopao.com/20181204191110-uploadFile"
+}
+
+

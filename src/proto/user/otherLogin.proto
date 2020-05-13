@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.user";
+
+//用户证件认证添加 url = "otherLogin/userotheraccount/save"
+message UserOtherAccountAddReq{
+    string userId = 1;
+    string type = 3;
+    string openId = 4;
+    string unionId = 5;
+    string headImg = 6;
+    string nickName = 7;
+    int64 createTime = 8;
+}
+
+//用户证件认证修改 url = "otherLogin/userotheraccount/upd"
+message UserOtherAccountUpdReq{
+    string userId = 1;
+    string type = 3;
+    string openId = 4;
+    string unionId = 5;
+    string headImg = 6;
+    string nickName = 7;
+    int64 createTime = 8;
+}
+
+//用户证件认证删除 url = "otherLogin/userotheraccount/del"
+message UserOtherAccountDelReq{
+    string userId = 1;
+    string type = 3;
+    string openId = 4;
+    string unionId = 5;
+    string headImg = 6;
+    string nickName = 7;
+    int64 createTime = 8;
+}
+
+//用户证件认证查询 url = "otherLogin/userotheraccount/queryUserOtherAccountList"
+message UserOtherAccountQueryReq{
+    string userId = 1;
+    string type = 3;
+    string openId = 4;
+    string unionId = 5;
+    string headImg = 6;
+    string nickName = 7;
+    int64 createTime = 8;
+}
+
+message UserOtherAccountQueryRes{
+    string userId = 1;
+    string type = 3;
+    string openId = 4;
+    string unionId = 5;
+    string headImg = 6;
+    string nickName = 7;
+    int64 createTime = 8;
+}
+
+
+
+
+
+
+
+
+
+
+
+

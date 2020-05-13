@@ -1,0 +1,240 @@
+syntax = "proto3";
+
+import "enums/enum.proto";
+import "article/comment.proto";
+import "user/base.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.article";
+
+message BaseArticle {
+    string artId = 1; //文章id example ="ART20200217438213546"
+    FollowUserInfo userInfo = 2; //用户信息
+    int64 pubTime = 3; //发布时间 example = "1582009999999"
+    string pubRegion = 4; //发布地区  example = "上海 长宁"
+    string artContent = 5; //文章文字内容  example="这车好帅"
+    string artPicUrl = 12; //文章封面图 使用fix协议
+    string carBrand = 6; //发布的品牌 example="宝马"
+    string veType = 7; //发布的型号 example="911"
+    string partTopic = 8; //参与话题 example="TOPIC000001"
+    string topicName = 11; //话题名称 example="飓风出行"
+    int64 likeCount = 9; //喜欢数 example="9"
+    int64 commCount = 10; //评论数 example="9"
+    repeated ListComment comment = 13; //最新评论top3(或热门评论TOP3)
+    string likeIdent = 14; //是否喜欢 ( Y N )
+    string artTitle = 15; //文章标题
+    string artType = 16; //文章类型
+    string checkIdent = 17; //审核状态
+}
+
+
+message BaseUserArt {
+    string artId = 1; //文章id example ="ART20200217438213546"
+    string artPicUrl = 2; //文章图片 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    string artTitle = 3; //文章标题 example="原来自己有车是这种感觉"
+    int64 collCount = 4; //被收藏数 example="99"
+    string artContent = 5;
+    BaseUserInfo userInfo = 6;
+    string artType = 7;
+    string checkIdent = 8;
+}
+
+
+message BaseDraft{
+    string artId = 1;
+    string artTitle = 2;
+    string artContent = 3;
+    string artPicUrl = 4;
+    string artType = 5;
+    int64 createTime = 6;
+}
+
+
+//相关推荐
+message RelatedRecommend {
+    string artId = 1; //文章id example ="ART20200217438213546"
+    string picUrl = 2; //文章图片 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    string title = 3; //文章标题 example="原来自己有车是这种感觉"
+    string artContent = 4;//文章内容
+    BaseUserInfo userInfo = 5; //用户信息
+}
+
+// 文章审核(后台功能) /article/console/check
+message ArticleCheckReq{
+    string artId = 1; //文章id example ="ART20200217438213546"
+    string checkIdent = 2; //状态   example = "Y N R"
+    string reason = 3; //拒绝原因 example = "图片不符合要求"
+}
+
+
+// 文章批量审核(后台功能) /article/console/batchCheck
+message BatchArtCheckReq{
+    repeated ArticleCheckReq batchArtCheckReq = 1;
+}
+
+
+//发表文章(图文,长文) url = "/article/info/publishArticle"
+//保存至草稿箱(图文,长文) url = "/article/info/saveDraft"
+message PubOrSaveArtReq {
+    string title = 1; //文章标题 example="原来自己有车是这种感觉"
+    ArtType artType = 2; //文章类别photo图文,longer长文 example ="photo"
+    string carBrand = 3; //品牌 example = "宝马 多个,号分割"
+    string veType = 4; //车型 example = "911 多个,号分割")
+    string pubRegion = 5; //发布地区  example = "上海市长宁区"
+    string atIds = 6; //at用户id  example = "13323456789 多个,号分割"
+    string partTopic = 7; //话题id   example="TOPIC000001"
+    string artContent = 8; //文章内容 example = "picId1|我的车|picid2|长这样的|picid3|大家来看看"
+    //example2 = "picid1|picid2|picid3|我的车长这样的"
+    string artId = 9; //文章id example = "ART20200217438213546 初次保存为空"
+}
+
+//草稿箱文章详情  url = "/article/info/draftDetail"
+message DraftDetailReq {
+    string artId = 1; //文章id example = "ART20200217438213546"
+}
+
+
+message DraftDetailRes {
+    string title = 1; //文章标题 example="原来自己有车是这种感觉"
+    string artType = 2; //文章类别photo图文,longer长文 example ="photo"
+    string carBrand = 3; //品牌 example = "宝马 多个,号分割"
+    string veType = 4; //车型 example = "911 多个,号分割")
+    string pubRegion = 5; //发布地区  example = "上海市长宁区"
+    string atIds = 6; //at用户id  example = "3ed27ad.1 多个,号分割"
+    string partTopicId = 7; //话题id   example="TOPIC000001"
+    string partTopicName = 8;
+    string artContent = 9; //文章内容 example = "picId1|我的车|picid2|长这样的|picid3|大家来看看"
+    //example2 = "picid1|picid2|picid3|我的车长这样的"
+    string artId = 10; //文章id example = "ART20200217438213546 初次保存为空"
+    repeated UserName UserName = 11; //用户名
+
+}
+
+
+
+//审核拒绝重新发表文章(图文,长文) url = "/article/info/againPubArticle"
+message AgainPubArtReq {
+    string title = 1; //文章标题 example="原来自己有车是这种感觉"
+    ArtType artType = 2; //文章类别photo图文,longer长文 example ="photo"
+    string carBrand = 3; //品牌 example = "宝马 多个,号分割"
+    string veType = 4; //车型 example = "911 多个,号分割"
+    string pubRegion = 5; //发布地区  example = "上海市长宁区"
+    string atIds = 6; //at用户id  example = "3ed27ad.1 多个,号分割"
+    string partTopic = 7; //话题id  example="TOPIC000001"
+    string artContent = 8; //文章内容 example = "picId1|我的车|picid2|长这样的|picid3|大家来看看"
+    //example2 = "picid1|picid2|picid3|我的车长这样的"
+    string artId = 9;
+}
+
+
+//后台文章详情 /article/console/detail
+message ArticleInfoDetailReq {
+    string artId = 1; //文章id example ="ART20200217438213546"
+}
+
+message ArticleInfoDetailRes{
+    string artId = 1; //文章id example ="ART20200217438213546"
+    string artTitle = 2; //文章标题 example="原来自己有车是这种感觉"
+    string artType = 3; //文章类别photo图文,longer长文 example ="photo"
+    string carBrand = 4; //品牌  example = "宝马 多个,号分割"
+    string veType = 5; //车型 example = "911 多个,号分割"
+    string pubUserId = 6; //发布用户id example = "3ed27ad.1"
+    string checkIdent = 7; //审核标识 example = "Y N R"
+    string atIds = 8; //at用户id example = "13323456789 多个,号分割"
+    string partTopic = 10; //话题id example="TOPIC000001"
+    string artContent = 11; //文章内容 example="这车好帅"
+    int64 createTime = 12; //创建时间 example = "1582009999999"
+    int64 updateTime = 13; //更新时间 example = "1582009999999"
+    string pubRegion = 14; //发布地区 example = "上海 长宁"
+    string status = 15; //上线线状态 example = "Y上线 N下线"
+}
+
+
+//保存文章 /article/console/saveArt
+message SaveArtReq {
+    string title = 1; //文章标题 example="原来自己有车是这种感觉"
+    string carBrand = 2; //品牌 example = "宝马 多个,号分割"
+    string veType = 3; //车型 example = "911 多个,号分割")
+    string pubRegion = 4; //发布地区  example = "上海市长宁区"
+    string atIds = 5; //at用户id  example = "13323456789 多个,号分割"
+    string partTopic = 6; //话题id   example="TOPIC000001"
+    string artContent = 7; //文章内容 example = ""
+    string pubUserId = 8;//发布用户id example = "3ed27ad.1"
+    ArtType artType = 9;
+    string mobile = 10;
+}
+
+
+
+//修改文章 /article/console/updArt
+message UpdArtReq {
+    string title = 1; //文章标题 example="原来自己有车是这种感觉"
+    string carBrand = 2; //品牌 example = "宝马 多个,号分割"
+    string veType = 3; //车型 example = "911 多个,号分割")
+    string pubRegion = 4; //发布地区  example = "上海市长宁区"
+    string atIds = 5; //at用户id  example = "13323456789 多个,号分割"
+    string partTopic = 6; //话题id   example="TOPIC000001"
+    string artContent = 7; //文章内容 example = ""
+    string pubUserId = 8;//发布用户id example = "3ed27ad.1"
+    string artId = 9;//文章id example ="ART20200217438213546"
+}
+
+
+//上下线文章 /article/console/updArtStatus
+message UpdArtStatusReq {
+    string artId = 1; //文章id example ="ART20200217438213546"
+    Flag flag = 2; //Y上线 N下线
+}
+
+
+//删除文章 /article/info/delArt
+message DelArtReq {
+    string artId = 1; //文章id example ="ART20200217438213546"
+}
+
+
+//审核拒绝重新发表文章(图文,长文) url = "/article/info/see"
+message ArtSeeReq{
+    string artId = 1 ;//文章id
+}
+
+
+//修改文章发布时间 仅供内部操作 url = "/article/console/updPubTime"
+message UpdPubTime{
+    string artId = 1 ;//文章id
+    int64 pubTime = 2 ;//发布时间
+}
+
+
+//文章置顶/取消置顶 url = "/article/console/topArt"
+message TopArtReq{
+    string artId = 1 ;//文章id
+    TopFlagType topFlag = 2 ; //T置顶 F取消置顶或沉底 B沉底
+    int64 topTime = 3;//置顶时间
+}
+
+
+//图片内容审核 url = "/article/checkImg"
+//参数是文件格式，同图片上传一致
+
+//文本内容审核 url = "/article/checkContent"
+message ContentCensorReq{
+    string content = 1;//内容,可以是文本，也可以是图片url
+}
+
+//发送 工作信息 给kafka
+message RobotWork{
+    string id =1;
+    string workId =2;
+    string artId =3;
+    string robot =4;
+    string work =5;
+    string comment =6;
+    int64 startTime =7;
+    string status =8;
+}
+
+
+
+
+
+

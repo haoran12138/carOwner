@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.system";
+
+message BaseOpr {
+    string account = 1; //账号 example="13838384388"
+    string oprName = 2; //名称 example="飓风出行"
+}
+
+message BaseFunc {
+    int32 funcId = 1; //id
+    string funcName = 2; //功能名 example="车辆管理"
+    int32 parentId = 3; //父id 0为root
+    string buttonFlag = 4; //是否为按钮 example="Y是 N不是".
+    string flag = 5; //是否已选 example="Y是 N不是"
+}

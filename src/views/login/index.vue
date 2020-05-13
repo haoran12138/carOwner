@@ -23,6 +23,7 @@
           v-model="captcha"
           type="number"
           placeholder="请输入验证码"
+          @input="changeCaptcha"
         >
           <template #left-icon>
             <img class="input-icon" src="@/assets/image/captcha.png" />
@@ -63,7 +64,9 @@
 
         <div class="txt">
           未注册将为您创建账号并代表您已同意
-          <a href="">《用户服务协议》</a>
+          <a href="http://www.jfchuxing.com/pages/jfcxserverule.html#/"
+            >《用户服务协议》</a
+          >
         </div>
       </div>
     </div>
@@ -72,6 +75,10 @@
 </template>
 <script>
 import { Toast } from "vant";
+import { login } from "@/api/user";
+import { setToken, getToken } from "@/utils/auth";
+import { mapMutations } from "vuex";
+
 export default {
   name: "login",
   data() {
@@ -85,7 +92,7 @@ export default {
       // 验证码等待
       captchaLoading: false,
       // 是否同意协议
-      isProtocol: false,
+      isProtocol: true,
       time: 60 * 1000
     };
   },
@@ -94,8 +101,17 @@ export default {
       return this.isTel && this.isCaptcha && this.isProtocol;
     }
   },
-  created() {},
+  created() {
+    // let token = getToken();
+    // if (token) {
+    //   this.$router.replace({ name: "basicInfo" });
+    // }
+  },
+  beforeDestroy() {
+    Toast.clear();
+  },
   methods: {
+    ...mapMutations(["SET_USER_INFO"]),
     gitCaptcha() {
       if (!this.isTel) {
         Toast("号码错误请重新输入");
@@ -106,13 +122,20 @@ export default {
       this.time = 60 * 1000;
     },
     changeTel(tel) {
-      if (!/^1[3456789]\d{9}$/.test(tel)) {
+      if (!/^1[23456789]\d{9}$/.test(tel)) {
         this.isTel = false;
       } else {
         this.isTel = true;
       }
     },
-    handleLogin() {
+    changeCaptcha(val) {
+      if (val.length == 4) {
+        this.isCaptcha = true;
+      } else {
+        this.isCaptcha = false;
+      }
+    },
+    async handleLogin() {
       if (!this.isProtocol) {
         Toast("请确认用户协议");
         return;
@@ -122,8 +145,35 @@ export default {
         return;
       }
       if (!this.isCaptcha) {
-        Toast("请输入验证码");
+        Toast("请合法验证码");
         return;
+      }
+
+      let req = {};
+      req.tel = this.tel;
+      req.code = this.captcha;
+      req.loginChannel = "3";
+      Toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: "正在登陆中"
+      });
+      try {
+        let res = await login(req);
+        if (res.code == 200) {
+          let data = res.data[0];
+          setToken(data.token);
+          this.SET_USER_INFO({ userId: data.userId });
+          Toast.success({
+            duration: 1000,
+            message: "登陆成功,正在跳转"
+          });
+          this.$router.replace({ name: "carList" });
+        } else {
+          console.log(res.code);
+        }
+      } catch (error) {
+        Toast.fail("未知错误");
       }
     },
     finishTime() {
@@ -148,7 +198,7 @@ export default {
   flex-flow: column;
   align-items: center;
   justify-content: space-around;
-  div {
+  & > div {
     width: 100%;
   }
 }
@@ -171,9 +221,10 @@ export default {
 }
 .protocol {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-around;
   .switch {
+    margin: 10px;
     .btn {
       position: relative;
       width: 32px;
@@ -195,11 +246,14 @@ export default {
     }
   }
   .txt {
+    width: 100%;
     font-size: 24px;
     font-weight: 300;
     color: rgba(182, 183, 187, 1);
     line-height: 34px;
-    white-space: nowrap;
+    a {
+      white-space: nowrap;
+    }
   }
 }
 .bg {

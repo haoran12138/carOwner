@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.match";
+
+
+//发起寻车意向 url = "match/intention"
+message MatchAddReq{
+    int64 rentStartTime=1; //租车起始时间 example = "1582009999999"
+    int64 rentEndTime=2; //租车结束时间 example = "1582009999999"
+    int32 rentDay=3; //租车天数 example = "3"
+    string rentAmtInterval=4; //租金单价区间 example = "3000-5000"
+    string useRegion=5; //使用地区 example = "上海 长宁"
+    string carBrand=6; //品牌 example = "宝马 多个,号分割"
+    string veType=7; //车型 example = "911"
+    string carColor=8; //车辆颜色 example = "黑色"
+}
+
+
+//发起寻车意向 url = "match/intention"
+message CarMatchRes{
+    string matchId=1; //撮合意向id example = "JFMO2019112057863484"
+    string userId=2; //用户id example = "13312345678"
+    string matchStatus=3; //状态 待接单pending 已有车主应单should 已确认confirm 已违约break
+}
+
+
+
+//车主报价 url = "quoted/price"
+message MatchCarReq{
+    double rentAmt=1; //租金报价 example = "5000"
+    string matchId=2; //撮合意向id example = "JFMO2019112057863484"
+    int64 rentStartTime=3; //租车起始时间 example = "1582009999999"
+    int64 rentEndTime=4; //租车结束时间 example = "1582009999999"
+    int32 rentDay=5; //租车天数 example = "3"
+    string useRegion=6; //使用地区 example = "上海 长宁"
+    string carBrand=7; //品牌 example = "宝马 多个,号分割"
+    string veType=8; //车型 example = "911"
+    string carColor=9; //车辆颜色 example = "黑色"
+}
+
+
+//车主报价 url = "quoted/price"
+message MatchQuotedPriceDTO{
+    string masterUser=1; //车主 example = "13661825172"
+    double rentAmt=2; //租金单价
+    double rentAmtTotal=3; //租金总价
+    string matchId=4; //撮合意向id example = "JFMO2019112057863484"
+}
+
+
+message CarGarageDTO{
+    string userId=1; //用户id example = "3ed27ad.1"
+    string carBrand=2; //品牌 example = "宝马 多个,号分割"
+    string veType=3; //车型 example = "911"
+    string carColor=4; //车辆颜色 example = "黑色"
+    string carLicense=5; //车牌号 example = "沪A123456"
+}
+
+
+
+
+
+
+
+
+
+

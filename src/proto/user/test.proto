@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.user";
+
+//实体类添加 url = "user/test/add"
+message TestAddReq{
+    int32 id = 1;
+    int64 name = 2;
+    int64 createTime = 3;
+}
+
+//实体类修改 url = "user/test/upd"
+message TestUpdReq{
+    int32 id = 1;
+    int64 name = 2;
+    int64 createTime = 3;
+}
+
+//实体类删除 url = "user/test/del"
+message TestDelReq{
+    int32 id = 1;
+    int64 name = 2;
+    int64 createTime = 3;
+}
+
+//实体类查询 url = "user/test/queryTestList"
+message TestQueryReq{
+    int32 id = 1;
+    int64 name = 2;
+    int64 createTime = 3;
+}
+
+message TestQueryRes{
+    int32 id = 1;
+    int64 name = 2;
+    int64 createTime = 3;
+}
+
+
+
+
+
+
+
+
+
+
+
+

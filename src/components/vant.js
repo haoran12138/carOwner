@@ -8,7 +8,17 @@ import {
   Toast,
   Cell,
   CellGroup,
-  CountDown
+  CountDown,
+  Area,
+  Popup,
+  IndexBar,
+  IndexAnchor,
+  Icon,
+  Loading,
+  Overlay,
+  Card,
+  Tag,
+  SwipeCell
 } from "vant";
 let vantUIs = [
   Tabbar,
@@ -19,12 +29,22 @@ let vantUIs = [
   Toast,
   Cell,
   CellGroup,
-  CountDown
+  CountDown,
+  Area,
+  Popup,
+  IndexBar,
+  IndexAnchor,
+  Icon,
+  Loading,
+  Overlay,
+  Card,
+  Tag,
+  SwipeCell
 ];
 
 export default {
   install(Vue) {
-    vantUIs.forEach((vantUI) => [
+    vantUIs.forEach(vantUI => [
       Vue.component(vantUI.name, vantUI)
       // Vue.use(vantUI)    // 也可以使用 Vue.use()
     ]);

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.act";
+
+//活动列表信息
+message BaseActInfo {
+    int32 actId = 1; //活动id
+    string actName = 2; //活动名称
+    string actPicUrl = 3; //活动封面图
+    int64 userCount = 4; //参与人数
+    int64 endDate = 5; //活动结束时间
+    string actTitle = 6;//话题标题
+    string flag = 7; //是否参与.
+}
+
+
+
+

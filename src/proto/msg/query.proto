@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+import "enums/enum.proto";
+import "user/base.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.msg";
+
+//后台查询消息 url = "/msg/console/queryNotifyMsg"
+message QueryNotifyMsgReq{
+    int64 msgId = 1;
+    string oprId = 2;  //操作员id example = "1383838438"
+    string msgTitle = 3; //消息标题 example = "系统推送"
+    MsgType msgType = 4;
+    int64 beginDate = 5; //推送开始时间 example = "1582009999999"
+    int64 endDate = 6; //推送结束时间 example = "1582009999999"
+    PageReq pageReq = 7;
+}
+
+
+message QueryNotifyMsgRes{
+    int64 msgId = 1;
+    string oprId = 2;  //操作员id example = "1383838438"
+    string msgTitle = 3; //消息标题 example = "系统推送"
+    string msgType = 4; //消息类型 example = "system系统 push推送"
+    string msgContent = 5; //内容 example = "今天系统更新"
+    string msgImg = 6; //消息图片 example = "http://image.jufengchaopao.com/20181204191110-uploadFile"
+    string msgUrl = 7; //消息链接
+    int64 updateTime = 8; //更新时间 example = "1582009999999"
+    int64 pushTime = 9; //推送时间 example = "1582009999999"
+}
+
+
+//查询与消息对应的活动/图文/话题/视频 url = "/msg/console/queryDropList"
+message QueryDropListReq{
+    string text = 1; //标题/id
+    string esType = 2; //类型 ARTICLE/VIDEO/TOPIC
+    PageReq pageReq = 3;
+}
+
+message QueryDropListRes{
+    string id = 1; //id
+    string title = 2; //标题
+    string type = 3; //LONGER PHOTO VIDEO TOPIC
+}

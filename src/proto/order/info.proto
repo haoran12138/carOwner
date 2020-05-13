@@ -1,0 +1,248 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.order";
+
+
+//后台登录 url = "/order/console/login"
+message LoginReq{
+    string oprId=1;
+    string passwd=2;
+}
+
+
+//清除未支付超时订单
+message PaySeaScheDTO{
+    string searchId=1; //寻车id example = "JFSO2019112057863484"
+    int32 seqNo=2; //版本号 example = "1"
+}
+
+
+//发起寻车 url = "/order/searchOrder/st"
+message SearchAddReq{
+    string carBrand=1; //品牌 example = "宝马 多个,号分割"
+    string veType=2; //车型 example = "911 多个,号分割"
+    string carColor=3; //车辆颜色 example = "黑色 多个,号分割"
+    string useType=4; //租车目的 example = "自驾selfdrive 婚庆商务wedding 静态展示exhibition"
+    string localIdent=5; //本地标识 example = "y n none"
+    int64 rentStartTime=6; //租车起始时间 example = "1581993467768"
+    int64 rentEndTime=7; //租车结束时间 example = "1581999999999"
+    int32 rentDay=8; //租车天数 example = "3"
+    string useRegion=9; //使用地区 example = "上海 长宁"
+    double unitAmt=10; //租车单价 example = "2000"
+    double rentAmt=11; //车辆租金 example = "4000"
+    double depositAmt=12; //车辆押金 example = "4000"
+    double violationAmt=13;//违章押金 example = "4000"
+    double bondAmt=14; //车辆保证金 example = "500"
+    string orderDesc=15; //备注 example = "一定要黑色"
+}
+
+
+//寻车用户确认费用 url = "/order/searchOrder/confirm"
+message SearchConfirmReq{
+    string searchId=1; //寻车id example = "JFSO2019112057863484"
+    string carActual=2; //实际车型 example = "宝马 911 黑色"
+    string pickupAddress=3; //取车地址 example = "上海市长宁区XXX路XX号"
+    string retAddress=4; //还车地址 example = "上海市长宁区XXX路XX号"
+    double deliveryAmt=5; //送车费用 example = "150"
+    double vehicleAmt=6; //取车费用 example = "150"
+}
+
+
+//发起微信支付 url = "/order/wxpay/payOrder"
+message PayOrderReq{
+    string searchId=1; //寻车id example = "JFSO2019112057863484"
+    double amout=2; //金额 example = "5000"
+    string attach=3; //支付类型 example = "寻车押金deposit 车主保证金bond"
+}
+
+
+//发起微信支付 url = "/order/wxpay/payOrder"
+message PayQueryReq{
+    string searchId=1; //寻车id example = "JFSO2019112057863484"
+    double amout=2; //金额 example = "5000"
+    string attach=3; //支付类型 example = "寻车押金deposit 车主保证金bond"
+    string userId=4; //用户id example = "13312345678"
+}
+
+
+//导出报表 url = "/order/searchOrder/export"
+message ExportReq{
+    int64 beginDate=1; //起始时间 example = "1582009999999"
+    int64 endDate=2; //结束时间 example = "1592009999999"
+    string status=3;  ////状态 待付定金tobepaid 已付定金paid 待车主支付保证金tobemp 待确认tobe 已确认confirm 已取车pickup 已还车return 待退押金refund 已完成finish
+}
+
+
+//导出报表
+message CarOrderExportDTO{
+    string searchId=1; //寻车id example = "JFSO2019112057863484"
+    string rentUser=2; //租车用户 example = "13661825172"
+    string masterUser=3; //车主 example = "13661825172"
+    string carBrand=4; //品牌 example = "宝马 多个,号分割"
+    string veType=5; //车型 example = "911"
+    string carColor=6; //车辆颜色 example = "黑色"
+    string useType=7; //租车目的 example = "自驾selfdrive 婚庆商务wedding 静态展示exhibition"
+    string rentStartTime=8;  //租车起始时间 example = "1582009999999"
+    string rentEndTime=9; //租车结束时间 example = "1582009999999"
+    int32 rentDay=10; //租车天数 example = "3"
+    string useRegion=11; //使用地区 example = "上海 长宁"
+    string carStatus=12; //状态 example = "待付定金tobepaid 已付定金paid 待车主支付保证金tobemp 待确认tobe 已确认confirm 已取车pickup 已还车return 待退押金refund 已完成finish"
+    double unitAmt=13; //租金单价
+    double rentAmt=14; //车辆租金
+    double depositAmt=15; //车辆押金
+    double retDepAmt=16; //退车辆押金
+    double violationAmt=17; //违章押金
+    double retVioAmt=18; //退违章押金
+    double deliveryAmt=19; //送车费用
+    double vehicleAmt=20; //还车费用
+    double earnestAmt=21; //定金
+    double tailAmt=22; //尾款
+    double damageAmt=23; //车损金
+    double bondAmt=24; //保证金
+    double rentTotalAmt=25; //发起方合计费用
+    double masterTotalAmt=26; //车主合计费用
+    string createTime=27; //创建时间 example = "1582009999999"
+}
+
+
+//车主抢单 url = "/order/rob/ear"
+message SearchCarReq{
+    string searchId=1; //寻车id example = "JFSO2019112057863484"
+}
+
+//发起寻车 url = "/order/searchOrder/st"
+message CarSearchRes {
+    string searchId = 1; //寻车id example = "JFSO2019112057863484"
+    double earnestAmt = 2; //定金.
+}
+
+
+
+//取车按钮 url = "/order/searchOrder/pickup"
+message PickupReq{
+    string searchId=1; //寻车id example = "JFSO2019112057863484".
+}
+
+
+//取车按钮
+message OrderStatusUpdDTO{
+    string searchId=1; //寻车id example = "JFSO2019112057863484"
+    string carStatus=2; //状态 example = "待付定金tobepaid 已付定金paid 待车主支付保证金tobemp 待确认tobe 已确认confirm 已取车pickup 已还车return 待退押金refund 已完成finish"
+    int64 updateTime=3; //更新时间 example = "1582009999999"
+    int64 seqNo=4; //版本号 example = "1"
+    string rentUser=5; //租车用户 example = "13661825172"
+}
+
+
+message RefundReq{
+    string orderId=1; //订单id example = "JFSO1223456464"
+    string vehicleType=2; //退款类型 example = "保证金margin 车辆押金deposit 违章illegal"
+    string abnormalDesc=3; //异常描述 example = "车辆异常"
+    double refundAmt=4; //定损金额 example = "500"
+    string refundType=5; //抢车退款账号类型 example = "支付宝alipay 银行bank"
+    string refundAcc=6; //抢车退款账号 example = "1234567"
+    string refundName=7; //抢车退款用户名 example = "jf123456"
+    string bankName=8; //抢车开户行 example = "上海建行长宁支行"
+    string masterRefundType=9;//车主退款账号类型 example = "支付宝alipay 银行bank"
+    string masterRefundAcc=10;//车主退款账号 example = "1234567"
+    string masterRefundName=11;//车主退款用户名 example = "jf123456"
+    string masterBankName=12;//车主开户行 example = "上海建行长宁支行"
+}
+
+
+//修改还车信息并确认尾款 url = "/order/searchOrder/modCarInfo/pickUp"
+message UPdPickupReq{
+    string searchId=1; //寻车id example = "JFSO2019112057863484"
+    double retAmt=2; //还车费用
+    string retAddress=3; //还车地址 example = "上海市长宁区XXX路XX号"
+
+}
+
+//修改还车信息并确认尾款
+message OrderStatusOtherUpdDTO{
+    string searchId=1; //寻车id example = "JFSO2019112057863484"
+    string carStatus=2; //状态 example = "待付定金tobepaid 已付定金paid 待车主支付保证金tobemp 待确认tobe 已确认confirm 已取车pickup 已还车return 待退押金refund 已完成finish"
+    int64 updateTime=3; //更新时间 example = "1582009999999"
+    int64 seqNo=4; //版本号 example = "1"
+    double retAmt=5; //还车费用
+    string retAddress=6; //还车地址 example = "上海市长宁区XXX路XX号"
+    double tailAmt=7; //尾款
+    string rentUser=8; //租车用户 example = "13661825172"
+    //保证金部分
+    double retBondAmt=9; //退车主保证金
+    double masterTotalAmt=10; //车主合计费用
+    //车损金部分
+    double damageAmt=11; //车损金
+    double retDepAmt=12; ////退车辆押金
+    //违章押金
+    double retVioAmt=13; //退违章押金
+    double rentTotalAmt=14; //发起方合计费用
+}
+
+
+
+message ConfirmRes {
+    int32 confirm=1; //操作确认 example = "1"
+}
+
+
+//根据订单查详情 url = "/order/searchOrder/byId"
+message OrderDetailReq{
+    string details=1; //状态详情 example = "use  home  master"
+    string searchId=2; //寻车id example = "JFSO2019112057863484".
+}
+
+
+//管理后台查订单详情 url = "/order/searchOrder/details"
+message OperOrderDetailReq{
+    string searchId=1; //寻车id example = "JFSO2019112057863484".
+}
+
+
+//退车损押金 结算金额(抢车退车损押金 车主退车损金+保证金+租金) url = "/order/searchOrder/retdd"
+message RetDamageDepositReq{
+    string searchId=1; //寻车id example = "JFSO2019112057863484".
+}
+
+
+//退车损押金 结算金额
+message OrderCheckStatusDTO{
+    string searchId=1; //寻车id example = "JFSO2019112057863484"
+    string txnType=2; //支付类型 example = "寻车押金deposit 车主保证金bond"
+}
+
+
+message UseOrderDTO{
+    string userId=1; //用户id example = "13312345678"
+    string status=2; //状态 example = "待付定金tobepaid 已付定金paid 待车主支付保证金tobemp"
+    string type=3;
+    PageReq pageReq =4;
+}
+
+
+//发起微信支付 url = "/order/wxpay/payOrder"
+message FinalPayRes {
+    string prepayId = 1; //第三方流水号
+}
+
+//微信回调请求 内部不使用！！！
+message WexinPayResponse {
+    string returnCode=1; //返回code example = "SUCCESS"
+    string returnMsg=2; //返回信息 example = "OK"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

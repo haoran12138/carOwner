@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+import "system/base.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.system";
+
+
+
+//查询用户列表 url = "system/console/func/queryFuncList"
+message QueryFuncListReq {
+    string funcName = 1; //功能名 example="车辆管理"
+    PageReq pageReq = 2;
+}
+
+
+message QueryFuncListRes {
+    int32 funcId = 1; //id
+    string funcName = 2; //功能名 example="车辆管理"
+    int32 parentId = 3;  //父id 0为root
+    string url = 4; //url
+    string buttonFlag = 5; //是否为按钮 example="Y是 N不是"
+    int64 createTime = 6; //创建时间 example = "1582009999999"
+    int64 updateTime = 7; //更新时间 example = "1582009999999"
+}
+
+
+//新增功能 url = "system/console/func/addFunc"
+message AddFuncReq {
+    string funcName = 1; //功能名 example="车辆管理"
+    int32 parentId = 2; //父id 0为root
+    string url = 3; //url
+    string buttonFlag = 4; //是否为按钮 example="Y是 N不是"
+}
+
+
+//功能详情 url = "system/console/func/funcDetail"
+message FuncDetailReq {
+    int32 funcId = 1; //id
+}
+
+
+message FuncDetailRes {
+    int32 funcId = 1; //id
+    string funcName = 2; //功能名 example="新增车辆"
+    int32 parentId = 3; //父id 0为root
+    string parentName = 4; //父功能名 example="车辆管理"
+    string url = 5; //url
+    string buttonFlag = 6; //是否为按钮 example="Y是 N不是"
+    int64 createTime = 7; //创建时间 example = "1582009999999"
+    int64 updateTime = 8; //更新时间 example = "1582009999999"
+    repeated BaseOpr baseOpr = 9; //拥有该功能的用户
+}
+
+
+//更新功能 url = "system/console/func/updFunc"
+message UpdFuncReq {
+    int32 funcId = 1; //id
+    string funcName = 2; //功能名 example="车辆管理"
+    int32 parentId = 3; //父id 0为root
+    string url = 4; //url
+    string buttonFlag = 5; //是否为按钮 example="Y是 N不是"
+}
+
+
+//删除功能 url = "system/console/func/delFunc"
+message DelFuncReq {
+    int32 funcId = 1; //id
+}
+
+
+//所有父功能列表 url = "system/console/func/allParentFunc"
+message AllParentFuncRes {
+    int32 funcId = 1; //id
+    string funcName = 2; //功能名 example="车辆管理"
+    int32 parentId = 3; //父id 0为root
+}
+
+
+
+
+
+
+
+
+
+

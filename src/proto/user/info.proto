@@ -1,0 +1,159 @@
+syntax = "proto3";
+
+import "common/commons.proto";
+import "enums/enum.proto";
+import "user/base.proto";
+import "article/query.proto";
+import "user/query.proto";
+import "user/token.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.user";
+
+
+
+//解密获取手机号 url = "user/sp/decipher"
+message DecipherReq {
+    string encrypdata = 1;
+    string ivdata = 2;
+    string openId = 3;
+}
+
+
+//根据code获取openid url = "user/sp/getOpenId"
+message GetOpenIdReq {
+    string jsonCode = 1;
+}
+
+
+//小程序登录 url = "user/sp/miniAppLogin"
+message MiniAppLoginReq {
+    string mobile = 1; //手机号 example = "18688888888"
+    string nikeName = 2; //昵称 example = "飓风出行"
+    string headImage = 3; //头像 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    string openId = 4; //openId example = "oxkJX4-cJ6idJAQWmcv2lKJzypec"
+    string unionId = 5; //unionId
+}
+
+
+//小程序登录 url = "user/sp/miniAppLogin"
+message MiniAppLoginRes {
+    string mobile = 1; //手机号 example = "18688888888"
+    int32 mCount = 2; //车主待确认、待支付
+    int32 useCount = 3; //租车用户待支付
+    string token = 4;
+}
+
+
+//登录 url = "user/sp/login"
+message UserLoginReq {
+    string tel = 1; //手机号 example = "3ed27ad.1"
+    string code = 2 ;//手机验证码
+    string login_channel = 3;//0 安卓app 1 iosapp 2 微信小程序
+}
+
+
+//第三方登录 url = "user/sp/otherLogin"
+message OtherLoginReq {
+    string tel = 1; //手机号 example = "18688888888"
+    string code = 2 ;//手机验证码
+    string openId = 3;//
+    string channelType = 4;//0 微信 1 QQ  2微博
+    string deviceId = 5;
+    string device_platform = 6;
+    string login_channel = 7;//0安卓 1ios 2小程序 3seo百度推广页
+}
+
+
+//验证第三方登录是否绑定 url = "user/sp/checkOtherLogin"
+message CheckOtherLoginReq {
+    string openId = 1;
+    string channelType = 2;//0 微信 1 QQ  2微博
+}
+
+
+//用户信息 url = "user/info/userInfo"
+message UserInfoRes{
+    string userId = 1; //用户id example = "3ed27ad.1"
+    string userName = 2; //名称 example = "飓风出行"
+    string headPic = 3; //头像 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    string sex = 4; //性别 example = "male男 female女"
+    string province = 5; //省 example = "上海"
+    string city = 6; //市 example = "上海"
+    string district = 7; //区 example = "长宁区"
+    int64 birthday = 8; //生日 example = "1582009999999"
+    string brief = 9; //简介 example = "很高兴认识你"
+}
+
+
+//修改用户信息 url = "user/info/updUserInfo"
+message UpdUserInfoReq{
+    string userName = 1; //名称 example = "飓风出行"
+    string headPic = 2; //头像 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    string sex = 3; //性别 example = "male男 female女"
+    string province = 4; //省 example = "上海"
+    string city = 5; //市 example = "上海"
+    string district = 6; //区 example = "长宁区"
+    int64 birthday = 7; //生日 example = "1582009999999"
+    string brief = 8; //简介 example = "很高兴认识你"
+    string mobile = 9; //手机
+}
+
+
+//修改用户类型 url = "user/console/setType"
+message SetTypeReq {
+    string userId = 1; //用户id example = "3ed27ad.1"
+    UserType userType = 2; //类型 example = " USER MASTER"
+}
+
+//短信发送 url = "user/sp/verifycode/send"
+message VerifyCodeSendReq{
+    string tel = 1; //手机号
+    string type = 2; //0登录 1支付 2提现
+}
+
+
+//用户认证状态 url = "user/info/getUserStatus"
+message UserStatusRes{
+    string status = 1; //用户审核状态 0等待审核 1已审核 2未通过 3已拉黑 4未提交审核
+}
+
+
+//更新背景图 url = "user/info/updBgPic"
+message UpdBgPicReq{
+    string bgPic = 1; //背景图 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+}
+
+
+//查询老后台用户银行流水 房产抵押状态 url = "user/info/mortgageStatus"
+message MortgageStatusRes{
+    int32 bankStatus = 1; // 0未审核 1通过 2拒绝 4未提交过审核
+    int32 houseStatus = 2;// 0未审核 1通过 2拒绝 4未提交过审核
+}
+
+
+//查询老后台身份证 驾驶证照片 url = "user/info/certifiedPhotos"
+message CertifiedPhotosRes{
+    string idcardFront = 1; //身份证正面
+    string idcardBack = 2; // 身份证反面
+    string drivingFront = 3;//驾驶证正面
+    string drivingBack = 4;// 驾驶证反面
+}
+
+
+//查询老后台押金减免相关信息 url = "user/info/reduction"
+message ReductionRes{
+    int32 orderNum = 1; //订单数
+    string houseImgs = 2; //房产证图片
+    string bankImgs = 3;// 银行流水图片
+    int32 userStatus = 4;//是否为车主 0普通用户 1车主 2既是车主又是用户
+}
+
+//用户身份证识别 url= "user/updateUserIdCard"
+message updateUserIdCardReq{
+    string idCardNum = 1; //身份证号
+    string name = 2; //姓名
+    string idCardFront = 3; //身份证正面照
+    string idCardBack = 4; //身份证背面照
+    string validityPeriod = 5;//身份证有效期
+}
+

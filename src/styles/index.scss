@@ -1,0 +1,36 @@
+input::-webkit-input-placeholder,
+input::-moz-placeholder,
+input:-moz-placeholder,
+input:-ms-input-placeholder {
+  color: #d3d4d9;
+}
+
+
+.safe-area-bottom{
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
+}
+.van-overlay{
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.van-index-bar{
+  .van-index-bar__sidebar{
+    color: #ccc;
+  }
+}
+.van-index-anchor{
+
+}
+
+.van-index-anchor--sticky,
+.van-index-anchor{
+  background: #e6e6e6;
+  color: #414141;
+  height: 60px;
+  font-size: 20px;
+  line-height: 60px;
+}
+.van-hairline--bottom::after{
+  display: none;
+}

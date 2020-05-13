@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.common";
+
+message HotKeyString {
+    string hotKeyString=1; //热词
+}
+
+//Feign调用获取用户数 /getUserCount
+message CountByDayAndAll {
+    int32 day=1; //日用户数
+    int32 all=2; //总用户数
+}
+
+message Garage {
+    string carLicense=1; //车牌号 example = "沪A123456"
+    string carBrand=2; //品牌 example = "宝马 多个,号分割"
+    string veType=3; //车型 example = "911"
+    string carColor=4; //颜色 example = "黑色"
+    string carPicUrl=6; //图片地址 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    string rentAmtInterval=7; //租金单价区间 example = "3000-5000"
+}
+
+message OrderServiceGetCount {
+    int32 mCount=1; //车主待确认、待支付
+    int32 useCount=2; //租车用户待支付
+}
+

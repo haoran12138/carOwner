@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+import "enums/enum.proto";
+import "user/base.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.msg";
+
+message BaseMsgInfo{
+    string title = 1; //标题
+    string content = 2; //内容
+    string msgImg = 3; //图片url
+    string msgUrl = 4; //消息链接/图文/话题/视频/活动id
+}
+
+
+//后台发送系统消息 url ="/msg/console/sendSystemMsg"
+//后台发送推送消息 url ="/msg/console/sendPushMsg"
+message NotifyMsgSendReq {
+    MsgType msgType = 1; //消息类型 example = "SYSTEM"
+    string msgTitle = 2; //标题 example = "系统更新消息"
+    string msgContent = 3; //内容 example = "今天系统更新"
+    int64 pushTime = 4; //推送时间 example = "1582009999999"
+    string msgImg = 5; //消息图片 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    string msgUrl = 6; //消息链接
+    string linkType = 7;//跳转类型
+}
+
+//读消息 url ="/msg/info/readMsg"
+message ReadMsgReq {
+    ReadMsgType readMsgType = 1; //消息类型 example = "PUSHMSG"
+    int64 readMsgTime = 2; //读取消息时间
+}
+
+//消息首页 url ="/msg/info/main"
+message MsgMainRes {
+    int32 likeCount = 1; //点赞数
+    int32 followCount = 2; //关注数
+    int32 commentAtCount = 3;
+    int32 systemCount = 4;
+    string systemContent = 5;
+    int64 systemTime = 6;
+    int32 pushCount = 7;
+    string pushContent = 8;
+    int64 pushTime = 9;
+    string checkContent = 10;
+    int64 checkTime = 11;
+    int32 checkRead = 12;
+}
+
+//消息类型列表 url ="/msg/info/detail"
+message MsgDetailReq {
+    ReadMsgType readMsgType = 1;
+    PageReq pageReq = 2;
+}
+
+message MsgDetailRes {
+    FollowUserInfo userInfo = 1;
+    BaseMsgInfo msgInfo = 2;
+    int64 pushTime = 3;
+    string msgType = 4;
+    string linkType = 5;
+    string showType = 6;//展示类型
+}
+
+
+//管理后台删除未发送消息 url ="/msg/console/delNotifyMsg"
+message DelNotifyMsgReq {
+    int64 msgId = 1;
+}
+
+
+//管理后台修改未发送消息 url ="/msg/console/updNotifyMsg"
+message UpdNotifyMsgReq {
+    int64 msgId = 1;
+    string msgTitle = 2; //标题 example = "系统更新消息"
+    string msgContent = 3; //内容 example = "今天系统更新"
+    int64 pushTime = 4; //推送时间 example = "1582009999999"
+    string msgImg = 5; //消息图片 example = "http://image.jufengchaopao.com/20181204191110-uploadFile"
+    string msgUrl = 6; //消息链接
+}

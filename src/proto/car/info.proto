@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+import "common/commons.proto";
+import "enums/enum.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.car";
+
+message OffsetRent{
+    int32 day = 1; //日期 example = "20200101"
+    int32 rent = 2; //价格 example = "500"
+}
+
+
+message RentalCarInfo{
+    int64 id = 1; //车辆id example = "30"
+    string model = 2; //车型名 example = "730Li"
+    string brand = 3; //车辆品牌 example = "188"
+    int32 rent  = 4; //车辆价格 example = "5000"
+    string modelImg = 5; //车辆图片 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+}
+
+
+message UpdRentCalReq{
+    int64 modelId = 1; //车型id example = "1 以品牌为单位更新租金，modelId=0"
+    int64 brandId = 2; //品牌id example = "1 品牌 model都为0时 更新所有品牌"
+    OffsetType offsetType = 3;//偏移类型 example = "percent百分比 plus数值"
+    int32 offsetValue = 5; //偏移值 example = "500"
+    repeated int32 day  = 6; //日期 example = "20200101"
+}

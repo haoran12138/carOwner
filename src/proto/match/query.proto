@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.match";
+
+
+//寻车意向列表 url = "match/matchList"
+message MatchIntentionRes{
+    string matchId=1; //撮合意向id example = "JFMO2019112057863484"
+    string userId=2; //用户id example = "13312345678"
+    string matchStatus=3; //状态 待接单pending 已有车主应单should 已确认confirm 已违约break
+    int64 rentStartTime=4; //租车起始时间 example = "1582009999999"
+    int64 rentEndTime=5; //租车结束时间 example = "1582009999999"
+    int32 rentDay=6; //租车天数 example = "3"
+    string rentAmtInterval=7; //租金单价区间 example = "3000-5000"
+    string carBrand=8; //品牌 example = "宝马 多个,号分割"
+    string veType=9; //车型 example = "911"
+    string carColor=10; //车辆颜色 example = "黑色"
+    string useRegion=11; //使用地区 example = "上海 长宁"
+    int64 updateTime=12; //更新时间 example = "1582009999999"
+}
+
+
+message MatchListReq{
+    string userId=1; //用户id example = "13312345678"
+    string matchStatus=2; //状态 example = "待接单pending 已有车主应单should 已确认confirm 已违约break"
+}

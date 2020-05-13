@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+
+import "common/commons.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.user";
+
+//新增车辆 url = "user/garage/add"
+message GarageAddReq{
+    string carLicense=1; //车牌号 example = "沪A123456"
+    string carBrand=2; //品牌 example = "宝马 多个,号分割"
+    string veType=3; //车型 example = "911"
+    string carColor=4; //颜色 example = "黑色"
+    string carPic=5; //图片url example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+}
+
+//修改车库车辆 url = "user/garage/upd"
+message GarageUpdReq{
+    string carLicense=1; //车牌号 example = "沪A123456"
+    string carBrand=2; //品牌 example = "宝马 多个,号分割"
+    string veType=3; //车型 example = "911"
+    string carColor=4; //颜色 example = "黑色"
+    string carPic=5; //图片 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+}
+
+//删除车库车辆 url = "user/garage/del"
+message GarageDelReq {
+    string carLicense = 1; //车牌号 example = "沪A123456"
+}
+

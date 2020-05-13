@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+import "common/commons.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.article";
+
+//机器人评论模板添加 url = "article/console/robotComment/save"
+message RobotCommentAddReq{
+    string rcId = 1;
+    string content = 2;
+    string type = 3;
+}
+
+//机器人评论模板修改 url = "article/console/robotComment/upd"
+message RobotCommentUpdReq{
+    string rcId = 1;
+    string content = 2;
+    string type = 3;
+}
+
+//机器人评论模板删除 url = "article/console/robotComment/del"
+message RobotCommentDelReq{
+    string rcId = 1;
+    string content = 2;
+    string type = 3;
+}
+
+//机器人评论模板查询 url = "article/console/robotComment/queryRobotCommentList"
+message RobotCommentQueryReq{
+    string rcId = 1;
+    string content = 2;
+    string type = 3;
+    PageReq page = 6; //列表分页
+}
+
+message RobotCommentQueryRes{
+    string rcId = 1;
+    string content = 2;
+    string type = 3;
+    PageReq page = 6; //列表分页
+}
+
+//创建work url="article/console/robot/work/add"
+message CreateWork{
+    string title =1; //任务名
+    string workType = 2; //选择文章模式(0随机 1指定)
+    //    string rdmWorkType = 3; //随机文章筛选条件(4位0/1),品牌/型号/地区/类别(图文/长文/视频)
+    string rdmArtCarBrand = 4; //随机车辆品牌
+    string rdmArtCarModel = 5; //随机车辆型号
+    string rdmArtType = 6; //随机文章类别（photo,longer,video)
+    string rdmArtArea = 7; //随机文章地区
+    string artId = 8; //文章id
+    string work = 9; //工作类型（4位0/1）,评论/收藏/点赞/点文章下评论的赞 例："1110"
+    string rcType = 10; //评论种类
+    int32 robNum = 11; //机器人数量
+    int32 interval = 12; //每次子任务执行间隔时间
+    int32 times = 13; //执行频次
+    int64 endTime = 14; //任务结束时间
+    int64 startTime = 15; //任务结束时间
+//    string status = 16; //N未执行 Y执行完毕 R执行中
+}
+
+//更新work url="article/console/robot/work/update"
+message UpdateWorkReq{
+    string title =1; //任务名
+    string workType = 2; //选择文章模式(0随机 1指定)
+    string rdmArtCarBrand = 4; //随机车辆品牌
+    string rdmArtCarModel = 5; //随机车辆型号
+    string rdmArtType = 6; //随机文章类别（photo,longer,video)
+    string rdmArtArea = 7; //随机文章地区
+    string artId = 8; //文章id
+    string work = 9; //工作类型（4位0/1）,评论/收藏/点赞/点文章下评论的赞 例："1110"
+    string rcType = 10; //评论种类
+    int32 robNum = 11; //机器人数量
+    int32 interval = 12; //每次子任务执行间隔时间
+    int32 times = 13; //执行频次
+    int64 endTime = 14; //任务结束时间
+    int64 startTime = 15; //任务结束时间
+    string workId =16; //任务id
+}
+
+//查询单个任务返回 article/console/robot/work/getByWorkId
+message WorkEntity{
+    string title =1; //任务名
+    string workType = 2; //选择文章模式(0随机 1指定)
+    string workId =3; //任务id
+    string rdmArtCarBrand = 4; //随机车辆品牌
+    string rdmArtCarModel = 5; //随机车辆型号
+    string rdmArtType = 6; //随机文章类别（photo,longer,video)
+    string rdmArtArea = 7; //随机文章地区
+    string artId = 8; //文章id
+    string work = 9; //工作类型（4位0/1）,评论/收藏/点赞/点文章下评论的赞 例："1110"
+    string rcType = 10; //评论种类
+    int32 robNum = 11; //机器人数量
+    int32 interval = 12; //每次子任务执行间隔时间
+    int32 times = 13; //执行频次
+    int64 endTime = 14; //任务结束时间
+    int64 startTime = 15; //任务结束时间
+    string status = 16; //N未执行 Y执行完毕 R执行中
+}
+
+
+//发布任务 url="article/console/robot/work/activate"
+message ActivateWork{
+    string workId = 1;
+}
+
+//停止任务 url="article/console/robot/work/stop"
+message StopWork{
+    string workId = 1;
+}
+
+//删除任务 url="article/console/robot/work/delete"
+message DeleteWorkReq{
+    string workId = 1;
+}
+
+
+//机器人池操作相关  article/console/robotComment/queryTypeList
+message PoolNum{
+    int32 num = 1;
+}
+
+
+
+
+
+
+
+

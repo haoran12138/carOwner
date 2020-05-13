@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+import "user/base.proto";
+import "common/commons.proto";
+package jfCloud_proto;
+option java_package = "com.jf.cloud.proto.article";
+
+
+
+message BaseUserCollect {
+    string artId = 1; //文章id example="ART20200212438703069"
+    string artPicUrl = 2; //文章图片 example = "http://image.jufengchaopao.com/JPIC15825534709104312.jpeg"
+    string artTitle = 3; //文章标题 example="原来自己有车是这种感觉"
+    int64 collCount = 4; //被收藏数 example=99
+    string artContent = 6; //文章内容
+    BaseUserInfo userInfo = 7;
+    string artType = 8; //文章类型
+}
+
+
+//更新收藏状态 url = "/article/collect/upd"
+message UpdCollectReq {
+    string artId = 1; //文章id example="ART20200212438703069"
+    string flag = 2; //是否已收藏 example="Y N"
+}
+
+
+//他人个人中心-喜欢 url = "/article/collect/otherCollect"
+message OtherCollectReq {
+    string userId = 1; //用户id example = "13312345678"
+    PageReq page = 2;
+}
+
+
+message UserCollectRes {
+    repeated BaseUserCollect baseUserCollect = 1;
+    int64 totalCount = 2; //用户总收藏数 example=99
+    PageRes page = 3; //列表分页
+}
+
+
+//最近喜欢的用户 url = "/article/collect/newCollect"
+message NewCollectReq {
+    string artId = 1; //用户id example = "13312345678"
+    PageReq page = 2;
+}
