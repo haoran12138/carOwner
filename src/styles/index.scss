@@ -34,3 +34,7 @@ input:-ms-input-placeholder {
 .van-hairline--bottom::after{
   display: none;
 }
+
+.van-cell__title.van-field__label{
+  white-space: nowrap;
+}

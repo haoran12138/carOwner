@@ -1,45 +1,102 @@
 <template>
   <div class="container">
-    <div class="header">
-      <header-com title="我的车辆"></header-com>
-    </div>
-    <van-swipe-cell style="margin:10px 0" v-for="item in 10" :key="item">
-      <van-card
-        @click="handleClickCar"
-        desc="沪a34343"
-        title="奔驰 AUG"
-        :centered="true"
-        thumb="https://img.yzcdn.cn/vant/ipad.jpeg"
+    <van-pull-refresh
+      v-model="isLoading"
+      success-text="刷新成功"
+      @refresh="onRefresh"
+    >
+      <div class="header">
+        <header-com title="我的车辆"></header-com>
+      </div>
+      <van-swipe-cell
+        style="margin:10px 0"
+        v-for="(item, index) in list"
+        :key="index"
       >
-        <template #tags>
-          <van-tag plain type="danger">待完善</van-tag>
+        <van-card
+          @click="handleClickCar"
+          desc="沪a34343"
+          :title="item.brand + ' ' + item.model"
+          :centered="true"
+          :thumb="item.carThumbPic || defaultUrl"
+        >
+          <template #tags>
+            <van-tag plain type="danger">{{
+              item.carStatus | formateStatus
+            }}</van-tag>
+          </template>
+        </van-card>
+        <template #right>
+          <van-button square text="删除" type="danger" class="delete-button" />
         </template>
-      </van-card>
-      <template #right>
-        <van-button square text="删除" type="danger" class="delete-button" />
-      </template>
-    </van-swipe-cell>
-    <div class="btn-box">
-      <van-button round class="add-btn" color="#E63D33" block @click="handleAdd"
-        >添加新车辆</van-button
-      >
-    </div>
+      </van-swipe-cell>
+      <div class="btn-box">
+        <van-button
+          round
+          class="add-btn"
+          color="#E63D33"
+          block
+          @click="handleAdd"
+          >添加新车辆</van-button
+        >
+      </div>
+    </van-pull-refresh>
   </div>
 </template>
 <script>
 import headerCom from "@/components/headerCom";
+import { getUserCarListApi } from "@/api/user";
+import { Toast } from "vant";
+// 车辆状态 0未审核 1上线 2下线 3审核通过 4未通过
+let statusList = ["未审核", "上线", "下线", "审核通过", "未通过"];
 export default {
   name: "carList",
   data() {
-    return {};
+    return {
+      isLoading: false,
+      list: [],
+      defaultUrl: "http://image.jufengchaopao.com/JPIC15894607295541532.png"
+    };
+  },
+  filters: {
+    formateStatus(status) {
+      return statusList[status];
+    }
   },
   components: { headerCom },
-  created() {},
+  created() {
+    this.init();
+  },
+  activated() {
+    this.init();
+  },
   methods: {
+    init() {
+      this.query();
+    },
+    onRefresh() {
+      this.init();
+    },
+    async query() {
+      this.isLoading = true;
+      try {
+        let res = await getUserCarListApi();
+        if (res.data.header.code) {
+          this.list = res.data.body;
+        } else {
+          Toast.fail(res.data.header.desc);
+        }
+      } catch (error) {
+        Toast.fail("数据错误");
+      } finally {
+        this.isLoading = false;
+      }
+    },
     handleAdd() {
       this.$router.replace({ name: "basicInfo" });
     },
     handleClickCar() {
+      this.$router.replace({ name: "perfectInfo", query: { id: 111 } });
       console.log("aaa");
     }
   }

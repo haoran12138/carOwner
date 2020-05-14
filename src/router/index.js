@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-
+import entryInfoRouter from "./modules/entryInfo";
 Vue.use(VueRouter);
 
 const routes = [
@@ -11,23 +11,28 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    component: () => import("@/views/login/index")
+    component: () => import("@/views/login/index"),
+    meta: { level: 1 }
   },
   {
     path: "/basicInfo",
     name: "basicInfo",
-    component: () => import("@/views/basicInfo/index")
+    component: () => import("@/views/basicInfo/index"),
+    meta: { level: 3 }
   },
   {
     path: "/perfectInfo",
     name: "perfectInfo",
-    component: () => import("@/views/perfectInfo/index")
+    component: () => import("@/views/perfectInfo/index"),
+    meta: { level: 3 }
   },
   {
     path: "/carList",
     name: "carList",
-    component: () => import("@/views/carList/index")
+    component: () => import("@/views/carList/index"),
+    meta: { level: 2 }
   },
+  ...entryInfoRouter,
   {
     path: "/test",
     name: "test",
@@ -41,7 +46,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  mode: "hash",
   base: process.env.BASE_URL,
   routes
 });

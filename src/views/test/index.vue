@@ -20,6 +20,7 @@
       <div @click="handleCancel">取消</div>
       <div @click="handleConfirm">确认</div>
     </div>
+    <img :src="img" alt="" />
   </div>
 </template>
 
@@ -31,14 +32,16 @@ export default {
   components: { VueCropper },
   data() {
     return {
-      imgSrc: "http://image.jufengchaopao.com/JPIC1589356070722875.jpeg"
+      imgSrc: "http://image.jufengchaopao.com/JPIC1589356070722875.jpeg",
       // imgSrc: "http://image.jufengchaopao.com/JPIC1589356818497114.jpeg"
+      img: ""
     };
   },
   created() {},
   methods: {
     handleConfirm() {
-      let a = this.$refs.cropper.getCroppedCanvas();
+      let a = this.$refs.cropper.getCroppedCanvas().toDataURL("image/jpeg");
+      this.img = a;
     },
     handleCancel() {
       // this.$router.to(-1)

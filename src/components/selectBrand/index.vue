@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="selec-brand">
     <div class="header">
       <div @click="closed" class="closed">
         <van-icon name="arrow-down" />
@@ -8,7 +8,11 @@
     </div>
     <div class="main">
       <div class="left">
-        <van-index-bar z-index="2" highlight-color="#414141">
+        <van-index-bar
+          z-index="2"
+          highlight-color="#414141"
+          :index-list="initialsList"
+        >
           <div v-for="(item, index) in initialsList" :key="index">
             <van-index-anchor :index="item" />
             <div
@@ -26,16 +30,27 @@
         </van-index-bar>
       </div>
       <div class="right">
-        <div
-          @click="handleClickModel(item.modelName)"
-          class="model-item"
-          :class="{ hover: changeModel == item.modelName }"
-          :key="index"
-          v-for="(item, index) in modelList"
-        >
-          {{ carInfo.brand }} {{ item.modelName }}
+        <div v-show="!isError">
+          <div
+            @click="handleClickModel(item.modelName)"
+            class="model-item"
+            :class="{ hover: changeModel == item.modelName }"
+            :key="index"
+            v-for="(item, index) in modelList"
+          >
+            {{ carInfo.brand }} {{ item.modelName }}
+          </div>
+          <div v-show="modelList.length == 0">暂无车型</div>
         </div>
-        <div v-show="modelList.length == 0">暂无车型</div>
+        <!-- 网络错误 -->
+        <div style="height:100%" @click="handleRefresh">
+          <van-empty
+            style="height:100%"
+            v-if="isError"
+            image="network"
+            description="点击刷新"
+          />
+        </div>
       </div>
     </div>
     <van-overlay :show="mainLoading">
@@ -69,7 +84,8 @@ export default {
 
       // 选中的信息
       changeBrandId: 18,
-      changeModel: ""
+      changeModel: "",
+      isError: false
     };
   },
   created() {
@@ -101,7 +117,7 @@ export default {
           this.initialsList = list.sort();
         }
       } catch (error) {
-        console.log(error);
+        this.isError = true;
       } finally {
         this.mainLoading = false;
       }
@@ -118,7 +134,7 @@ export default {
           this.modelList = res.data;
         }
       } catch (error) {
-        console.log(error);
+        this.isError = true;
       } finally {
         this.rightLoading = false;
       }
@@ -137,12 +153,17 @@ export default {
     },
     closed() {
       this.$emit("closed", this.carInfo);
+    },
+    handleRefresh() {
+      this.isError = false;
+      this.getBrandList();
+      this.getModelList(this.changeBrandId);
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-.container {
+.selec-brand {
   overflow: hidden;
   position: fixed;
   top: 0;

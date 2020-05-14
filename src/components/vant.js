@@ -18,7 +18,14 @@ import {
   Overlay,
   Card,
   Tag,
-  SwipeCell
+  SwipeCell,
+  Panel,
+  PullRefresh,
+  Empty,
+  NavBar,
+  Uploader,
+  ActionSheet,
+  NumberKeyboard
 } from "vant";
 let vantUIs = [
   Tabbar,
@@ -39,7 +46,14 @@ let vantUIs = [
   Overlay,
   Card,
   Tag,
-  SwipeCell
+  SwipeCell,
+  Panel,
+  PullRefresh,
+  Empty,
+  NavBar,
+  Uploader,
+  ActionSheet,
+  NumberKeyboard
 ];
 
 export default {

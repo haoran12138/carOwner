@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getToken } from "./auth.js";
 import { baseURL } from "@/config";
+import { Toast } from "vant";
 const service = axios.create({
   baseURL: baseURL + "/match/pre", // api 的 base_url
   timeout: 8000, // request timeout
@@ -33,20 +34,24 @@ service.interceptors.request.use(
 );
 
 service.interceptors.response.use(
-  response => {
-    // console.log(response, '测试')
-    // console.log('res', response)
-    if (response.data.header.code != 200) {
-      return Promise.reject(response);
-    } else {
-      return response;
+  res => {
+    console.log(res);
+    if (res.data.header.code == 401 || res.data.header.code == 407) {
+      debugger;
+      Toast.fail(res.msg);
+      // removeToken();
+      // window.location.replace("/login");
     }
+    if (res.code == 999) {
+      Toast.fail(res.msg);
+    }
+    return res;
+
+    // if the custom code is not 20000, it is judged as an error.
   },
-
-  (error, status) => {
-    console.log(error); // for debug
-
-    return Promise.reject(error);
+  error => {
+    console.log(error);
+    Toast.fail("网络错误 请稍后重试");
   }
 );
 

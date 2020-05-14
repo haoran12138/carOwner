@@ -11,6 +11,7 @@ module.exports = {
     "no-console": 1,
     "no-debugger": 1,
     "no-unused-vars": 1,
-    "no-empty":1
+    "no-empty":1,
+    "no-duplicate-case":1
   },
 };

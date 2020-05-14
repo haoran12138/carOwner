@@ -17,13 +17,25 @@
       </van-field>
       <van-field
         :border="false"
-        type="text"
+        type="tel"
         input-align="right"
-        v-model="info.carName"
-        label="车辆联系人"
+        v-model="info.carTel"
+        label="车辆联系人电话"
         placeholder="请输入"
         right-icon="0"
-        @input="changeCarName"
+        @input="changeCarTel"
+      >
+      </van-field>
+      <van-field
+        :border="false"
+        type="text"
+        input-align="right"
+        :value="(info.carInfo.brand + ' ' + info.carInfo.model).trim()"
+        label="品牌车型"
+        right-icon="arrow"
+        placeholder="请选择"
+        :readonly="true"
+        @click="openBrand"
       >
       </van-field>
       <van-field
@@ -47,14 +59,15 @@
         :border="false"
         type="text"
         input-align="right"
-        :value="info.carInfo.brand + info.carInfo.model"
-        label="品牌类型"
+        v-model="info.useType"
+        label="车辆用途"
         right-icon="arrow"
-        placeholder="请输入"
+        placeholder="请选择"
         :readonly="true"
-        @click="openBrand"
+        @click="openUseType"
       >
       </van-field>
+
       <van-field
         :border="false"
         type="text"
@@ -62,7 +75,7 @@
         v-model="info.city"
         label="交车城市"
         right-icon="arrow"
-        placeholder="请输入"
+        placeholder="请选择"
         :readonly="true"
         @click="openCity"
       >
@@ -72,6 +85,7 @@
         :class="{ disabled: !isSubmit }"
         color="#E63D33"
         block
+        :disabled="submitLoading"
         @click="handleSubmit"
         >提交</van-button
       >
@@ -114,6 +128,7 @@
         </div>
       </div>
     </van-popup>
+    <!-- 车型品牌 -->
     <van-popup
       :close-on-popstate="true"
       :safe-area-inset-bottom="true"
@@ -126,6 +141,13 @@
         @closed="closeSelectBrand"
       ></select-brand>
     </van-popup>
+    <!-- 车辆用途 -->
+    <van-action-sheet
+      :safe-area-inset-bottom="true"
+      v-model="showChangeUserType"
+      :actions="userTypeList"
+      @select="handleSelectUserType"
+    />
   </div>
 </template>
 <script>
@@ -133,8 +155,10 @@ import area from "@/assets/js/area.js";
 import homeTownList from "@/assets/js/homeTownList.js";
 import selectBrand from "@/components/selectBrand";
 import headerCom from "@/components/headerCom";
+import { addUserCarApi } from "@/api/user";
 import { Toast } from "vant";
 let nameReg = /^[\u2E80-\u9FFF]{2,10}$/;
+let telReg = /^1[23456789]\d{9}$/;
 let plateReg = /^([ABCDEFGHJKLMNPQRSTUVWXY][1-9DF][1-9ABCDEFGHJKLMNPQRSTUVWXYZ]\d{3}[1-9DF]|[ABCDEFGHJKLMNPQRSTUVWXY][\dABCDEFGHJKLNMxPQRSTUVWXYZ]{5})$/;
 export default {
   name: "basicInfo",
@@ -145,15 +169,17 @@ export default {
         // 用户姓名
         realName: "",
         // 车辆联系人
-        carName: "",
+        carTel: "",
         hometown: "沪",
         plate: "",
         carInfo: { brand: "", model: "" },
-        city: ""
+        city: "",
+        useType: ""
       },
       showChangeCity: false,
       showChangeHomeTown: false,
       showChangeBrand: false,
+      showChangeUserType: false,
       // 城市数据
       areaList: null,
       // 车牌籍贯数据
@@ -163,11 +189,18 @@ export default {
 
       isRuls: {
         isRealName: false,
-        isCarName: false,
+        isCarTel: false,
         isPlate: false,
         isBrand: false,
-        isCity: false
-      }
+        isCity: false,
+        isUseType: false
+      },
+      userTypeList: [
+        { name: "自驾租赁", color: "#000" },
+        { name: "婚庆租赁", color: "#000" },
+        { name: "全部业务", color: "#000" }
+      ],
+      submitLoading: false
     };
   },
   computed: {
@@ -183,7 +216,7 @@ export default {
     }
   },
   watch: {
-    "info.brand": function(val) {
+    "info.carInfo.brand": function(val) {
       if (val) {
         this.isRuls.isBrand = true;
       } else {
@@ -197,11 +230,12 @@ export default {
         // 用户姓名
         realName: "",
         // 车辆联系人
-        carName: "",
+        carTel: "",
         hometown: "沪",
         plate: "",
         carInfo: { brand: "", model: "" },
-        city: ""
+        city: "",
+        userType: ""
       },
       showChangeCity: false,
       showChangeHomeTown: false,
@@ -215,11 +249,17 @@ export default {
 
       isRuls: {
         isRealName: false,
-        isCarName: false,
+        isCarTel: false,
         isPlate: false,
         isBrand: false,
-        isCity: false
-      }
+        isCity: false,
+        isUseType: false
+      },
+      userTypeList: [
+        { name: "自驾租赁", color: "#000" },
+        { name: "婚庆租赁", color: "#000" },
+        { name: "全部业务", color: "#000" }
+      ]
     };
     Object.assign(this, data);
     this.init();
@@ -244,16 +284,32 @@ export default {
     openCity() {
       this.showChangeCity = true;
     },
+    // 打开选择车辆用途
+    openUseType() {
+      this.showChangeUserType = true;
+    },
     changeRealName(value) {
       this.isRuls.isRealName = nameReg.test(value);
     },
-    changeCarName(value) {
-      this.isRuls.isCarName = nameReg.test(value);
+    changeCarTel(value) {
+      this.isRuls.isCarTel = telReg.test(value);
     },
     changePlate(value) {
-      this.isRuls.isPlate = plateReg.test(value);
+      this.isRuls.isPlate = plateReg.test(value.toUpperCase());
     },
-
+    handleSelectUserType(item, index) {
+      let { userTypeList } = this;
+      userTypeList.forEach((a, b) => {
+        if (b == index) {
+          a.color = "#e63d33";
+        } else {
+          a.color = "#000000";
+        }
+      });
+      this.showChangeUserType = false;
+      this.info.useType = item.name;
+      this.isRuls.isUseType = true;
+    },
     handleCancelCity() {
       this.showChangeCity = false;
     },
@@ -264,7 +320,6 @@ export default {
         this.isRuls.isCity = true;
       }
     },
-
     handleChangeHomeTown(index) {
       this.homeTownIndex = index;
     },
@@ -274,22 +329,98 @@ export default {
     },
 
     handleSubmit() {
-      let { isRealName, isCarName, isPlate, isBrand, isCity } = this.isRuls;
-      if (!(isRealName && isCarName)) {
+      let {
+        isRealName,
+        isCarTel,
+        isPlate,
+        isBrand,
+        isCity,
+        isUseType
+      } = this.isRuls;
+      if (!isRealName) {
         Toast.fail("姓名格式不合法");
+        return;
+      }
+      if (!isCarTel) {
+        Toast.fail("手机号格式不合法");
+        return;
+      }
+
+      if (!isBrand) {
+        Toast.fail("请选择车型");
         return;
       }
       if (!isPlate) {
         Toast.fail("输入车牌格式不合法");
         return;
       }
-      if (!isBrand) {
-        Toast.fail("请选中车型");
+      if (!isUseType) {
+        Toast.fail("请选择车辆用途");
         return;
       }
       if (!isCity) {
-        Toast.fail("请选中城市");
+        Toast.fail("请选择交车城市");
         return;
+      }
+      this.handleFormData();
+    },
+    async handleFormData() {
+      this.submitLoading = true;
+      Toast.loading({
+        duration: 0,
+        message: "添加中...",
+        forbidClick: true
+      });
+      let {
+        realName,
+        carTel,
+        hometown,
+        plate,
+        carInfo,
+        city,
+        useType
+      } = this.info;
+
+      let fd = new FormData();
+      fd.append("name", realName);
+      fd.append("carContactsTel", carTel);
+      fd.append("brand", carInfo.brand);
+      fd.append("model", carInfo.model);
+      fd.append("plateNumber", hometown + plate);
+      fd.append("city", city);
+
+      //  "自驾租赁", color: "#000" },
+      //         { name: "婚庆租赁", color: "#000" },
+      //         { name: "全部业务
+      switch (useType) {
+        case "自驾租赁":
+          fd.append("carType", "1");
+          break;
+        case "婚庆租赁":
+          fd.append("carType", "2");
+          break;
+        case "全部业务":
+          fd.append("carType", "3");
+          break;
+        default:
+          this.submitLoading = false;
+          console.log("错误");
+          Toast.fail("错误 请刷新重试");
+          return false;
+      }
+
+      let res = await addUserCarApi(fd);
+      try {
+        if (res.data.header.code == 200) {
+          Toast.success("添加成功");
+          this.$router.replace({ name: "carList" });
+        } else {
+          Toast.fail(res.data.header.desc);
+        }
+      } catch (error) {
+        Toast.fail("数据错误");
+      } finally {
+        this.submitLoading = false;
       }
     },
     closeSelectBrand(carInfo) {

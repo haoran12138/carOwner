@@ -59,7 +59,7 @@ service.interceptors.response.use(
   },
   error => {
     console.log(error);
-    Toast.fail("未知错误");
+    Toast.fail("网络错误 请稍后重试");
   }
 );
 
