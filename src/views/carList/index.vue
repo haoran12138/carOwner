@@ -15,7 +15,7 @@
       >
         <van-card
           @click="handleClickCar"
-          desc="沪a34343"
+          :desc="item.plateNumber"
           :title="item.brand + ' ' + item.model"
           :centered="true"
           :thumb="item.carThumbPic || defaultUrl"
