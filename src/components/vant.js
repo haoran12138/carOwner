@@ -25,7 +25,9 @@ import {
   NavBar,
   Uploader,
   ActionSheet,
-  NumberKeyboard
+  NumberKeyboard,
+  ImagePreview,
+  Image as VanImage
 } from "vant";
 let vantUIs = [
   Tabbar,
@@ -53,7 +55,9 @@ let vantUIs = [
   NavBar,
   Uploader,
   ActionSheet,
-  NumberKeyboard
+  NumberKeyboard,
+  ImagePreview,
+  VanImage
 ];
 
 export default {

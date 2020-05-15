@@ -1,19 +1,30 @@
 <template>
   <div id="app">
     <transition :name="transitionName">
-      <keep-alive :exclude="['login']">
+      <keep-alive
+        :max="5"
+        :exclude="['login', 'cardId', 'cardDrive', 'insurance', 'carImgs']"
+      >
         <router-view />
       </keep-alive>
     </transition>
   </div>
 </template>
 <script>
+import { Toast } from "vant";
 export default {
   name: "app",
   data() {
     return {
       transitionName: ""
     };
+  },
+  created() {
+    Toast.setDefaultOptions(
+      "loading",
+      { forbidClick: true },
+      { duration: 2000 }
+    );
   },
   watch: {
     $route(to, from) {

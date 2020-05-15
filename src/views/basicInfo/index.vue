@@ -157,9 +157,7 @@ import selectBrand from "@/components/selectBrand";
 import headerCom from "@/components/headerCom";
 import { addUserCarApi } from "@/api/user";
 import { Toast } from "vant";
-let nameReg = /^[\u2E80-\u9FFF]{2,10}$/;
-let telReg = /^1[23456789]\d{9}$/;
-let plateReg = /^([ABCDEFGHJKLMNPQRSTUVWXY][1-9DF][1-9ABCDEFGHJKLMNPQRSTUVWXYZ]\d{3}[1-9DF]|[ABCDEFGHJKLMNPQRSTUVWXY][\dABCDEFGHJKLNMxPQRSTUVWXYZ]{5})$/;
+import { isNameReg, isTelReg, isPlateReg } from "@/utils/regTest";
 export default {
   name: "basicInfo",
   components: { selectBrand, headerCom },
@@ -289,13 +287,13 @@ export default {
       this.showChangeUserType = true;
     },
     changeRealName(value) {
-      this.isRuls.isRealName = nameReg.test(value);
+      this.isRuls.isRealName = isNameReg(value);
     },
     changeCarTel(value) {
-      this.isRuls.isCarTel = telReg.test(value);
+      this.isRuls.isCarTel = isTelReg(value);
     },
     changePlate(value) {
-      this.isRuls.isPlate = plateReg.test(value.toUpperCase());
+      this.isRuls.isPlate = isPlateReg(value.toUpperCase());
     },
     handleSelectUserType(item, index) {
       let { userTypeList } = this;

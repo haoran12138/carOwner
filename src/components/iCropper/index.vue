@@ -3,7 +3,7 @@
     <div id="icropper">
       <vue-cropper
         ref="cropper"
-        :viewMode="1"
+        :viewMode="0"
         dragMode="move"
         :src="oriImg"
         :rotatable="true"
@@ -53,27 +53,29 @@ export default {
     handleConfirm() {
       let self = this;
       Toast.loading({
+        duration: 0,
         message: "切割压缩中...",
         forbidClick: true
       });
       let dataU = this.$refs.cropper.getCroppedCanvas().toDataURL("image/jpeg");
       let cropperFile = dataURLtoFile(dataU);
-
+      // 计算压缩比例
+      let qua = Math.floor(((1.8 * 1024 * 1024) / cropperFile.size) * 10);
+      qua = qua > 8 ? 8 : qua;
       new Compressor(cropperFile, {
         convertSize: 2000000,
-        quality: 0.6,
+        quality: qua / 10,
         async success(result) {
           let f = new window.File([result], "aa.jpeg", {
             type: result.type
           });
-
-          Toast.success("图片处理完成");
+          Toast.clear();
           self.$emit("confirmCropper", f);
         },
         error(err) {
-          Toast.error("压缩错误");
+          Toast.fail("压缩错误");
           self.handleCancel();
-          console.log(err.message);
+          // console.log(err.message);
         }
       });
     },

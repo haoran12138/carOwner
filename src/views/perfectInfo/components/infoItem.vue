@@ -8,9 +8,11 @@
     </div>
     <div class="right">
       <div class="txt">
-        {{ carryTxt }}
+        <span v-if="carryType == 0"> {{ carryTypeN }}</span>
+        <span v-if="carryType == 1"> {{ carryTypeP }}</span>
+        <span v-if="carryType == 2"> {{ carryTypeY }}</span>
       </div>
-      <van-icon style="line-height: 6vw;" name="arrow" v-if="mCarrType != 2" />
+      <van-icon style="line-height: 6vw;" name="arrow" v-if="carryType != 2" />
     </div>
   </div>
 </template>
@@ -55,29 +57,11 @@ export default {
     }
   },
   data() {
-    return {
-      carryTxt: "",
-      mCarrType: 0
-    };
+    return {};
   },
-  created() {
-    this.init();
-  },
+  watch: {},
+  created() {},
   methods: {
-    init() {
-      this.mCarrType = this.carrType;
-      let txt = "";
-      if (this.carryType == 0) {
-        txt = this.carryTypeN;
-      }
-      if (this.carryType == 1) {
-        txt = this.carryTypeP;
-      }
-      if (this.carryType == 2) {
-        txt = this.carryTypeY;
-      }
-      this.carryTxt = txt;
-    },
     handleClickItem() {
       this.$router.replace({ name: this.routerName });
     }

@@ -5,40 +5,47 @@
       success-text="刷新成功"
       @refresh="onRefresh"
     >
-      <div class="header">
-        <header-com title="我的车辆"></header-com>
-      </div>
-      <van-swipe-cell
-        style="margin:10px 0"
-        v-for="(item, index) in list"
-        :key="index"
-      >
-        <van-card
-          @click="handleClickCar"
-          :desc="item.plateNumber"
-          :title="item.brand + ' ' + item.model"
-          :centered="true"
-          :thumb="item.carThumbPic || defaultUrl"
+      <div class="main">
+        <div class="header">
+          <header-com title="我的车辆"></header-com>
+        </div>
+        <van-swipe-cell
+          style="margin:10px 0"
+          v-for="(item, index) in list"
+          :key="index"
         >
-          <template #tags>
-            <van-tag plain type="danger">{{
-              item.carStatus | formateStatus
-            }}</van-tag>
+          <van-card
+            @click="handleClickCar(item.id)"
+            :desc="item.plateNumber"
+            :title="item.brand + ' ' + item.model"
+            :centered="true"
+            :thumb="item.carThumbPic || defaultUrl"
+          >
+            <template #tags>
+              <van-tag plain type="danger">{{
+                item.carStatus | formateStatus
+              }}</van-tag>
+            </template>
+          </van-card>
+          <template #right>
+            <!-- <van-button
+              square
+              text="删除"
+              type="danger"
+              class="delete-button"
+            /> -->
           </template>
-        </van-card>
-        <template #right>
-          <van-button square text="删除" type="danger" class="delete-button" />
-        </template>
-      </van-swipe-cell>
-      <div class="btn-box">
-        <van-button
-          round
-          class="add-btn"
-          color="#E63D33"
-          block
-          @click="handleAdd"
-          >添加新车辆</van-button
-        >
+        </van-swipe-cell>
+        <div class="btn-box">
+          <van-button
+            round
+            class="add-btn"
+            color="#E63D33"
+            block
+            @click="handleAdd"
+            >添加新车辆</van-button
+          >
+        </div>
       </div>
     </van-pull-refresh>
   </div>
@@ -70,6 +77,12 @@ export default {
   activated() {
     this.init();
   },
+  deactivated() {
+    Toast.clear();
+  },
+  beforeDestroy() {
+    Toast.clear();
+  },
   methods: {
     init() {
       this.query();
@@ -93,11 +106,18 @@ export default {
       }
     },
     handleAdd() {
+      Toast.loading({
+        duration: 0,
+        message: "正在跳转"
+      });
       this.$router.replace({ name: "basicInfo" });
     },
-    handleClickCar() {
-      this.$router.replace({ name: "perfectInfo", query: { id: 111 } });
-      console.log("aaa");
+    handleClickCar(id) {
+      Toast.loading({
+        duration: 0,
+        message: "正在跳转"
+      });
+      this.$router.replace({ name: "perfectInfo", query: { id } });
     }
   }
 };
@@ -105,6 +125,9 @@ export default {
 <style lang="scss" scoped>
 .container {
   padding-bottom: 250px;
+  .main {
+    height: 100vh;
+  }
 }
 .btn-box {
   position: fixed;

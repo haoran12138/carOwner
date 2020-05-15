@@ -1,3 +1,11 @@
+
+.container{
+  min-height: 100vh;
+}
+
+
+
+
 input::-webkit-input-placeholder,
 input::-moz-placeholder,
 input:-moz-placeholder,
@@ -37,4 +45,11 @@ input:-ms-input-placeholder {
 
 .van-cell__title.van-field__label{
   white-space: nowrap;
+}
+
+.van-nav-bar{
+  border-bottom: 1px solid #ccc;
+  .van-icon{
+    color: #000;
+  }
 }

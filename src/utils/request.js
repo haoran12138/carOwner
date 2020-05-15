@@ -3,7 +3,7 @@ import { getToken } from "./auth.js";
 import { baseURL } from "@/config";
 import { Toast } from "vant";
 const service = axios.create({
-  baseURL: baseURL + "/match/pre", // api 的 base_url
+  baseURL: baseURL, // api 的 base_url
   timeout: 8000, // request timeout
   headers: {
     accept: "*/*",
@@ -35,12 +35,13 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   res => {
-    console.log(res);
-    if (res.data.header.code == 401 || res.data.header.code == 407) {
-      debugger;
-      Toast.fail(res.msg);
-      // removeToken();
-      // window.location.replace("/login");
+    if (res.data.header) {
+      if (res.data.header.code == 401 || res.data.header.code == 407) {
+        debugger;
+        Toast.fail(res.msg);
+        // removeToken();
+        // window.location.replace("/login");
+      }
     }
     if (res.code == 999) {
       Toast.fail(res.msg);

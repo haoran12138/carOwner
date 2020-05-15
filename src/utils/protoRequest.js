@@ -58,8 +58,8 @@ service.interceptors.response.use(
     // if the custom code is not 20000, it is judged as an error.
   },
   error => {
-    console.log(error);
     Toast.fail("网络错误 请稍后重试");
+    return false;
   }
 );
 

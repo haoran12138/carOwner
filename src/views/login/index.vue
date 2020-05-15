@@ -75,7 +75,7 @@
 </template>
 <script>
 import { Toast } from "vant";
-import { login } from "@/api/user";
+import { login, verifyCodeSendApi } from "@/api/user";
 import { setToken, getToken } from "@/utils/auth";
 import { mapMutations } from "vuex";
 
@@ -112,14 +112,27 @@ export default {
   },
   methods: {
     ...mapMutations(["SET_USER_INFO"]),
-    gitCaptcha() {
+    async gitCaptcha() {
       if (!this.isTel) {
         Toast("号码错误请重新输入");
         return;
       }
-
       this.captchaLoading = true;
       this.time = 60 * 1000;
+      let res = {};
+      res.tel = this.tel;
+      res.type = "0";
+      try {
+        let req = await verifyCodeSendApi(res);
+        if (req.code == 200) {
+          // console.log("发送成功");
+        } else {
+          throw "发送失败";
+        }
+      } catch (error) {
+        this.time = 5000;
+        Toast.fail("发送失败");
+      }
     },
     changeTel(tel) {
       if (!/^1[23456789]\d{9}$/.test(tel)) {
@@ -155,7 +168,6 @@ export default {
       req.loginChannel = "3";
       Toast.loading({
         duration: 0, // 持续展示 toast
-        forbidClick: true,
         message: "正在登陆中"
       });
       try {
@@ -164,8 +176,8 @@ export default {
           let data = res.data[0];
           setToken(data.token);
           this.SET_USER_INFO({ userId: data.userId });
-          Toast.success({
-            duration: 1000,
+          Toast.loading({
+            duration: 0,
             message: "登陆成功,正在跳转"
           });
           this.$router.replace({ name: "carList" });

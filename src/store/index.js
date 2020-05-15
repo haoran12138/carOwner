@@ -7,11 +7,36 @@ export default new Vuex.Store({
   state: {
     userInfo: {
       userId: ""
-    }
+    },
+    // 身份证
+    cardId: {},
+    // 行驶证
+    cardDriver: [],
+    // 交强险或商业险
+    insurance: {},
+    // 车辆图片
+    carImgs: [],
+    // 车辆描述
+    carDesc: ""
   },
   mutations: {
     SET_USER_INFO: (state, { userId }) => {
       state.userInfo.userId = userId;
+    },
+    SET_CARD_ID: (state, data) => {
+      state.cardId = data;
+    },
+    SET_CARD_DRIVER: (state, data) => {
+      state.cardDriver = data;
+    },
+    SET_INSURANCE: (state, data) => {
+      state.insurance = data;
+    },
+    SET_CAR_IMGS: (state, data) => {
+      state.carImgs = data;
+    },
+    SET_CAR_DESC: (state, data) => {
+      state.carDesc = data;
     }
   },
   actions: {},

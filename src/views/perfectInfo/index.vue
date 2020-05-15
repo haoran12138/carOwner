@@ -7,34 +7,34 @@
       </div>
       <info-item
         routerName="cardId"
-        :carryType="0"
+        :carryType="carrType.cardId"
         txt="身份证"
         :isMust="true"
       ></info-item>
       <info-item
-        routerName="cardId"
-        :carryType="0"
+        routerName="cardDrive"
+        :carryType="carrType.cardDrive"
         txt="行驶证"
         :isMust="true"
       ></info-item>
       <info-item
-        routerName="cardId"
-        :carryType="0"
+        routerName="insurance"
+        :carryType="carrType.insurance"
         txt="交强险或商业险"
       ></info-item>
       <div class="info-title">
         车辆信息
       </div>
       <info-item
-        routerName="cardId"
-        :carryType="0"
+        routerName="carInfo"
+        :carryType="carrType.carInfo"
         txt="车辆基本信息"
         :isMust="true"
       ></info-item>
-      <info-item routerName="cardId" :carryType="0" txt="车辆照片"></info-item>
+      <info-item routerName="carImgs" :carryType="0" txt="车辆照片"></info-item>
       <info-item
-        routerName="cardId"
-        :carryType="0"
+        routerName="carDesc"
+        :carryType="carrType.carDesc"
         txt="车辆描述"
         carryTypeN="请填写"
       ></info-item>
@@ -48,13 +48,25 @@
 import headerCom from "@/components/headerCom";
 import infoItem from "./components/infoItem";
 import loading from "@/components/loading";
+import { getCarByIdApi } from "@/api/user";
+import { Toast } from "vant";
+import { mapMutations } from "vuex";
 export default {
   name: "perfectInfo",
   components: { headerCom, infoItem, loading },
   data() {
     return {
       id: "",
-      mainLoading: false
+      mainLoading: false,
+      // 填写完成情况 0 未上传  1 部分上传  2 完成上传
+      carrType: {
+        cardId: 0,
+        cardDrive: 0,
+        insurance: 0,
+        carImgs: 0,
+        carInfo: 0,
+        carDesc: 0
+      }
     };
   },
   created() {
@@ -64,8 +76,147 @@ export default {
     this.init();
   },
   methods: {
+    ...mapMutations([
+      "SET_CARD_ID",
+      "SET_CARD_DRIVER",
+      "SET_INSURANCE",
+      "SET_CAR_IMGS",
+      "SET_CAR_DESC"
+    ]),
     init() {
       this.id = this.$route.query.id;
+      this.query();
+    },
+    async query() {
+      this.mainLoading = true;
+      let fd = new FormData();
+      fd.append("carId", this.id);
+      try {
+        let res = await getCarByIdApi(fd);
+        if (res.data.header.code == 200) {
+          this.formateData(res.data.body);
+        }
+      } catch (error) {
+        Toast.fail("未知错误");
+      } finally {
+        this.mainLoading = false;
+      }
+    },
+    formateData(data) {
+      this.cardIdData(data);
+      this.insuranceData(data);
+      this.cardDriverData(data);
+      this.carImgsData(data);
+      this.carDescData(data);
+      this.carInfoData(data);
+    },
+    // 身份证信息
+    cardIdData(data) {
+      let res = {};
+      // 图片
+      res.idCard = data.idCard || "";
+      res.ownerName = data.ownerName || "";
+      res.idcardNum = data.idcardNum || "";
+      let flag = 0;
+      let length = 0;
+      // 字段总数  填写的字段总数
+      for (let item in res) {
+        if (res[item]) {
+          flag++;
+        }
+        length++;
+      }
+      if (flag == length) {
+        this.carrType.cardId = 2;
+      }
+      if (flag == 0) {
+        this.carrType.cardId = 0;
+      }
+      if (flag < length && flag > 0) {
+        this.carrType.cardId = 1;
+      }
+    },
+    // 行驶证
+    cardDriverData(data) {
+      let res = [];
+      if (data.carLicense) {
+        res = data.carLicense.split(",");
+      }
+      this.carrType.cardDrive = res.length;
+    },
+
+    // 交强险或商业险
+    insuranceData(data) {
+      let res = [];
+      if (data.insurance) {
+        res = data.insurance.split(",");
+      }
+      this.carrType.insurance = res.length;
+    },
+    // 车辆图片
+    carImgsData(data) {
+      let res = [];
+      if (data.carPhoto) {
+        res = data.carPhoto.split(",");
+      }
+      if (res.length == 0) {
+        this.carrType.carImgs = 0;
+      }
+      if (res.length > 0 && res.length < 6) {
+        this.carrType.carImgs = 2;
+      }
+      if (res.length >= 6) {
+        this.carrType.carImgs = 1;
+      }
+    },
+    // 车辆描述
+    carDescData(data) {
+      let res = data.carDesc || "";
+      if (res) {
+        this.carrType.carDesc = 2;
+      } else {
+        this.carrType.carDesc = 0;
+      }
+    },
+    carInfoData(data) {
+      let res = {};
+      // 车牌
+      res.plateNumber = data.plateNumber || "";
+      res.brand = data.brand || "";
+      res.model = data.model || "";
+      // 预期押金
+      res.wantRent = data.wantRent;
+      //颜色
+      res.color = data.color || "";
+      // 发动机类型
+      res.engineType = data.engineType;
+      // 排量
+      res.outPut = data.outPut;
+      // 变速箱
+      res.gearbox = data.gearbox || "";
+      // 座位数
+      res.seatNum = data.seatNum;
+      // 是否敞篷
+      res.isRoadster = data.isRoadster; // 0否  1 是
+      res.city = data.city;
+      let flag = 0;
+      let length = 0;
+      // 字段总数  填写的字段总数
+      for (let item in res) {
+        if (res[item]) {
+          flag++;
+        }
+        length++;
+      }
+      if (flag == length) {
+        this.carrType.carInfo = 2;
+      }
+      if (flag == 0) {
+        this.carrType.carInfo = 0;
+      }
+      if (flag < length && flag > 0) {
+        this.carrType.carInfo = 1;
+      }
     }
   }
 };
