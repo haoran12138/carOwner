@@ -1,12 +1,13 @@
+const path = require("path");
+function resolve(dir) {
+  return path.join(__dirname, dir);
+}
+
 module.exports = {
-  devServer: {
-    overlay: {
-      warnings: false,
-      errors: false
-    }
+  publicPath: "./",
+  assetsDir: "static",
+  chainWebpack: config => {
+    config.resolve.alias.set("@", resolve("src"));
   },
-  css: {
-    sourceMap: true
-  },
-  productionSourceMap: true
+  productionSourceMap: false
 };

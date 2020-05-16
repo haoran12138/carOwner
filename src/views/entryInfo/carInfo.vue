@@ -90,7 +90,7 @@
         :border="false"
         type="number"
         input-align="right"
-        v-model="info.outPut"
+        v-model="info.output"
         label="排量"
         placeholder="请输入"
       >
@@ -251,7 +251,7 @@ export default {
         wantRent: 0,
         color: "",
         engineType: "",
-        outPut: "",
+        output: "",
         seatNum: "",
         gearbox: "",
         isRoadster: 0 // 0否  1 是
@@ -281,7 +281,9 @@ export default {
       roadsterList: [
         { name: "非敞篷", color: "", value: 0 },
         { name: "敞篷", color: "", value: 1 }
-      ]
+      ],
+      // 是否有改变 在改回去也算改变
+      isChange: false
     };
   },
   computed: {
@@ -290,6 +292,19 @@ export default {
   created() {
     this.areaList = area;
     this.init();
+  },
+  mounted() {
+    setTimeout(() => {
+      this.isChange = false;
+    }, 1000);
+  },
+  watch: {
+    info: {
+      handler(val) {
+        this.isChange = true;
+      },
+      deep: true // 监听这个对象中的每一个属性变化
+    }
   },
   methods: {
     init() {
@@ -305,7 +320,7 @@ export default {
         wantRent,
         color,
         engineType,
-        outPut,
+        output,
         seatNum,
         gearbox,
         isRoadster
@@ -320,24 +335,28 @@ export default {
       this.info.wantRent = wantRent;
       this.info.color = color;
       this.info.engineType = engineType;
-      this.info.outPut = outPut;
+      this.info.output = output;
       this.info.seatNum = seatNum;
       this.info.gearbox = gearbox;
       this.info.isRoadster = isRoadster;
     },
     onClickLeft() {
       let self = this;
-      Dialog.confirm({
-        message: "是否保存后退出"
-      })
-        .then(() => {
-          this.update().then(() => {
+      if (this.isChange) {
+        Dialog.confirm({
+          message: "是否保存后退出"
+        })
+          .then(() => {
+            this.update().then(() => {
+              self.$router.replace({ name: "perfectInfo" });
+            });
+          })
+          .catch(() => {
             self.$router.replace({ name: "perfectInfo" });
           });
-        })
-        .catch(() => {
-          self.$router.replace({ name: "perfectInfo" });
-        });
+      } else {
+        self.$router.replace({ name: "perfectInfo" });
+      }
     },
     onClickRight() {
       this.update();
@@ -460,7 +479,7 @@ export default {
       fd.append("wantRent", info.wantRent);
       fd.append("color", info.color);
       fd.append("engineType", info.engineType);
-      fd.append("outPut", info.outPut);
+      fd.append("output", info.output);
       fd.append("seatNum", info.seatNum);
       fd.append("gearbox", info.gearbox);
       fd.append("isRoadster", info.isRoadster);
@@ -471,6 +490,7 @@ export default {
             duration: 500,
             message: "更新完成"
           });
+          this.isChange = false;
         } else {
           throw "code not 200";
         }

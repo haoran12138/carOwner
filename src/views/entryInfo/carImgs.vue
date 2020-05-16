@@ -31,7 +31,7 @@
     >
       <guide-photo
         :guideUrl="guideUrl"
-        :aspectRatio="1"
+        :aspectRatio="2"
         @getImgUrl="getImgUrl"
         :info="info"
       ></guide-photo>
@@ -123,9 +123,10 @@ export default {
   methods: {
     init() {
       let carImgs = this.carImgs;
-      this.imgNum = carImgs.length;
+      this.imgNum = 0;
       carImgs.forEach((item, index) => {
         if (item) {
+          this.imgNum++;
           this.showImgList[index]["imgUrl"] = item;
           this.showImgList[index]["desc"] = "已上传";
         }

@@ -3,7 +3,7 @@
     <div class="main">
       <div class="title">
         <div>你好,</div>
-        <div>欢迎来到飓风出现车主端</div>
+        <div>欢迎来到飓风出行车主端</div>
       </div>
       <div class="center mform">
         <van-field
@@ -22,6 +22,7 @@
           :border="false"
           v-model="captcha"
           type="number"
+          :maxLength="4"
           placeholder="请输入验证码"
           @input="changeCaptcha"
         >
@@ -76,7 +77,7 @@
 <script>
 import { Toast } from "vant";
 import { login, verifyCodeSendApi } from "@/api/user";
-import { setToken } from "@/utils/auth";
+import { setToken, getToken } from "@/utils/auth";
 import { mapMutations } from "vuex";
 
 export default {
@@ -104,10 +105,10 @@ export default {
     }
   },
   created() {
-    // let token = getToken();
-    // if (token) {
-    //   this.$router.replace({ name: "basicInfo" });
-    // }
+    let token = getToken();
+    if (token) {
+      this.$router.replace({ name: "carList" });
+    }
   },
   beforeDestroy() {
     Toast.clear();
@@ -182,7 +183,10 @@ export default {
             duration: 0,
             message: "登陆成功,正在跳转"
           });
-          this.$router.replace({ name: "carList" });
+          // 登陆成功
+          this.$router.replace({
+            name: "carList"
+          });
         } else {
           console.log(res.code);
         }

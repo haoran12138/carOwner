@@ -170,7 +170,6 @@ export default {
       fd.append("url", this.fileList[0].content);
       try {
         let res = await ORCCardIdAPi(fd);
-        console.log(res);
         if (res.data.direction == -1) {
           this.isRuls.isORC = false;
           Toast.fail("识别失败 请上传清晰证件");

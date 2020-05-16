@@ -8,7 +8,6 @@ const service = axios.create({
   headers: {
     accept: "*/*",
     "jf-appdevice": "h5",
-    jf_token: "123",
     "jf-appversion": "3.01"
   },
   validateStatus: function(status) {
@@ -28,30 +27,28 @@ service.interceptors.request.use(
     return config;
   },
   error => {
-    console.log(error);
     Promise.reject(error);
   }
 );
 
 service.interceptors.response.use(
   res => {
-    if (res.data.header) {
-      if (res.data.header.code == 401 || res.data.header.code == 407) {
-        debugger;
-        Toast.fail(res.msg);
+    console.log(res);
+    if (res.data) {
+      if (res.data.code == 401 || res.data.code == 407) {
+        Toast.fail(res.data.desc);
         removeToken();
-        window.location.replace("/login");
+        window.location.replace("#/login");
       }
     }
-    if (res.code == 999) {
-      Toast.fail(res.msg);
+    if (res.data.header && res.data.header.code == 999) {
+      Toast.fail(res.data.header.msg);
     }
     return res;
 
     // if the custom code is not 20000, it is judged as an error.
   },
   error => {
-    console.log(error);
     Toast.fail("网络错误 请稍后重试");
     return false;
   }

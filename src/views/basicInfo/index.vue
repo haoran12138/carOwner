@@ -1,6 +1,10 @@
 <template>
   <div class="container">
-    <header-com title="填写基础信息" routerName="carList"></header-com>
+    <header-com
+      :noReturn="noReturn"
+      title="填写基础信息"
+      routerName="carList"
+    ></header-com>
 
     <!--  right-icon="0"   错误图标不会显示 用于占位 -->
     <div class="center mform">
@@ -178,9 +182,10 @@ export default {
       userTypeList: [
         { name: "自驾租赁", color: "#000" },
         { name: "婚庆租赁", color: "#000" },
-        { name: "全部业务", color: "#000" }
+        { name: "自驾租赁、婚庆租赁", color: "#000" }
       ],
-      submitLoading: false
+      submitLoading: false,
+      noReturn: true
     };
   },
   computed: {
@@ -234,7 +239,7 @@ export default {
       userTypeList: [
         { name: "自驾租赁", color: "#000" },
         { name: "婚庆租赁", color: "#000" },
-        { name: "全部业务", color: "#000" }
+        { name: "自驾租赁、婚庆租赁", color: "#000" }
       ]
     };
     Object.assign(this, data);
@@ -245,6 +250,7 @@ export default {
   },
   methods: {
     init() {
+      this.noReturn = this.$route.query.noReturn;
       this.areaList = area;
     },
     // 打开选择车辆品牌
@@ -361,7 +367,7 @@ export default {
 
       //  "自驾租赁", color: "#000" },
       //         { name: "婚庆租赁", color: "#000" },
-      //         { name: "全部业务
+      //         { name: "自驾租赁、婚庆租赁
       switch (useType) {
         case "自驾租赁":
           fd.append("carType", "1");
@@ -369,7 +375,7 @@ export default {
         case "婚庆租赁":
           fd.append("carType", "2");
           break;
-        case "全部业务":
+        case "自驾租赁、婚庆租赁":
           fd.append("carType", "3");
           break;
         default:

@@ -3,7 +3,7 @@
     <van-nav-bar title="车辆描述" left-arrow @click-left="onClickLeft" />
     <div class="desc">
       <van-field
-        :value="message"
+        v-model="message"
         rows="5"
         autosize
         type="textarea"
@@ -44,6 +44,8 @@ export default {
         message: "保存中"
       });
       let fd = new FormData();
+
+      fd.append("id", this.carId);
       fd.append("carDesc", this.message);
       try {
         let res = await updateCarByIdApi(fd);

@@ -92,10 +92,10 @@ export default {
     this.init();
   },
   methods: {
-    ...mapActions(["getBrand"]),
     init() {
-      this.brandObj = JSON.parse(sessionStorage.getItem("brandObj"));
-      this.initialsList = JSON.parse(sessionStorage.getItem("initialsList"));
+      this.brandObj = JSON.parse(sessionStorage.getItem("brandObj")) || {};
+      this.initialsList =
+        JSON.parse(sessionStorage.getItem("initialsList")) || [];
       ///sessionStorage 如果有 不重新获取
       if (this.initialsList.length == 0) {
         this.getBrand();

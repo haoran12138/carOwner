@@ -80,12 +80,8 @@ export default {
   activated() {
     this.init();
   },
-  deactivated() {
-    Toast.clear();
-  },
-  beforeDestroy() {
-    Toast.clear();
-  },
+  deactivated() {},
+  beforeDestroy() {},
   methods: {
     ...mapMutations(["SET_CAR_ID"]),
     init() {
@@ -100,27 +96,23 @@ export default {
         let res = await getUserCarListApi();
         if (res.data.header.code) {
           this.list = res.data.body;
-        } else {
-          Toast.fail(res.data.header.desc);
+          if (this.list.length == 0) {
+            // 跳basicInfo 且不允许返回
+            this.$router.replace({
+              name: "basicInfo",
+              query: { noReturn: false }
+            });
+          }
         }
       } catch (error) {
-        Toast.fail("数据错误");
       } finally {
         this.isLoading = false;
       }
     },
     handleAdd() {
-      Toast.loading({
-        duration: 0,
-        message: "正在跳转"
-      });
-      this.$router.replace({ name: "basicInfo" });
+      this.$router.replace({ name: "basicInfo", query: { noReturn: true } });
     },
     handleClickCar(id) {
-      Toast.loading({
-        duration: 0,
-        message: "正在跳转"
-      });
       this.$router.replace({ name: "perfectInfo" });
       this.SET_CAR_ID(id);
     },

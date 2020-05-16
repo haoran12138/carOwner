@@ -31,10 +31,16 @@
         txt="车辆基本信息"
         :isMust="true"
       ></info-item>
-      <info-item routerName="carImgs" :carryType="0" txt="车辆照片"></info-item>
+      <info-item
+        routerName="carImgs"
+        :carryType="carrType.carImgs"
+        :carryTypeP="`待完善(${imgsLength}/6)`"
+        txt="车辆照片"
+      ></info-item>
       <info-item
         routerName="carDesc"
         :carryType="carrType.carDesc"
+        carryTypeY="已填写"
         txt="车辆描述"
         carryTypeN="请填写"
       ></info-item>
@@ -65,7 +71,8 @@ export default {
         carImgs: 0,
         carInfo: 0,
         carDesc: 0
-      }
+      },
+      imgsLength: 0
     };
   },
   computed: {
@@ -192,11 +199,12 @@ export default {
         this.carrType.carImgs = 0;
       }
       if (length > 0 && length < 6) {
-        this.carrType.carImgs = 2;
-      }
-      if (length >= 6) {
         this.carrType.carImgs = 1;
       }
+      if (length >= 6) {
+        this.carrType.carImgs = 2;
+      }
+      this.imgsLength = length;
       this.SET_CAR_IMGS(res);
     },
     // 车辆描述
@@ -222,7 +230,7 @@ export default {
       // 发动机类型
       res.engineType = data.engineType || "";
       // 排量
-      res.outPut = data.outPut || "";
+      res.output = data.output || "";
       // 变速箱
       res.gearbox = data.gearbox || "";
       // 座位数
@@ -234,7 +242,7 @@ export default {
       let length = 0;
       // 字段总数  填写的字段总数
       for (let item in res) {
-        if (res[item]) {
+        if (res[item] || res[item] == 0) {
           flag++;
         }
         length++;
