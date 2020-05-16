@@ -34,8 +34,11 @@
 <script>
 import showUpload from "./components/showUpload";
 import guidePhoto from "./components/guidePhoto";
+import { updateCarByIdApi } from "@/api/user";
+import { mapState } from "vuex";
+import { Toast } from "vant";
 export default {
-  name: "cardDrive",
+  name: "insurance",
   components: { showUpload, guidePhoto },
   data() {
     return {
@@ -67,8 +70,25 @@ export default {
       showGuide: false
     };
   },
-  created() {},
+  computed: {
+    ...mapState(["insurance", "carId"])
+  },
+  created() {
+    if (!this.carId) {
+      this.$router.replace({ name: "carList" });
+    }
+    this.init();
+  },
   methods: {
+    init() {
+      let insurance = this.insurance;
+      insurance.forEach((item, index) => {
+        if (item) {
+          this.showImgList[index]["imgUrl"] = item;
+          this.showImgList[index]["desc"] = "已上传";
+        }
+      });
+    },
     onClickLeft() {
       this.$router.replace({ name: "perfectInfo" });
     },
@@ -80,8 +100,30 @@ export default {
     },
     getImgUrl({ url, info }) {
       this.showImgList[info.keyIndex]["imgUrl"] = url;
+      this.showImgList[info.keyIndex]["desc"] = "已上传";
       this.showGuide = false;
+      this.updData();
+    },
+    async updData() {
       let fd = new FormData();
+      let list = [];
+      this.showImgList.forEach(item => {
+        list.push(item.imgUrl);
+      });
+      fd.append("id", this.carId);
+      fd.append("insurance", list.join(","));
+      Toast.loading("上传中");
+      try {
+        let res = await updateCarByIdApi(fd);
+        if (res.data.header.code == 200) {
+          Toast.clear();
+        } else {
+          throw "code not 200";
+        }
+      } catch (error) {
+        console.log(error);
+        Toast.fail("未知错误");
+      }
     }
   }
 };

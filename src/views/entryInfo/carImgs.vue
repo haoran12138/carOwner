@@ -41,6 +41,9 @@
 <script>
 import showUpload from "./components/showUpload";
 import guidePhoto from "./components/guidePhoto";
+import { updateCarByIdApi } from "@/api/user";
+import { mapState } from "vuex";
+import { Toast } from "vant";
 export default {
   name: "cardDrive",
   components: { showUpload, guidePhoto },
@@ -55,7 +58,6 @@ export default {
           guideUrl: "http://image.jufengchaopao.com/JPIC15895352682808345.png",
           title: "正侧面 45度",
           desc: "未上传",
-
           name: "up"
         },
         {
@@ -64,7 +66,6 @@ export default {
           guideUrl: "http://image.jufengchaopao.com/JPIC15895354171367341.png",
           title: "车身照",
           desc: "未上传",
-
           name: "up"
         },
 
@@ -74,7 +75,6 @@ export default {
           guideUrl: "http://image.jufengchaopao.com/JPIC15895355160733981.png",
           title: "车头照",
           desc: "未上传",
-
           name: "up"
         },
         {
@@ -83,7 +83,6 @@ export default {
           guideUrl: "http://image.jufengchaopao.com/JPIC15895374656967702.png",
           title: "车尾照",
           desc: "未上传",
-
           name: "up"
         },
         {
@@ -92,7 +91,6 @@ export default {
           guideUrl: "http://image.jufengchaopao.com/JPIC15895357923434839.png",
           title: "中控室",
           desc: "未上传",
-
           name: "up"
         },
         {
@@ -101,7 +99,6 @@ export default {
           guideUrl: "http://image.jufengchaopao.com/JPIC15895358822805428.png",
           title: "后座照",
           desc: "未上传",
-
           name: "up"
         }
       ],
@@ -114,8 +111,26 @@ export default {
       imgNum: 0
     };
   },
-  created() {},
+  computed: {
+    ...mapState(["carImgs", "carId"])
+  },
+  created() {
+    if (!this.carId) {
+      this.$router.replace({ name: "carList" });
+    }
+    this.init();
+  },
   methods: {
+    init() {
+      let carImgs = this.carImgs;
+      this.imgNum = carImgs.length;
+      carImgs.forEach((item, index) => {
+        if (item) {
+          this.showImgList[index]["imgUrl"] = item;
+          this.showImgList[index]["desc"] = "已上传";
+        }
+      });
+    },
     onClickLeft() {
       this.$router.replace({ name: "perfectInfo" });
     },
@@ -127,8 +142,32 @@ export default {
     },
     getImgUrl({ url, info }) {
       this.showImgList[info.keyIndex]["imgUrl"] = url;
+      this.showImgList[info.keyIndex]["desc"] = "已上传";
       this.showGuide = false;
+      this.updData();
+    },
+    async updData() {
       let fd = new FormData();
+      let carPhotoList = [];
+      this.showImgList.forEach((item, index) => {
+        carPhotoList.push(item.imgUrl);
+      });
+      fd.append("id", this.carId);
+      // 取正侧面 做缩略图
+      fd.append("carThumbPic", carPhotoList[0]);
+      fd.append("carPhoto", carPhotoList.join(","));
+      Toast.loading("上传中");
+      try {
+        let res = await updateCarByIdApi(fd);
+        if (res.data.header.code == 200) {
+        } else {
+          throw "code not 200";
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        Toast.clear();
+      }
     }
   }
 };

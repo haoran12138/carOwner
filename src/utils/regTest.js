@@ -17,6 +17,6 @@ export function isPlateReg(str) {
 }
 
 // 身份证  （不带 省份）
-export function isCardIdReg(str) {
+export function isCardIdNumReg(str) {
   return cardIdReg.test(str);
 }

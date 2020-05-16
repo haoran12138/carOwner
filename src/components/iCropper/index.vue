@@ -60,7 +60,7 @@ export default {
       let dataU = this.$refs.cropper.getCroppedCanvas().toDataURL("image/jpeg");
       let cropperFile = dataURLtoFile(dataU);
       // 计算压缩比例
-      let qua = Math.floor(((1.8 * 1024 * 1024) / cropperFile.size) * 10);
+      let qua = Math.floor(((1.5 * 1024 * 1024) / cropperFile.size) * 10);
       qua = qua > 8 ? 8 : qua;
       new Compressor(cropperFile, {
         convertSize: 2000000,

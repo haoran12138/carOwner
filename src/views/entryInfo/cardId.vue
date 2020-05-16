@@ -23,14 +23,14 @@
           />
         </div>
       </div>
-      <div class="form-item" :class="{ hover: changeFormName == 'cardId' }">
+      <div class="form-item" :class="{ hover: changeFormName == 'cardIdNum' }">
         <div class="form-title">身份证号</div>
         <div class="form-input">
           <van-field
-            @input="changeCardId"
-            @focus="focusCardId"
-            @blur="blurCardId"
-            v-model="cardId"
+            @input="changeCardIdNum"
+            @focus="focusCardIdNum"
+            @blur="blurCardIdNum"
+            v-model="cardIdNum"
           />
         </div>
       </div>
@@ -65,10 +65,11 @@
 </template>
 <script>
 import { uploadApi } from "@/api/sys";
-import { ORCCardIdAPi } from "@/api/user";
+import { ORCCardIdAPi, updateCarByIdApi } from "@/api/user";
 import iCropper from "@/components/iCropper";
+import { isNameReg, isCardIdNumReg } from "@/utils/regTest";
 import { Toast } from "vant";
-import { isNameReg, isCardIdReg } from "@/utils/regTest";
+import { mapState } from "vuex";
 export default {
   name: "cardId",
   components: { iCropper },
@@ -76,24 +77,28 @@ export default {
     return {
       fileList: [],
       showCropper: false,
+      // 切割处理后上传的图片
       cropperImg: "",
+      // 选择的本地图片
       oriImg: "",
       cardName: "",
-      cardId: "",
+      cardIdNum: "",
+      // 正在操作的input 的 class name   变色用
       changeFormName: "",
-      isRules: {
+      isRuls: {
         isUserName: false,
-        isCardId: false,
+        isCardIdNum: false,
         isORC: true
       }
     };
   },
   computed: {
-    isSubmit: () => {
+    ...mapState(["cardId", "carId"]),
+    isSubmit: function() {
       let res = true;
-      let isRules = this;
-      for (let item in isRules) {
-        if (!isRules[item]) {
+      let isRuls = this.isRuls;
+      for (let item in isRuls) {
+        if (!isRuls[item]) {
           res = false;
           break;
         }
@@ -101,7 +106,18 @@ export default {
       return res;
     }
   },
-  created() {},
+  created() {
+    if (!this.carId) {
+      this.$router.replace({ name: "carList" });
+    }
+    let { idcard, idcardNum, ownerName } = this.cardId;
+    if (idcard) {
+      // 有图片才用
+      this.fileList[0] = { url: idcard };
+      this.cardName = ownerName;
+      this.cardIdNum = idcardNum;
+    }
+  },
   methods: {
     onClickLeft() {
       this.$router.replace({ name: "perfectInfo" });
@@ -113,10 +129,10 @@ export default {
       this.oriImg = file.content;
     },
     changeCardName() {
-      this.isRules.isUserName = isNameReg(this.cardName);
+      this.isRuls.isUserName = isNameReg(this.cardName);
     },
-    changeCardId() {
-      this.isRules.isCardId = isCardIdReg(this.cardId);
+    changeCardIdNum() {
+      this.isRuls.isCardIdNum = isCardIdNumReg(this.cardIdNum);
     },
     cloesdCropper() {
       this.fileList = [];
@@ -156,36 +172,35 @@ export default {
         let res = await ORCCardIdAPi(fd);
         console.log(res);
         if (res.data.direction == -1) {
-          this.isRules.isORC = false;
+          this.isRuls.isORC = false;
           Toast.fail("识别失败 请上传清晰证件");
         } else {
-          this.isRules.isORC = true;
+          this.isRuls.isORC = true;
           this.cardName = res.data.words_result["姓名"].words;
-          this.cardId = res.data.words_result["公民身份号码"].words;
+          this.cardIdNum = res.data.words_result["公民身份号码"].words;
           // 验证 合法格式
           this.changeCardName();
-          this.changeCardId();
+          this.changeCardIdNum();
         }
       } catch (error) {
         // 可能是 程序错误  依然运行提交
-        this.isRules.isORC = true;
+        this.isRuls.isORC = true;
         Toast.fail("识别错误");
       }
     },
     delImage() {
       this.fileList.pop();
     },
-
     focusCardName() {
       this.changeFormName = "cardName";
     },
     blurCardName() {
       this.changeFormName = "";
     },
-    focusCardId() {
-      this.changeFormName = "cardId";
+    focusCardIdNum() {
+      this.changeFormName = "cardIdNum";
     },
-    blurCardId() {
+    blurCardIdNum() {
       this.changeFormName = "";
     },
 
@@ -195,11 +210,22 @@ export default {
         duration: 0,
         loadingType: "spinner"
       });
-      setTimeout(() => {
-        Toast.success({
-          message: "上传成功"
-        });
-      }, 1000);
+      let fd = new FormData();
+      fd.append("id", this.carId);
+      fd.append("idcard", this.fileList[0].content);
+      fd.append("idcardNum", this.cardIdNum);
+      fd.append("ownerName", this.cardName);
+      try {
+        let res = await updateCarByIdApi(fd);
+        if (res.data.header.code == 200) {
+          Toast.success("保存完成");
+          this.$router.replace({ name: "perfectInfo" });
+        } else {
+          throw "code not 200";
+        }
+      } catch (error) {
+        Toast.clear();
+      }
     }
   }
 };

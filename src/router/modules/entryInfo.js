@@ -30,6 +30,22 @@ const entryInfoRouter = [
     meta: {
       level: 4
     }
+  },
+  {
+    path: "/entryInfo/carInfo",
+    name: "carInfo",
+    component: () => import("@/views/entryInfo/carInfo.vue"),
+    meta: {
+      level: 4
+    }
+  },
+  {
+    path: "/entryInfo/carDesc",
+    name: "carDesc",
+    component: () => import("@/views/entryInfo/carDesc.vue"),
+    meta: {
+      level: 4
+    }
   }
 ];
 

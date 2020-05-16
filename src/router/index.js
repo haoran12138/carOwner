@@ -34,11 +34,6 @@ const routes = [
   },
   ...entryInfoRouter,
   {
-    path: "/test",
-    name: "test",
-    component: () => import("@/views/test/index")
-  },
-  {
     path: "*",
     name: "404",
     component: () => import("@/views/404")

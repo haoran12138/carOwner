@@ -40,12 +40,12 @@ export default {
       type: String,
       default: "请上传"
     },
-    // carryType 0 时的 展现文字
+    // carryType 1 时的 展现文字
     carryTypeP: {
       type: String,
       default: "待完善"
     },
-    // carryType 0 时的 展现文字
+    // carryType 2 时的 展现文字
     carryTypeY: {
       type: String,
       default: "已上传"

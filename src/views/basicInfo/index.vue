@@ -111,22 +111,7 @@
       v-model="showChangeHomeTown"
       position="bottom"
     >
-      <div class="home-town-container">
-        <div class="title">
-          <div class="confirm" @click="handleConfirmHomeTown">完成</div>
-        </div>
-        <div class="main">
-          <div
-            class="item"
-            :class="{ hover: index == homeTownIndex }"
-            v-for="(item, index) in homeTownList"
-            :key="index"
-            @click="handleChangeHomeTown(index)"
-          >
-            {{ item }}
-          </div>
-        </div>
-      </div>
+      <home-town @hidePopup="hidePopup" v-model="info.hometown"></home-town>
     </van-popup>
     <!-- 车型品牌 -->
     <van-popup
@@ -152,15 +137,15 @@
 </template>
 <script>
 import area from "@/assets/js/area.js";
-import homeTownList from "@/assets/js/homeTownList.js";
 import selectBrand from "@/components/selectBrand";
 import headerCom from "@/components/headerCom";
+import homeTown from "@/components/homeTown";
 import { addUserCarApi } from "@/api/user";
 import { Toast } from "vant";
 import { isNameReg, isTelReg, isPlateReg } from "@/utils/regTest";
 export default {
   name: "basicInfo",
-  components: { selectBrand, headerCom },
+  components: { selectBrand, headerCom, homeTown },
   data() {
     return {
       info: {
@@ -181,9 +166,6 @@ export default {
       // 城市数据
       areaList: null,
       // 车牌籍贯数据
-      homeTownList: null,
-      // 索引
-      homeTownIndex: 1,
 
       isRuls: {
         isRealName: false,
@@ -240,10 +222,6 @@ export default {
       showChangeBrand: false,
       // 城市数据
       areaList: null,
-      // 车牌籍贯数据
-      homeTownList: null,
-      // 索引
-      homeTownIndex: 1,
 
       isRuls: {
         isRealName: false,
@@ -268,7 +246,6 @@ export default {
   methods: {
     init() {
       this.areaList = area;
-      this.homeTownList = homeTownList;
     },
     // 打开选择车辆品牌
     openBrand() {
@@ -318,14 +295,9 @@ export default {
         this.isRuls.isCity = true;
       }
     },
-    handleChangeHomeTown(index) {
-      this.homeTownIndex = index;
-    },
-    handleConfirmHomeTown() {
+    hidePopup() {
       this.showChangeHomeTown = false;
-      this.info.hometown = this.homeTownList[this.homeTownIndex];
     },
-
     handleSubmit() {
       let {
         isRealName,
@@ -427,32 +399,6 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-.plate .van-field__button {
-  position: absolute;
-  right: 250px;
-  .hometown {
-    width: 60px;
-    height: 55px;
-    border: 1px solid rgb(160, 160, 160);
-    color: #000000;
-    line-height: 55px;
-    text-align: center;
-  }
-  .hometown::after {
-    display: block;
-    content: "";
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    border: 8px solid #e63d33;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-bottom-color: transparent;
-    transform: rotate(45deg);
-  }
-}
-</style>
 <style lang="scss" scoped>
 .container {
   overflow: hidden;
@@ -465,39 +411,6 @@ export default {
   margin-top: 100px;
   &.disabled {
     opacity: 0.5;
-  }
-}
-
-.home-town-container {
-  overflow: hidden;
-  padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom: env(safe-area-inset-bottom);
-  .title {
-    border-bottom: 1px solid #ccc;
-    height: 100px;
-    line-height: 100px;
-    .confirm {
-      width: 160px;
-      text-align: center;
-      float: right;
-      color: rgb(39, 114, 253);
-    }
-  }
-  .main {
-    .item {
-      display: inline-block;
-      width: 12.5vw;
-      height: 12.5vw;
-      text-align: center;
-      line-height: 12.5vw;
-      border: 1px solid #ccc;
-      border-right: 0px;
-      border-top: 0px;
-    }
-    .item.hover {
-      background: rgb(39, 114, 253);
-      color: #fff;
-    }
   }
 }
 </style>

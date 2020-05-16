@@ -1,9 +1,21 @@
 <template>
   <div id="app">
     <transition :name="transitionName">
+      <!--应该在router meta 里表示是否 keep alive 生成数组  暂时放者 -->
       <keep-alive
         :max="5"
-        :exclude="['login', 'cardId', 'cardDrive', 'insurance', 'carImgs']"
+        :exclude="[
+          'login',
+          'cardId',
+          'cardDrive',
+          'insurance',
+          'carImgs',
+          'carInfo',
+          'cardId',
+          'insurance',
+          'carDesc',
+          '404'
+        ]"
       >
         <router-view />
       </keep-alive>
@@ -40,7 +52,8 @@ export default {
         this.transitionName = "slide-right";
       }
     }
-  }
+  },
+  methods: {}
 };
 </script>
 <style lang="scss">

@@ -60,8 +60,10 @@
 </template>
 <script>
 import loading from "@/components/loading";
-import { brandListApi, modelListApi } from "@/api/car";
+import { modelListApi, brandListApi } from "@/api/car";
+import { mapState, mapActions } from "vuex";
 import { getInitials } from "@/utils/index";
+import { Toast } from "vant";
 export default {
   name: "selectBrand",
   props: ["value"],
@@ -75,14 +77,12 @@ export default {
       mainLoading: true,
       leftLoading: false,
       rightLoading: false,
-      brandList: [],
+      // 车辆品牌首字母数组
+      initialsList: [],
       brandObj: {},
       modelList: [],
-      // 首字母数组
-      initialsSet: new Set(),
-      initialsList: [],
 
-      // 选中的信息
+      // 选中的品牌
       changeBrandId: 18,
       changeModel: "",
       isError: false
@@ -92,51 +92,62 @@ export default {
     this.init();
   },
   methods: {
+    ...mapActions(["getBrand"]),
     init() {
-      this.initialsList.forEach((item, index) => {
-        this.brandObj[item] = [];
-      });
-      this.getBrandList();
+      this.brandObj = JSON.parse(sessionStorage.getItem("brandObj"));
+      this.initialsList = JSON.parse(sessionStorage.getItem("initialsList"));
+      ///sessionStorage 如果有 不重新获取
+      if (this.initialsList.length == 0) {
+        this.getBrand();
+      }
       this.getModelList(this.changeBrandId);
     },
-    async getBrandList() {
+    async getBrand() {
+      let brandList = [];
+      let brandObj = {};
+      let initialsSet = new Set();
+      let initialsList = [];
+
       try {
-        this.mainLoading = true;
         let res = await brandListApi({
           pageReq: { pageSize: 1000, pageNum: 1 }
         });
         if (res.code == 200) {
-          this.brandList = res.data;
-          this.brandList.forEach((item, index) => {
+          brandList = res.data;
+          brandList.forEach(item => {
             let initials = getInitials(item.brandName);
-            this.brandObj[initials] = this.brandObj[initials] || [];
-            this.brandObj[initials].push(item);
-            this.initialsSet.add(initials);
+            brandObj[initials] = brandObj[initials] || [];
+            brandObj[initials].push(item);
+            initialsSet.add(initials);
           });
-          let list = Array.from(this.initialsSet);
-          this.initialsList = list.sort();
+          let list = Array.from(initialsSet);
+          initialsList = list.sort();
+          this.brandObj = brandObj;
+          this.initialsList = initialsList;
+          // 存入 sessionStorage
+          sessionStorage.setItem("brandObj", JSON.stringify(brandObj));
+          sessionStorage.setItem("initialsList", JSON.stringify(initialsList));
         }
       } catch (error) {
-        this.isError = true;
-      } finally {
-        this.mainLoading = false;
+        Toast.fail("未知错误");
       }
     },
     async getModelList(brandId) {
       const req = {
         brandId
       };
-
       try {
-        this.rightLoading = true;
+        this.mainLoading = true;
         let res = await modelListApi(req);
         if (res.code == 200) {
           this.modelList = res.data;
+        } else {
+          throw "error";
         }
       } catch (error) {
         this.isError = true;
       } finally {
-        this.rightLoading = false;
+        this.mainLoading = false;
       }
     },
 
@@ -156,12 +167,17 @@ export default {
     },
     handleRefresh() {
       this.isError = false;
-      this.getBrandList();
+      this.getBrand();
       this.getModelList(this.changeBrandId);
     }
   }
 };
 </script>
+<style lang="scss">
+.selec-brand .van-overlay {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+</style>
 <style lang="scss" scoped>
 .selec-brand {
   overflow: hidden;

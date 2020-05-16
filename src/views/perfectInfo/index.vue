@@ -50,13 +50,12 @@ import infoItem from "./components/infoItem";
 import loading from "@/components/loading";
 import { getCarByIdApi } from "@/api/user";
 import { Toast } from "vant";
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 export default {
   name: "perfectInfo",
   components: { headerCom, infoItem, loading },
   data() {
     return {
-      id: "",
       mainLoading: false,
       // 填写完成情况 0 未上传  1 部分上传  2 完成上传
       carrType: {
@@ -69,35 +68,42 @@ export default {
       }
     };
   },
+  computed: {
+    ...mapState(["carId"])
+  },
   created() {
     this.init();
   },
   activated() {
     this.init();
   },
+
   methods: {
     ...mapMutations([
       "SET_CARD_ID",
       "SET_CARD_DRIVER",
       "SET_INSURANCE",
       "SET_CAR_IMGS",
-      "SET_CAR_DESC"
+      "SET_CAR_DESC",
+      "SET_CAR_INFO"
     ]),
     init() {
-      this.id = this.$route.query.id;
       this.query();
     },
     async query() {
       this.mainLoading = true;
       let fd = new FormData();
-      fd.append("carId", this.id);
+      fd.append("carId", this.carId);
       try {
         let res = await getCarByIdApi(fd);
         if (res.data.header.code == 200) {
           this.formateData(res.data.body);
+        } else {
+          throw "code ";
         }
       } catch (error) {
         Toast.fail("未知错误");
+        this.$router.replace({ name: "carList" });
       } finally {
         this.mainLoading = false;
       }
@@ -114,7 +120,7 @@ export default {
     cardIdData(data) {
       let res = {};
       // 图片
-      res.idCard = data.idCard || "";
+      res.idcard = data.idcard || "";
       res.ownerName = data.ownerName || "";
       res.idcardNum = data.idcardNum || "";
       let flag = 0;
@@ -135,6 +141,7 @@ export default {
       if (flag < length && flag > 0) {
         this.carrType.cardId = 1;
       }
+      this.SET_CARD_ID(res);
     },
     // 行驶证
     cardDriverData(data) {
@@ -142,7 +149,14 @@ export default {
       if (data.carLicense) {
         res = data.carLicense.split(",");
       }
-      this.carrType.cardDrive = res.length;
+      let length = 0;
+      res.forEach(item => {
+        if (item) {
+          length++;
+        }
+      });
+      this.carrType.cardDrive = length;
+      this.SET_CARD_DRIVER(res);
     },
 
     // 交强险或商业险
@@ -151,7 +165,16 @@ export default {
       if (data.insurance) {
         res = data.insurance.split(",");
       }
-      this.carrType.insurance = res.length;
+      // 存在的个数
+      let length = 0;
+      res.forEach(item => {
+        if (item) {
+          length++;
+        }
+      });
+
+      this.carrType.insurance = length;
+      this.SET_INSURANCE(res);
     },
     // 车辆图片
     carImgsData(data) {
@@ -159,15 +182,22 @@ export default {
       if (data.carPhoto) {
         res = data.carPhoto.split(",");
       }
-      if (res.length == 0) {
+      let length = 0;
+      res.forEach(item => {
+        if (item) {
+          length++;
+        }
+      });
+      if (length == 0) {
         this.carrType.carImgs = 0;
       }
-      if (res.length > 0 && res.length < 6) {
+      if (length > 0 && length < 6) {
         this.carrType.carImgs = 2;
       }
-      if (res.length >= 6) {
+      if (length >= 6) {
         this.carrType.carImgs = 1;
       }
+      this.SET_CAR_IMGS(res);
     },
     // 车辆描述
     carDescData(data) {
@@ -177,6 +207,7 @@ export default {
       } else {
         this.carrType.carDesc = 0;
       }
+      this.SET_CAR_DESC(res);
     },
     carInfoData(data) {
       let res = {};
@@ -185,20 +216,20 @@ export default {
       res.brand = data.brand || "";
       res.model = data.model || "";
       // 预期押金
-      res.wantRent = data.wantRent;
+      res.wantRent = data.wantRent || 0;
       //颜色
       res.color = data.color || "";
       // 发动机类型
-      res.engineType = data.engineType;
+      res.engineType = data.engineType || "";
       // 排量
-      res.outPut = data.outPut;
+      res.outPut = data.outPut || "";
       // 变速箱
       res.gearbox = data.gearbox || "";
       // 座位数
-      res.seatNum = data.seatNum;
+      res.seatNum = data.seatNum || "";
       // 是否敞篷
-      res.isRoadster = data.isRoadster; // 0否  1 是
-      res.city = data.city;
+      res.isRoadster = data.isRoadster || 0; // 0否  1 是
+      res.city = data.city || "";
       let flag = 0;
       let length = 0;
       // 字段总数  填写的字段总数
@@ -217,6 +248,7 @@ export default {
       if (flag < length && flag > 0) {
         this.carrType.carInfo = 1;
       }
+      this.SET_CAR_INFO(res);
     }
   }
 };

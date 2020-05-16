@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken } from "./auth.js";
+import { getToken, removeToken } from "./auth.js";
 import { baseURL } from "@/config";
 import { Toast } from "vant";
 const service = axios.create({
@@ -39,8 +39,8 @@ service.interceptors.response.use(
       if (res.data.header.code == 401 || res.data.header.code == 407) {
         debugger;
         Toast.fail(res.msg);
-        // removeToken();
-        // window.location.replace("/login");
+        removeToken();
+        window.location.replace("/login");
       }
     }
     if (res.code == 999) {
@@ -53,6 +53,7 @@ service.interceptors.response.use(
   error => {
     console.log(error);
     Toast.fail("网络错误 请稍后重试");
+    return false;
   }
 );
 

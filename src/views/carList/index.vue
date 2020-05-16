@@ -47,13 +47,16 @@
           >
         </div>
       </div>
+      <div class="out-btn" @click="handleOut">退出</div>
     </van-pull-refresh>
   </div>
 </template>
 <script>
 import headerCom from "@/components/headerCom";
 import { getUserCarListApi } from "@/api/user";
-import { Toast } from "vant";
+import { removeToken } from "@/utils/auth";
+import { Toast, Dialog } from "vant";
+import { mapMutations } from "vuex";
 // 车辆状态 0未审核 1上线 2下线 3审核通过 4未通过
 let statusList = ["未审核", "上线", "下线", "审核通过", "未通过"];
 export default {
@@ -84,6 +87,7 @@ export default {
     Toast.clear();
   },
   methods: {
+    ...mapMutations(["SET_CAR_ID"]),
     init() {
       this.query();
     },
@@ -117,7 +121,19 @@ export default {
         duration: 0,
         message: "正在跳转"
       });
-      this.$router.replace({ name: "perfectInfo", query: { id } });
+      this.$router.replace({ name: "perfectInfo" });
+      this.SET_CAR_ID(id);
+    },
+    handleOut() {
+      let self = this;
+      Dialog.confirm({
+        message: "是否退出登陆"
+      })
+        .then(() => {
+          removeToken();
+          self.$router.replace({ name: "login" });
+        })
+        .catch(() => {});
     }
   }
 };
@@ -140,5 +156,12 @@ export default {
 }
 .delete-button {
   height: 100%;
+}
+.out-btn {
+  position: absolute;
+  color: #fff;
+  top: 20px;
+  right: 15px;
+  padding: 10px;
 }
 </style>

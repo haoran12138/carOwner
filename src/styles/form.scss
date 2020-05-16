@@ -1,0 +1,32 @@
+.plate .van-field__button {
+    position: absolute;
+    right: 250px;
+    .hometown {
+      width: 60px;
+      height: 55px;
+      border: 1px solid rgb(160, 160, 160);
+      color: #000000;
+      line-height: 55px;
+      text-align: center;
+    }
+    .hometown::after {
+      display: block;
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      border: 8px solid #e63d33;
+      border-top-color: transparent;
+      border-right-color: transparent;
+      border-bottom-color: transparent;
+      transform: rotate(45deg);
+    }
+  }
+
+  .entry-info-desc{
+    padding:12px 32px;
+    background-color: #dbdbdb;
+    color: rgb(124, 124, 124);
+    line-height: 36px;
+    font-size: 22px;
+  }

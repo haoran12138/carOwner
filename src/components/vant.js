@@ -27,7 +27,8 @@ import {
   ActionSheet,
   NumberKeyboard,
   ImagePreview,
-  Image as VanImage
+  Image as VanImage,
+  Dialog
 } from "vant";
 let vantUIs = [
   Tabbar,
@@ -57,7 +58,8 @@ let vantUIs = [
   ActionSheet,
   NumberKeyboard,
   ImagePreview,
-  VanImage
+  VanImage,
+  Dialog
 ];
 
 export default {

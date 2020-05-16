@@ -8,20 +8,27 @@ export default new Vuex.Store({
     userInfo: {
       userId: ""
     },
+    // 当前查看车辆的id;
+    carId: "",
     // 身份证
     cardId: {},
     // 行驶证
     cardDriver: [],
     // 交强险或商业险
-    insurance: {},
+    insurance: [],
     // 车辆图片
     carImgs: [],
+    // 车辆详细信息
+    carInfo: {},
     // 车辆描述
     carDesc: ""
   },
   mutations: {
     SET_USER_INFO: (state, { userId }) => {
       state.userInfo.userId = userId;
+    },
+    SET_CAR_ID: (state, data) => {
+      state.carId = data;
     },
     SET_CARD_ID: (state, data) => {
       state.cardId = data;
@@ -34,6 +41,9 @@ export default new Vuex.Store({
     },
     SET_CAR_IMGS: (state, data) => {
       state.carImgs = data;
+    },
+    SET_CAR_INFO: (state, data) => {
+      state.carInfo = data;
     },
     SET_CAR_DESC: (state, data) => {
       state.carDesc = data;

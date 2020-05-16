@@ -14,6 +14,7 @@
         :desc="item.desc"
         :width="item.width"
         :height="item.height"
+        :info="item.info"
       ></show-upload>
     </div>
     <van-popup
@@ -34,6 +35,9 @@
 <script>
 import showUpload from "./components/showUpload";
 import guidePhoto from "./components/guidePhoto";
+import { updateCarByIdApi } from "@/api/user";
+import { mapState } from "vuex";
+import { Toast } from "vant";
 export default {
   name: "cardDrive",
   components: { showUpload, guidePhoto },
@@ -47,7 +51,7 @@ export default {
           desc: "未上传",
           width: "40vw",
           height: "60vw",
-          name: "up"
+          name: "drive1"
         },
         {
           imgUrl: "",
@@ -56,7 +60,7 @@ export default {
           desc: "未上传",
           width: "40vw",
           height: "60vw",
-          name: "down"
+          name: "drive2"
         }
       ],
       info: {
@@ -67,8 +71,26 @@ export default {
       showGuide: false
     };
   },
-  created() {},
+  computed: {
+    ...mapState(["cardDriver", "carId"])
+  },
+  created() {
+    // 没有 carid 返回carList
+    if (!this.carId) {
+      this.$router.replace({ name: "carList" });
+    }
+    this.init();
+  },
   methods: {
+    init() {
+      let cardDrive = this.cardDriver;
+      cardDrive.forEach((item, index) => {
+        if (item) {
+          this.showImgList[index]["imgUrl"] = item;
+          this.showImgList[index]["desc"] = "已上传";
+        }
+      });
+    },
     onClickLeft() {
       this.$router.replace({ name: "perfectInfo" });
     },
@@ -80,9 +102,29 @@ export default {
     },
     getImgUrl({ url, info }) {
       this.showImgList[info.keyIndex]["imgUrl"] = url;
-      console.log(url, info);
+      this.showImgList[info.keyIndex]["desc"] = "已上传";
       this.showGuide = false;
+      this.updData();
+    },
+    async updData() {
       let fd = new FormData();
+      let carLicenseList = [];
+      this.showImgList.forEach(item => {
+        carLicenseList.push(item.imgUrl);
+      });
+      fd.append("id", this.carId);
+      fd.append("carLicense", carLicenseList.join(","));
+      Toast.loading("上传中");
+      try {
+        let res = await updateCarByIdApi(fd);
+        if (res.data.header.code == 200) {
+          Toast.clear();
+        } else {
+          throw "code not 200";
+        }
+      } catch (error) {
+        Toast.fail("未知错误");
+      }
     }
   }
 };

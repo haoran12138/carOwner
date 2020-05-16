@@ -76,7 +76,7 @@
 <script>
 import { Toast } from "vant";
 import { login, verifyCodeSendApi } from "@/api/user";
-import { setToken, getToken } from "@/utils/auth";
+import { setToken } from "@/utils/auth";
 import { mapMutations } from "vuex";
 
 export default {
@@ -93,7 +93,9 @@ export default {
       captchaLoading: false,
       // 是否同意协议
       isProtocol: true,
-      time: 60 * 1000
+      time: 60 * 1000,
+      // 推荐Id
+      recommendId: "0"
     };
   },
   computed: {
@@ -171,7 +173,7 @@ export default {
         message: "正在登陆中"
       });
       try {
-        let res = await login(req);
+        let res = await login(req, this.recommendId);
         if (res.code == 200) {
           let data = res.data[0];
           setToken(data.token);

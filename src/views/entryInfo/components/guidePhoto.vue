@@ -84,6 +84,7 @@ export default {
             url: res.data[0].url,
             info: this.info
           });
+
           Toast.clear();
         } else {
           throw "code not 200";

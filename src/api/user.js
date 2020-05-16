@@ -11,6 +11,7 @@ export function login(data, p) {
     data: arrayToProto(data, "jfCloud_proto.UserLoginReq")
   });
 }
+
 // 获取验证码
 export function verifyCodeSendApi(data) {
   return protoService({
@@ -47,7 +48,7 @@ export function ORCCardIdAPi(data) {
   });
 }
 
-// 获取用户信息
+// 获取用户车辆信息
 export function getCarByIdApi(data) {
   return service({
     url: "match/pre/H5/car/getCarById",
@@ -56,7 +57,7 @@ export function getCarByIdApi(data) {
   });
 }
 
-// 修改用户信息
+// 修改用户车辆信息
 export function updateCarByIdApi(data) {
   return service({
     url: "match/pre/H5/car/updateCar",
