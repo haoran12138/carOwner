@@ -8,6 +8,8 @@ export default new Vuex.Store({
     userInfo: {
       userId: ""
     },
+    // 邀请码
+    recommendId: null,
     // 当前查看车辆的id;
     carId: "",
     // 身份证
@@ -26,6 +28,9 @@ export default new Vuex.Store({
   mutations: {
     SET_USER_INFO: (state, { userId }) => {
       state.userInfo.userId = userId;
+    },
+    SET_RECOMMEND_ID: (state, data) => {
+      state.recommendId = data;
     },
     SET_CAR_ID: (state, data) => {
       state.carId = data;

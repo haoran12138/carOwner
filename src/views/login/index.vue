@@ -78,7 +78,7 @@
 import { Toast } from "vant";
 import { login, verifyCodeSendApi } from "@/api/user";
 import { setToken, getToken } from "@/utils/auth";
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 
 export default {
   name: "login",
@@ -96,10 +96,11 @@ export default {
       isProtocol: true,
       time: 60 * 1000,
       // 推荐Id
-      recommendId: "0"
+      rId: null
     };
   },
   computed: {
+    ...mapState(["recommendId"]),
     isLogin: function() {
       return this.isTel && this.isCaptcha && this.isProtocol;
     }
@@ -110,17 +111,18 @@ export default {
       this.$router.replace({ name: "carList" });
     }
     let rid = this.$route.query.id;
-    if (!rid) {
+    if (!rid && !this.recommendId) {
       Toast.fail("数据错误 请重新扫码");
     } else {
-      this.recommendId = rid;
+      this.rId = rid || this.recommendId;
+      this.SET_RECOMMEND_ID(this.rId);
     }
   },
   beforeDestroy() {
     Toast.clear();
   },
   methods: {
-    ...mapMutations(["SET_USER_INFO"]),
+    ...mapMutations(["SET_USER_INFO", "SET_RECOMMEND_ID"]),
     async gitCaptcha() {
       if (!this.isTel) {
         Toast("号码错误请重新输入");
@@ -180,7 +182,7 @@ export default {
         message: "正在登陆中"
       });
       try {
-        let res = await login(req, this.recommendId);
+        let res = await login(req, this.rId);
         if (res.code == 200) {
           let data = res.data[0];
           setToken(data.token);
