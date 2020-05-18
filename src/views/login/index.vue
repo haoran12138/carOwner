@@ -109,6 +109,12 @@ export default {
     if (token) {
       this.$router.replace({ name: "carList" });
     }
+    let rid = this.$route.query.id;
+    if (!rid) {
+      Toast.fail("数据错误 请重新扫码");
+    } else {
+      this.recommendId = rid;
+    }
   },
   beforeDestroy() {
     Toast.clear();

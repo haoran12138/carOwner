@@ -6,7 +6,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    redirect: "/login"
+    redirect: "/404"
   },
   {
     path: "/login",
@@ -30,6 +30,12 @@ const routes = [
     path: "/carList",
     name: "carList",
     component: () => import("@/views/carList/index"),
+    meta: { level: 2 }
+  },
+  {
+    path: "/test",
+    name: "test",
+    component: () => import("@/views/test/index"),
     meta: { level: 2 }
   },
   ...entryInfoRouter,
