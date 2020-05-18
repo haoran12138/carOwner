@@ -145,6 +145,7 @@ export default {
       this.showImgList[info.keyIndex]["imgUrl"] = url;
       this.showImgList[info.keyIndex]["desc"] = "已上传";
       this.showGuide = false;
+      this.updImgNum();
       this.updData();
     },
     async updData() {
@@ -169,6 +170,16 @@ export default {
       } finally {
         Toast.clear();
       }
+    },
+    // 计算上传数量
+    updImgNum() {
+      let num = 0;
+      this.showImgList.forEach(item => {
+        if (item.imgUrl) {
+          num++;
+        }
+      });
+      this.imgNum = num;
     }
   }
 };

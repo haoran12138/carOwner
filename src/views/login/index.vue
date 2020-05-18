@@ -106,16 +106,16 @@ export default {
     }
   },
   created() {
-    let token = getToken();
-    if (token) {
-      this.$router.replace({ name: "carList" });
-    }
     let rid = this.$route.query.id;
     if (!rid && !this.recommendId) {
       Toast.fail("数据错误 请重新扫码");
     } else {
       this.rId = rid || this.recommendId;
       this.SET_RECOMMEND_ID(this.rId);
+    }
+    let token = getToken();
+    if (token) {
+      this.$router.replace({ name: "carList" });
     }
   },
   beforeDestroy() {
