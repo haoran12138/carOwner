@@ -218,6 +218,7 @@ export default {
       this.SET_CAR_DESC(res);
     },
     carInfoData(data) {
+      debugger;
       let res = {};
       // 车牌
       res.plateNumber = data.plateNumber || "";

@@ -45,10 +45,9 @@ service.interceptors.response.use(
     const res = protoToArray(response);
     console.log(res);
     if (res.code == 401 || res.code == 407) {
-      debugger;
       Toast.fail(res.msg);
-      // removeToken();
-      // window.location.replace("/login");
+      removeToken();
+      window.location.replace("/login");
     }
     if (res.code == 999) {
       Toast.fail(res.msg);
@@ -59,7 +58,7 @@ service.interceptors.response.use(
   },
   error => {
     Toast.fail("网络错误 请稍后重试");
-    return false;
+    return false; // 不抛出错误
   }
 );
 

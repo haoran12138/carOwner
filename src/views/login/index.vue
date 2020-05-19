@@ -121,7 +121,7 @@ export default {
       this.$router.replace({ name: "carList" });
     } else if (!token && rid) {
       // 没有token 且有 rid(扫码进入有rid  退出或超时进入登陆页无rid) 调用微信授权
-      this.wxlogin();
+      // this.wxlogin();
     }
   },
   beforeDestroy() {
@@ -202,6 +202,7 @@ export default {
           });
         } else {
           console.log(res.code);
+          throw "code not 200";
         }
       } catch (error) {
         Toast.fail("未知错误");
