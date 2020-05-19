@@ -6,12 +6,21 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    redirect: "/404"
+    name: "loading",
+    component: () => import("@/views/loading/index"),
+    meta: { level: 0 }
   },
   {
     path: "/login",
     name: "login",
     component: () => import("@/views/login/index"),
+    meta: { level: 1 }
+  },
+  // 绑定手机登陆
+  {
+    path: "/wxLogin",
+    name: "wxLogin",
+    component: () => import("@/views/login/wxLogin"),
     meta: { level: 1 }
   },
   {
@@ -47,7 +56,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  mode: "hash",
   base: process.env.BASE_URL,
   routes
 });

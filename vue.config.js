@@ -9,5 +9,8 @@ module.exports = {
   chainWebpack: config => {
     config.resolve.alias.set("@", resolve("src"));
   },
-  productionSourceMap: false
+  productionSourceMap: false,
+  devServer: {
+    disableHostCheck: true
+  }
 };

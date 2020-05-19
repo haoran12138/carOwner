@@ -13,12 +13,35 @@ export function login(data, p) {
 }
 
 // 获取验证码
-export function verifyCodeSendApi(data) {
+export function verifyCodeSendApi(data, p) {
+  let url = "user/nsp/verifycode/send?user_id=" + p;
   return protoService({
-    url: "user/nsp/verifycode/send",
+    url,
     method: "post",
     isToken: false,
     data: arrayToProto(data, "jfCloud_proto.VerifyCodeSendReq")
+  });
+}
+
+// 验证第三方登录是否绑定
+export function checkOtherLoginApi(data, p) {
+  let url = "user/nsp/checkOtherLogin?user_id=" + p;
+  return protoService({
+    url,
+    method: "post",
+    isToken: false,
+    data: arrayToProto(data, "jfCloud_proto.CheckOtherLoginReq")
+  });
+}
+
+// 绑定并登陆
+export function otherLoginApi(data, p) {
+  let url = "user/nsp/otherLogin/bind?user_id=" + p;
+  return protoService({
+    url,
+    method: "post",
+    isToken: false,
+    data: arrayToProto(data, "jfCloud_proto.OtherLoginReq")
   });
 }
 

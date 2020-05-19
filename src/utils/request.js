@@ -8,7 +8,7 @@ const service = axios.create({
   headers: {
     accept: "*/*",
     "jf-appdevice": "h5",
-    "jf-appversion": "3.01"
+    "jf-appversion": "3.0.2"
   },
   validateStatus: function(status) {
     return status < 500; // 状态码在大于或等于500时才会 reject

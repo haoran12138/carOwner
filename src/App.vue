@@ -14,7 +14,8 @@
           'cardId',
           'insurance',
           'carDesc',
-          '404'
+          '404',
+          'loading'
         ]"
       >
         <router-view />

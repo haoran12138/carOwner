@@ -43,10 +43,9 @@
           <div v-show="modelList.length == 0">暂无车型</div>
         </div>
         <!-- 网络错误 -->
-        <div style="height:100%" @click="handleRefresh">
+        <div v-if="isError" style="height:100%" @click="handleRefresh">
           <van-empty
             style="height:100%"
-            v-if="isError"
             image="network"
             description="点击刷新"
           />
@@ -90,6 +89,15 @@ export default {
   },
   created() {
     this.init();
+  },
+  mounted() {
+    // IOS 中 van-index-bar 显示不正常  z-index问题   从left 移动到 main中
+    let indexBarDOM = document.querySelector(
+      ".selec-brand .van-index-bar__sidebar"
+    );
+    let mianDOM = document.querySelector(".selec-brand .main");
+    let leftDOM = document.querySelector(".selec-brand .left");
+    mianDOM.insertBefore(indexBarDOM, leftDOM);
   },
   methods: {
     init() {
@@ -174,8 +182,16 @@ export default {
 };
 </script>
 <style lang="scss">
-.selec-brand .van-overlay {
-  background-color: rgba(255, 255, 255, 0.7);
+.selec-brand {
+  .van-overlay {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+  .brand-item {
+    width: 33vw;
+  }
+  .van-index-bar__index {
+    color: #ccc;
+  }
 }
 </style>
 <style lang="scss" scoped>
@@ -184,6 +200,7 @@ export default {
   position: fixed;
   top: 0;
   height: 100%;
+  width: 100vw;
 }
 .header {
   height: 8vh;
@@ -207,25 +224,35 @@ export default {
   }
 }
 .main {
+  width: 100%;
   overflow: hidden;
+  position: fixed;
   height: 92vh;
-  padding-top: 8vh;
+  top: 8vh;
   user-select: none;
   .left {
-    float: left;
-    width: 33vw;
+    width: 100%;
     height: 100%;
     overflow-x: hidden;
     background: #fff;
   }
   .right {
-    float: right;
+    position: fixed;
+    right: 0;
+    top: 8vh;
+    z-index: 20;
     width: 67vw;
-    height: 100%;
-
+    height: 100vh;
+    padding-bottom: 30vh;
     overflow-x: hidden;
     background: rgb(248, 248, 248);
   }
+}
+.main::-webkit-scrollbar {
+  display: none;
+}
+.right::scrollbar {
+  display: none;
 }
 .brand-item {
   position: relative;

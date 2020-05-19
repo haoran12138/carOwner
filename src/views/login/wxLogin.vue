@@ -3,7 +3,7 @@
     <div class="main">
       <div class="title">
         <div>你好,</div>
-        <div>欢迎来到飓风出行车主端</div>
+        <div>绑定手机号到当前微信</div>
       </div>
       <div class="center mform">
         <van-field
@@ -76,7 +76,7 @@
 </template>
 <script>
 import { Toast } from "vant";
-import { login, verifyCodeSendApi } from "@/api/user";
+import { otherLoginApi, verifyCodeSendApi } from "@/api/user";
 import { setToken, getToken } from "@/utils/auth";
 import { mapMutations, mapState } from "vuex";
 import Cookies from "js-cookie";
@@ -95,8 +95,7 @@ export default {
       // 是否同意协议
       isProtocol: true,
       time: 60 * 1000,
-      // 推荐Id
-      rId: null
+      recommendId: null
     };
   },
   computed: {
@@ -105,29 +104,19 @@ export default {
     }
   },
   created() {
-    let rid = this.$route.query.id;
     this.recommendId = Cookies.get("recommendId");
-    if (!rid && !this.recommendId) {
+    if (!this.recommendId) {
       Toast.fail("数据错误 请重新扫码");
     } else {
-      this.rId = rid || this.recommendId;
+      this.rId = this.recommendId;
       Cookies.set("recommendId", this.rId);
-    }
-
-    let token = getToken();
-
-    if (token) {
-      // 有token
-      this.$router.replace({ name: "carList" });
-    } else if (!token && rid) {
-      // 没有token 且有 rid(扫码进入有rid  退出或超时进入登陆页无rid) 调用微信授权
-      this.wxlogin();
     }
   },
   beforeDestroy() {
     Toast.clear();
   },
   methods: {
+    ...mapMutations(["SET_USER_INFO"]),
     async gitCaptcha() {
       if (!this.isTel) {
         Toast("号码错误请重新输入");
@@ -181,17 +170,19 @@ export default {
       let req = {};
       req.tel = this.tel;
       req.code = this.captcha;
-      req.loginChannel = "3";
+      req.loginChannel = "2";
+      req.openId = this.$route.query.openId;
+      req.channelType = "0";
       Toast.loading({
         duration: 0, // 持续展示 toast
         message: "正在登陆中"
       });
       try {
-        let res = await login(req, this.rId);
+        let res = await otherLoginApi(req, this.rId);
         if (res.code == 200) {
           let data = res.data[0];
           setToken(data.token);
-          // this.SET_USER_INFO({ userId: data.userId });
+          this.SET_USER_INFO({ userId: data.userId });
           Toast.loading({
             duration: 0,
             message: "登陆成功,正在跳转"
@@ -212,19 +203,6 @@ export default {
     },
     changeProtocol() {
       this.isProtocol = !this.isProtocol;
-    },
-    async wxlogin() {
-      let data = {
-        appid: "wx06c25adcfe124057",
-        redirect_uri: encodeURI("http://www.jfchuxing.com/haorantest"),
-        response_type: "code",
-        scope: "snsapi_base"
-      };
-      let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${data.appid}&redirect_uri=${data.redirect_uri}&response_type=${data.response_type}&scope=${data.scope}#wechat_redirect`;
-
-      let r =
-        "http://192.168.0.106:8080/?code=061snXuf1XD56u04govf1CJOuf1snXu4&state=#/";
-      window.location.replace(r);
     }
   }
 };

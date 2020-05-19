@@ -123,7 +123,8 @@ export default {
       })
         .then(() => {
           removeToken();
-          self.$router.replace({ name: "login" });
+          // self.$router.replace({ name: "login" });
+          window.location.replace("/#/login");
         })
         .catch(() => {});
     }

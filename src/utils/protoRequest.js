@@ -8,7 +8,7 @@ const service = axios.create({
   headers: {
     accept: "*/*",
     "jf-appdevice": "h5",
-    "jf-appversion": "3.01"
+    "jf-appversion": "3.0.2"
     // "content-type": "multipart/form-data"
   },
   baseURL: baseURL,
