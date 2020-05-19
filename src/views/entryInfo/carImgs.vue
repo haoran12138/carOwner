@@ -149,17 +149,17 @@ export default {
       this.updData();
     },
     async updData() {
-      let fd = new FormData();
-      let carPhotoList = [];
-      this.showImgList.forEach((item, index) => {
-        carPhotoList.push(item.imgUrl);
-      });
-      fd.append("id", this.carId);
-      // 取正侧面 做缩略图
-      fd.append("carThumbPic", carPhotoList[0]);
-      fd.append("carPhoto", carPhotoList.join(","));
-      Toast.loading("上传中");
       try {
+        let fd = new FormData();
+        let carPhotoList = [];
+        this.showImgList.forEach((item, index) => {
+          carPhotoList.push(item.imgUrl);
+        });
+        fd.append("id", this.carId);
+        // 取正侧面 做缩略图
+        fd.append("carThumbPic", carPhotoList[0]);
+        fd.append("carPhoto", carPhotoList.join(","));
+        Toast.loading("上传中");
         let res = await updateCarByIdApi(fd);
         if (res.data.header.code == 200) {
         } else {

@@ -98,15 +98,15 @@ export default {
       this.query();
     },
     async query() {
-      this.mainLoading = true;
-      let fd = new FormData();
-      fd.append("carId", this.carId);
       try {
+        this.mainLoading = true;
+        let fd = new FormData();
+        fd.append("carId", this.carId);
         let res = await getCarByIdApi(fd);
         if (res.data.header.code == 200) {
           this.formateData(res.data.body);
         } else {
-          throw "code ";
+          throw "code not 200";
         }
       } catch (error) {
         Toast.fail("未知错误");
@@ -218,7 +218,6 @@ export default {
       this.SET_CAR_DESC(res);
     },
     carInfoData(data) {
-      debugger;
       let res = {};
       // 车牌
       res.plateNumber = data.plateNumber || "";

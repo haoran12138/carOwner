@@ -122,12 +122,13 @@ export default {
         Toast("号码错误请重新输入");
         return;
       }
-      this.captchaLoading = true;
-      this.time = 60 * 1000;
-      let res = {};
-      res.tel = this.tel;
-      res.type = "0";
       try {
+        this.captchaLoading = true;
+        this.time = 60 * 1000;
+        let res = {};
+        res.tel = this.tel;
+        res.type = "0";
+
         let req = await verifyCodeSendApi(res);
         if (req.code == 200) {
           // console.log("发送成功");
@@ -193,6 +194,7 @@ export default {
           });
         } else {
           console.log(res.code);
+          throw "code not 200";
         }
       } catch (error) {
         Toast.fail("未知错误");

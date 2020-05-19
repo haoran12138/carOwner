@@ -145,10 +145,9 @@ export default {
       this.upload(file);
     },
     async upload(file) {
-      let fd = new FormData();
-      fd.append("uploadFile", file);
-
       try {
+        let fd = new FormData();
+        fd.append("uploadFile", file);
         let res = await uploadApi(fd);
         if (res.code == 200) {
           this.fileList[0].status = "";
@@ -165,10 +164,10 @@ export default {
     },
     //调用orc识别
     async getORCCardId() {
-      let fd = new FormData();
-      fd.append("type", "front");
-      fd.append("url", this.fileList[0].content);
       try {
+        let fd = new FormData();
+        fd.append("type", "front");
+        fd.append("url", this.fileList[0].content);
         let res = await ORCCardIdAPi(fd);
         if (res.data.direction == -1) {
           this.isRuls.isORC = false;
@@ -184,11 +183,12 @@ export default {
       } catch (error) {
         // 可能是 程序错误  依然运行提交
         this.isRuls.isORC = true;
-        Toast.fail("识别错误");
+        Toast.fail("未识别到 请手动录入");
       }
     },
     delImage() {
       this.fileList.pop();
+      this.isRuls.isORC = false;
     },
     focusCardName() {
       this.changeFormName = "cardName";
@@ -209,12 +209,13 @@ export default {
         duration: 0,
         loadingType: "spinner"
       });
-      let fd = new FormData();
-      fd.append("id", this.carId);
-      fd.append("idcard", this.fileList[0].content);
-      fd.append("idcardNum", this.cardIdNum);
-      fd.append("ownerName", this.cardName);
+
       try {
+        let fd = new FormData();
+        fd.append("id", this.carId);
+        fd.append("idcard", this.fileList[0].content);
+        fd.append("idcardNum", this.cardIdNum);
+        fd.append("ownerName", this.cardName);
         let res = await updateCarByIdApi(fd);
         if (res.data.header.code == 200) {
           Toast.success("保存完成");

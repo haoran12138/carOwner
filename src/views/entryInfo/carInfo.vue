@@ -469,21 +469,21 @@ export default {
         Toast.fail("车牌号不合法");
         return;
       }
-
-      let fd = new FormData();
-      fd.append("id", this.carId);
-      fd.append("plateNumber", info.homeTown + info.plate);
-      fd.append("brand", info.carInfo.brand);
-      fd.append("model", info.carInfo.model);
-      fd.append("city", info.city);
-      fd.append("wantRent", info.wantRent);
-      fd.append("color", info.color);
-      fd.append("engineType", info.engineType);
-      fd.append("output", info.output);
-      fd.append("seatNum", info.seatNum);
-      fd.append("gearbox", info.gearbox);
-      fd.append("isRoadster", info.isRoadster);
       try {
+        let fd = new FormData();
+        fd.append("id", this.carId);
+        fd.append("plateNumber", info.homeTown + info.plate);
+        fd.append("brand", info.carInfo.brand);
+        fd.append("model", info.carInfo.model);
+        fd.append("city", info.city);
+        fd.append("wantRent", info.wantRent);
+        fd.append("color", info.color);
+        fd.append("engineType", info.engineType);
+        fd.append("output", info.output);
+        fd.append("seatNum", info.seatNum);
+        fd.append("gearbox", info.gearbox);
+        fd.append("isRoadster", info.isRoadster);
+
         let res = await updateCarByIdApi(fd);
         if (res.data.header.code == 200) {
           Toast.success({

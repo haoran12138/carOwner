@@ -347,46 +347,46 @@ export default {
         message: "添加中...",
         forbidClick: true
       });
-      let {
-        realName,
-        carTel,
-        hometown,
-        plate,
-        carInfo,
-        city,
-        useType
-      } = this.info;
-
-      let fd = new FormData();
-      fd.append("name", realName);
-      fd.append("carContactsTel", carTel);
-      fd.append("brand", carInfo.brand);
-      fd.append("model", carInfo.model);
-      fd.append("plateNumber", hometown + plate);
-      fd.append("city", city);
-
-      //  "自驾租赁", color: "#000" },
-      //         { name: "婚庆租赁", color: "#000" },
-      //         { name: "自驾租赁、婚庆租赁
-      switch (useType) {
-        case "自驾租赁":
-          fd.append("carType", "1");
-          break;
-        case "婚庆租赁":
-          fd.append("carType", "2");
-          break;
-        case "自驾租赁、婚庆租赁":
-          fd.append("carType", "3");
-          break;
-        default:
-          this.submitLoading = false;
-          console.log("错误");
-          Toast.fail("错误 请刷新重试");
-          return false;
-      }
-
-      let res = await addUserCarApi(fd);
       try {
+        let {
+          realName,
+          carTel,
+          hometown,
+          plate,
+          carInfo,
+          city,
+          useType
+        } = this.info;
+
+        let fd = new FormData();
+        fd.append("name", realName);
+        fd.append("carContactsTel", carTel);
+        fd.append("brand", carInfo.brand);
+        fd.append("model", carInfo.model);
+        fd.append("plateNumber", hometown + plate);
+        fd.append("city", city);
+
+        //  "自驾租赁", color: "#000" },
+        //         { name: "婚庆租赁", color: "#000" },
+        //         { name: "自驾租赁、婚庆租赁
+        switch (useType) {
+          case "自驾租赁":
+            fd.append("carType", "1");
+            break;
+          case "婚庆租赁":
+            fd.append("carType", "2");
+            break;
+          case "自驾租赁、婚庆租赁":
+            fd.append("carType", "3");
+            break;
+          default:
+            this.submitLoading = false;
+            console.log("错误");
+            Toast.fail("错误 请刷新重试");
+            return false;
+        }
+
+        let res = await addUserCarApi(fd);
         if (res.data.header.code == 200) {
           Toast.success("添加成功");
           this.$router.replace({ name: "carList" });

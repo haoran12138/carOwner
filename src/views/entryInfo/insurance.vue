@@ -105,15 +105,15 @@ export default {
       this.updData();
     },
     async updData() {
-      let fd = new FormData();
-      let list = [];
-      this.showImgList.forEach(item => {
-        list.push(item.imgUrl);
-      });
-      fd.append("id", this.carId);
-      fd.append("insurance", list.join(","));
-      Toast.loading("上传中");
       try {
+        let fd = new FormData();
+        let list = [];
+        this.showImgList.forEach(item => {
+          list.push(item.imgUrl);
+        });
+        fd.append("id", this.carId);
+        fd.append("insurance", list.join(","));
+        Toast.loading("上传中");
         let res = await updateCarByIdApi(fd);
         if (res.data.header.code == 200) {
           Toast.clear();

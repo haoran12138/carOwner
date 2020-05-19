@@ -67,7 +67,8 @@ export function ORCCardIdAPi(data) {
   return service({
     url: "match/IdCardOCR",
     method: "post",
-    data
+    data,
+    isToken: false
   });
 }
 

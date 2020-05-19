@@ -107,15 +107,16 @@ export default {
       this.updData();
     },
     async updData() {
-      let fd = new FormData();
-      let carLicenseList = [];
-      this.showImgList.forEach(item => {
-        carLicenseList.push(item.imgUrl);
-      });
-      fd.append("id", this.carId);
-      fd.append("carLicense", carLicenseList.join(","));
-      Toast.loading("上传中");
       try {
+        let fd = new FormData();
+        let carLicenseList = [];
+        this.showImgList.forEach(item => {
+          carLicenseList.push(item.imgUrl);
+        });
+        fd.append("id", this.carId);
+        fd.append("carLicense", carLicenseList.join(","));
+        Toast.loading("上传中");
+
         let res = await updateCarByIdApi(fd);
         if (res.data.header.code == 200) {
           Toast.clear();

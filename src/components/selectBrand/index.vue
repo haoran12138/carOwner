@@ -135,6 +135,8 @@ export default {
           // 存入 sessionStorage
           sessionStorage.setItem("brandObj", JSON.stringify(brandObj));
           sessionStorage.setItem("initialsList", JSON.stringify(initialsList));
+        } else {
+          throw "code not 200";
         }
       } catch (error) {
         Toast.fail("未知错误");
@@ -153,6 +155,7 @@ export default {
           throw "error";
         }
       } catch (error) {
+        Toast.clear();
         this.isError = true;
       } finally {
         this.mainLoading = false;

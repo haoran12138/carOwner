@@ -43,11 +43,10 @@ export default {
         duration: 0,
         message: "保存中"
       });
-      let fd = new FormData();
-
-      fd.append("id", this.carId);
-      fd.append("carDesc", this.message);
       try {
+        let fd = new FormData();
+        fd.append("id", this.carId);
+        fd.append("carDesc", this.message);
         let res = await updateCarByIdApi(fd);
         if (res.data.header.code == 200) {
           Toast.success({

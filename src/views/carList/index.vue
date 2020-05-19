@@ -54,7 +54,7 @@
 <script>
 import headerCom from "@/components/headerCom";
 import { getUserCarListApi } from "@/api/user";
-import { removeToken } from "@/utils/auth";
+import { removeToken, getToken } from "@/utils/auth";
 import { Toast, Dialog } from "vant";
 import { mapMutations } from "vuex";
 // 车辆状态 0未审核 1上线 2下线 3审核通过 4未通过
@@ -85,6 +85,11 @@ export default {
   methods: {
     ...mapMutations(["SET_CAR_ID"]),
     init() {
+      let token = getToken();
+      if (!token) {
+        window.location.replace("/#/login");
+        return false;
+      }
       this.query();
     },
     onRefresh() {
@@ -103,8 +108,11 @@ export default {
               query: { noReturn: false }
             });
           }
+        } else {
+          throw "code not 200";
         }
       } catch (error) {
+        Toast.clear();
       } finally {
         this.isLoading = false;
       }

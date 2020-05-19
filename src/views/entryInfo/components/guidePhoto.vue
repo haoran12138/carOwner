@@ -74,10 +74,9 @@ export default {
         duration: 0,
         message: "处理中..."
       });
-      let fd = new FormData();
-      fd.append("uploadFile", file);
-
       try {
+        let fd = new FormData();
+        fd.append("uploadFile", file);
         let res = await uploadApi(fd);
         if (res.code == 200) {
           this.$emit("getImgUrl", {
