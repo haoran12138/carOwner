@@ -87,7 +87,7 @@ export default {
       cardDrive.forEach((item, index) => {
         if (item) {
           this.showImgList[index]["imgUrl"] = item;
-          this.showImgList[index]["desc"] = "已上传";
+          this.showImgList[index]["desc"] = "重新上传";
         }
       });
     },
@@ -102,7 +102,7 @@ export default {
     },
     getImgUrl({ url, info }) {
       this.showImgList[info.keyIndex]["imgUrl"] = url;
-      this.showImgList[info.keyIndex]["desc"] = "已上传";
+      this.showImgList[info.keyIndex]["desc"] = "重新上传";
       this.showGuide = false;
       this.updData();
     },
@@ -118,6 +118,9 @@ export default {
         Toast.loading("上传中");
 
         let res = await updateCarByIdApi(fd);
+        if (res === false) {
+          return;
+        }
         if (res.data.header.code == 200) {
           Toast.clear();
         } else {

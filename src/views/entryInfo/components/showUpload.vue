@@ -13,7 +13,8 @@
     </van-image>
     <div class="txt">
       <div class="title">{{ title }}</div>
-      <div class="desc">{{ desc }}</div>
+      <div class="desc" v-if="desc == '未上传'">{{ desc }}</div>
+      <div class="isdesc" v-else>{{ desc }}</div>
       <div class=""></div>
     </div>
   </div>
@@ -69,8 +70,19 @@ export default {
       font-weight: 500;
     }
     .desc {
-      color: rgb(221, 221, 221);
-      margin-top: 20px;
+      color: rgb(190, 190, 190);
+      margin-top: 30px;
+    }
+    .isdesc {
+      margin-top: 30px;
+      width: 140px;
+      color: #777777;
+      border-radius: 10px;
+      border: 2px solid #bbbbbb;
+      text-align: center;
+      height: 45px;
+      font-size: 26px;
+      line-height: 45px;
     }
   }
 }

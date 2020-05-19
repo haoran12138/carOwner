@@ -149,6 +149,9 @@ export default {
         let fd = new FormData();
         fd.append("uploadFile", file);
         let res = await uploadApi(fd);
+        if (res === false) {
+          return;
+        }
         if (res.code == 200) {
           this.fileList[0].status = "";
           this.fileList[0].message = "";
@@ -159,7 +162,7 @@ export default {
         }
       } catch (error) {
         this.fileList.pop();
-        Toast.fail("身份证错误 重新上传");
+        Toast.fail("未知错误 重新上传");
       }
     },
     //调用orc识别
@@ -169,6 +172,9 @@ export default {
         fd.append("type", "front");
         fd.append("url", this.fileList[0].content);
         let res = await ORCCardIdAPi(fd);
+        if (res === false) {
+          return;
+        }
         if (res.data.direction == -1) {
           this.isRuls.isORC = false;
           Toast.fail("识别失败 请上传清晰证件");
@@ -181,9 +187,9 @@ export default {
           this.changeCardIdNum();
         }
       } catch (error) {
-        // 可能是 程序错误  依然运行提交
+        // 可能是 程序错误  依然运行通过
         this.isRuls.isORC = true;
-        Toast.fail("未识别到 请手动录入");
+        Toast.fail("未识别 请手动录入");
       }
     },
     delImage() {
@@ -217,6 +223,9 @@ export default {
         fd.append("idcardNum", this.cardIdNum);
         fd.append("ownerName", this.cardName);
         let res = await updateCarByIdApi(fd);
+        if (res === false) {
+          return;
+        }
         if (res.data.header.code == 200) {
           Toast.success("保存完成");
           this.$router.replace({ name: "perfectInfo" });
@@ -224,7 +233,7 @@ export default {
           throw "code not 200";
         }
       } catch (error) {
-        Toast.clear();
+        Toast.fail("未知错误 重新上传");
       }
     }
   }

@@ -387,6 +387,9 @@ export default {
         }
 
         let res = await addUserCarApi(fd);
+        if (res === false) {
+          return;
+        }
         if (res.data.header.code == 200) {
           Toast.success("添加成功");
           this.$router.replace({ name: "carList" });
@@ -394,7 +397,7 @@ export default {
           Toast.fail(res.data.header.desc);
         }
       } catch (error) {
-        Toast.fail("数据错误");
+        Toast.fail("未知错误");
       } finally {
         this.submitLoading = false;
       }

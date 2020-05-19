@@ -130,6 +130,9 @@ export default {
         res.type = "0";
 
         let req = await verifyCodeSendApi(res);
+        if (res === false) {
+          return;
+        }
         if (req.code == 200) {
           // console.log("发送成功");
         } else {
@@ -180,6 +183,9 @@ export default {
       });
       try {
         let res = await otherLoginApi(req, this.rId);
+        if (res === false) {
+          return;
+        }
         if (res.code == 200) {
           let data = res.data[0];
           setToken(data.token);

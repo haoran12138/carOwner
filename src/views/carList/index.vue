@@ -87,7 +87,7 @@ export default {
     init() {
       let token = getToken();
       if (!token) {
-        window.location.replace("/#/login");
+        this.$router.replace({ name: "login" });
         return false;
       }
       this.query();
@@ -99,6 +99,10 @@ export default {
       this.isLoading = true;
       try {
         let res = await getUserCarListApi();
+        if (res === false) {
+          return;
+        }
+        this.isLoading = false;
         if (res.data.header.code) {
           this.list = res.data.body;
           if (this.list.length == 0) {
@@ -112,9 +116,10 @@ export default {
           throw "code not 200";
         }
       } catch (error) {
-        Toast.clear();
-      } finally {
+        Toast.fail("未知错误");
         this.isLoading = false;
+      } finally {
+        this.isLoading = true;
       }
     },
     handleAdd() {
@@ -131,8 +136,7 @@ export default {
       })
         .then(() => {
           removeToken();
-          // self.$router.replace({ name: "login" });
-          window.location.replace("/#/login");
+          self.$router.replace({ name: "login" });
         })
         .catch(() => {});
     }

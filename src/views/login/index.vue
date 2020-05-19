@@ -105,6 +105,7 @@ export default {
     }
   },
   created() {
+    debugger;
     let rid = this.$route.query.id;
     this.recommendId = Cookies.get("recommendId");
     if (!rid && !this.recommendId) {
@@ -140,6 +141,9 @@ export default {
         res.tel = this.tel;
         res.type = "0";
         let req = await verifyCodeSendApi(res);
+        if (res === false) {
+          return;
+        }
         if (req.code == 200) {
           // console.log("发送成功");
         } else {
@@ -182,12 +186,15 @@ export default {
       req.tel = this.tel;
       req.code = this.captcha;
       req.loginChannel = "3";
-      Toast.loading({
+      let tLoading = Toast.loading({
         duration: 0, // 持续展示 toast
         message: "正在登陆中"
       });
       try {
         let res = await login(req, this.rId);
+        if (res === false) {
+          return;
+        }
         if (res.code == 200) {
           let data = res.data[0];
           setToken(data.token);
@@ -202,10 +209,11 @@ export default {
           });
         } else {
           console.log(res.code);
-          throw "code not 200";
         }
       } catch (error) {
         Toast.fail("未知错误");
+      } finally {
+        tLoading.clear;
       }
     },
     finishTime() {

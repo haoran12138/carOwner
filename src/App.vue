@@ -25,6 +25,7 @@
 </template>
 <script>
 import { Toast } from "vant";
+import Cookie from "js-cookie";
 export default {
   name: "app",
   data() {
@@ -38,6 +39,9 @@ export default {
       { forbidClick: true },
       { duration: 2000 }
     );
+  },
+  destroyed() {
+    Cookie.remove("recommendId");
   },
   watch: {
     $route(to, from) {

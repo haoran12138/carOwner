@@ -26,16 +26,19 @@ serviceApi.interceptors.request.use(
 
 serviceApi.interceptors.response.use(
   res => {
+    debugger;
     console.log(res);
     if (res.data) {
       if (res.data.code == 401 || res.data.code == 407) {
         Toast.fail(res.data.desc);
         removeToken();
         window.location.replace("#/login");
+        return false;
       }
     }
     if (res.data.header && res.data.header.code == 999) {
       Toast.fail(res.data.header.msg);
+      return false;
     }
     return res;
 

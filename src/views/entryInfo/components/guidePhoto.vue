@@ -78,6 +78,9 @@ export default {
         let fd = new FormData();
         fd.append("uploadFile", file);
         let res = await uploadApi(fd);
+        if (res === false) {
+          return;
+        }
         if (res.code == 200) {
           this.$emit("getImgUrl", {
             url: res.data[0].url,
@@ -89,7 +92,7 @@ export default {
           throw "code not 200";
         }
       } catch (error) {
-        Toast.fail("网络错误 请稍后重试");
+        Toast.fail("未知错误");
       }
     }
   }
@@ -115,7 +118,7 @@ export default {
 }
 .center {
   width: 100%;
-  height: 85vh;
+  height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -124,7 +127,7 @@ export default {
   }
 }
 .btn {
-  height: 15vh;
+  height: 20vh;
   padding-bottom: constant(safe-area-inset-bottom);
   padding-bottom: env(safe-area-inset-bottom);
 }

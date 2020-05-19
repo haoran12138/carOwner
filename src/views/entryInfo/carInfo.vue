@@ -294,9 +294,10 @@ export default {
     this.init();
   },
   mounted() {
+    // 初始化改变状态
     setTimeout(() => {
       this.isChange = false;
-    }, 1000);
+    }, 500);
   },
   watch: {
     info: {
@@ -485,14 +486,15 @@ export default {
         fd.append("isRoadster", info.isRoadster);
 
         let res = await updateCarByIdApi(fd);
+        if (res === false) {
+          return;
+        }
         if (res.data.header.code == 200) {
           Toast.success({
             duration: 500,
             message: "更新完成"
           });
           this.isChange = false;
-        } else {
-          throw "code not 200";
         }
       } catch (error) {
         Toast.fail("更新错误");

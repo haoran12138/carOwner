@@ -128,7 +128,7 @@ export default {
         if (item) {
           this.imgNum++;
           this.showImgList[index]["imgUrl"] = item;
-          this.showImgList[index]["desc"] = "已上传";
+          this.showImgList[index]["desc"] = "重新上传";
         }
       });
     },
@@ -143,7 +143,7 @@ export default {
     },
     getImgUrl({ url, info }) {
       this.showImgList[info.keyIndex]["imgUrl"] = url;
-      this.showImgList[info.keyIndex]["desc"] = "已上传";
+      this.showImgList[info.keyIndex]["desc"] = "重新上传";
       this.showGuide = false;
       this.updImgNum();
       this.updData();
@@ -152,7 +152,7 @@ export default {
       try {
         let fd = new FormData();
         let carPhotoList = [];
-        this.showImgList.forEach((item, index) => {
+        this.showImgList.forEach(item => {
           carPhotoList.push(item.imgUrl);
         });
         fd.append("id", this.carId);
@@ -161,14 +161,14 @@ export default {
         fd.append("carPhoto", carPhotoList.join(","));
         Toast.loading("上传中");
         let res = await updateCarByIdApi(fd);
-        if (res.data.header.code == 200) {
-        } else {
+        if (res === false) {
+          return;
+        }
+        if (res.data.header.code != 200) {
           throw "code not 200";
         }
       } catch (error) {
-        console.log(error);
-      } finally {
-        Toast.clear();
+        Toast.fail("未知错误");
       }
     },
     // 计算上传数量

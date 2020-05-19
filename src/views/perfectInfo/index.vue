@@ -103,6 +103,9 @@ export default {
         let fd = new FormData();
         fd.append("carId", this.carId);
         let res = await getCarByIdApi(fd);
+        if (res === false) {
+          return;
+        }
         if (res.data.header.code == 200) {
           this.formateData(res.data.body);
         } else {
@@ -242,7 +245,7 @@ export default {
       let length = 0;
       // 字段总数  填写的字段总数
       for (let item in res) {
-        if (res[item] || res[item] == 0) {
+        if (res[item] || res[item] === 0) {
           flag++;
         }
         length++;

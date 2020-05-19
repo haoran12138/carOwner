@@ -120,6 +120,9 @@ export default {
         let res = await brandListApi({
           pageReq: { pageSize: 1000, pageNum: 1 }
         });
+        if (res === false) {
+          return;
+        }
         if (res.code == 200) {
           brandList = res.data;
           brandList.forEach(item => {
@@ -140,6 +143,7 @@ export default {
         }
       } catch (error) {
         Toast.fail("未知错误");
+        console.log(error);
       }
     },
     async getModelList(brandId) {
@@ -149,6 +153,9 @@ export default {
       try {
         this.mainLoading = true;
         let res = await modelListApi(req);
+        if (res === false) {
+          return;
+        }
         if (res.code == 200) {
           this.modelList = res.data;
         } else {

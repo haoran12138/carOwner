@@ -42,15 +42,18 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
+    debugger;
     const res = protoToArray(response);
     console.log(res);
     if (res.code == 401 || res.code == 407) {
       Toast.fail(res.msg);
       removeToken();
       window.location.replace("/login");
+      return false;
     }
     if (res.code == 999) {
       Toast.fail(res.msg);
+      return false;
     }
     return res;
 
