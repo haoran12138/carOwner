@@ -34,11 +34,8 @@ export default {
     };
   },
   created() {
-    Toast.setDefaultOptions(
-      "loading",
-      { forbidClick: true },
-      { duration: 2000 }
-    );
+    Toast.setDefaultOptions({ duration: 1000 });
+    Toast.setDefaultOptions("loading", { forbidClick: true });
   },
   destroyed() {
     Cookie.remove("recommendId");
