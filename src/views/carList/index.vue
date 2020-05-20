@@ -117,9 +117,8 @@ export default {
         }
       } catch (error) {
         Toast.fail("未知错误");
-        this.isLoading = false;
       } finally {
-        this.isLoading = true;
+        this.isLoading = false;
       }
     },
     handleAdd() {
