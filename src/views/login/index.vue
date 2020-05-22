@@ -78,7 +78,6 @@
 import { Toast } from "vant";
 import { login, verifyCodeSendApi } from "@/api/user";
 import { setToken, getToken } from "@/utils/auth";
-import { mapMutations, mapState } from "vuex";
 import Cookies from "js-cookie";
 export default {
   name: "login",
@@ -96,16 +95,15 @@ export default {
       isProtocol: true,
       time: 60 * 1000,
       // 推荐Id
-      rId: null
+      rId: null,
     };
   },
   computed: {
     isLogin: function() {
       return this.isTel && this.isCaptcha && this.isProtocol;
-    }
+    },
   },
   created() {
-    debugger;
     let rid = this.$route.query.id;
     this.recommendId = Cookies.get("recommendId");
     if (!rid && !this.recommendId) {
@@ -122,7 +120,7 @@ export default {
       this.$router.replace({ name: "carList" });
     } else if (!token && rid) {
       // 没有token 且有 rid(扫码进入有rid  退出或超时进入登陆页无rid) 调用微信授权
-      // this.wxlogin();
+      this.wxlogin();
     }
   },
   beforeDestroy() {
@@ -188,7 +186,7 @@ export default {
       req.loginChannel = "3";
       let tLoading = Toast.loading({
         duration: 0, // 持续展示 toast
-        message: "正在登陆中"
+        message: "正在登陆中",
       });
       try {
         let res = await login(req, this.rId);
@@ -201,11 +199,11 @@ export default {
           // this.SET_USER_INFO({ userId: data.userId });
           Toast.loading({
             duration: 0,
-            message: "登陆成功,正在跳转"
+            message: "登陆成功,正在跳转",
           });
           // 登陆成功
           this.$router.replace({
-            name: "carList"
+            name: "carList",
           });
         } else {
           console.log(res.code);
@@ -224,18 +222,18 @@ export default {
     },
     async wxlogin() {
       let data = {
-        appid: "wx06c25adcfe124057",
-        redirect_uri: encodeURI("http://www.jfchuxing.com/haorantest"),
+        appid: "wx19ce2dab89d8c1d6",
+        redirect_uri: encodeURI("http://qcs.5gzvip.idcfengye.com/"),
         response_type: "code",
-        scope: "snsapi_base"
+        scope: "snsapi_base",
       };
       let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${data.appid}&redirect_uri=${data.redirect_uri}&response_type=${data.response_type}&scope=${data.scope}#wechat_redirect`;
 
       let r =
         "http://192.168.0.106:8080/?code=061snXuf1XD56u04govf1CJOuf1snXu4&state=#/";
-      window.location.replace(r);
-    }
-  }
+      window.location.replace(url);
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
