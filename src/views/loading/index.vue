@@ -11,7 +11,7 @@ export default {
   name: "loging",
   data() {
     return {
-      recommendId: null,
+      recommendId: null
     };
   },
   created() {
@@ -28,7 +28,7 @@ export default {
           appsecret: "668a70238c3c5cce7dcf4a9e13f19e20",
           // appsecret: "b1dafa1cbd29eb5cc277711cbe6b4bac",
           response_type: "code",
-          scope: "snsapi_base",
+          scope: "snsapi_base"
         };
         let url = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${data.appid}&secret=${data.appsecret}&code=${code}&grant_type=authorization_code`;
         let fd = new FormData();
@@ -52,17 +52,17 @@ export default {
         // 手机绑定登陆登陆
         this.$router.replace({
           name: "wxLogin",
-          query: { openId: req.openId },
+          query: { openId: req.openId }
         });
       } else {
         // 绑定过 跳列表页
         setToken(token);
         this.$router.replace({
-          name: "carList",
+          name: "carList"
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped></style>

@@ -162,7 +162,7 @@ export default {
         plate: "",
         carInfo: { brand: "", model: "" },
         city: "",
-        useType: "",
+        useType: ""
       },
       showChangeCity: false,
       showChangeHomeTown: false,
@@ -178,15 +178,15 @@ export default {
         isPlate: false,
         isBrand: false,
         isCity: false,
-        isUseType: false,
+        isUseType: false
       },
       userTypeList: [
         { name: "自驾租赁", color: "#000" },
         { name: "婚庆租赁", color: "#000" },
-        { name: "自驾租赁、婚庆租赁", color: "#000" },
+        { name: "自驾租赁、婚庆租赁", color: "#000" }
       ],
       submitLoading: false,
-      noReturn: true,
+      noReturn: true
     };
   },
   computed: {
@@ -199,7 +199,7 @@ export default {
         }
       }
       return res;
-    },
+    }
   },
   watch: {
     "info.carInfo.brand": function(val) {
@@ -208,7 +208,7 @@ export default {
       } else {
         this.isRuls.isBrand = false;
       }
-    },
+    }
   },
   activated() {
     let data = {
@@ -221,7 +221,7 @@ export default {
         plate: "",
         carInfo: { brand: "", model: "" },
         city: "",
-        userType: "",
+        userType: ""
       },
       showChangeCity: false,
       showChangeHomeTown: false,
@@ -235,13 +235,13 @@ export default {
         isPlate: false,
         isBrand: false,
         isCity: false,
-        isUseType: false,
+        isUseType: false
       },
       userTypeList: [
         { name: "自驾租赁", color: "#000" },
         { name: "婚庆租赁", color: "#000" },
-        { name: "自驾租赁、婚庆租赁", color: "#000" },
-      ],
+        { name: "自驾租赁、婚庆租赁", color: "#000" }
+      ]
     };
     Object.assign(this, data);
     this.init();
@@ -312,7 +312,7 @@ export default {
         isPlate,
         isBrand,
         isCity,
-        isUseType,
+        isUseType
       } = this.isRuls;
       if (!isRealName) {
         Toast.fail("姓名格式不合法");
@@ -346,7 +346,7 @@ export default {
       Toast.loading({
         duration: 0,
         message: "添加中...",
-        forbidClick: true,
+        forbidClick: true
       });
       try {
         let {
@@ -356,7 +356,7 @@ export default {
           plate,
           carInfo,
           city,
-          useType,
+          useType
         } = this.info;
 
         let fd = new FormData();
@@ -382,7 +382,6 @@ export default {
             break;
           default:
             this.submitLoading = false;
-            console.log("错误");
             Toast.fail("错误 请刷新重试");
             return false;
         }
@@ -403,21 +402,21 @@ export default {
         this.submitLoading = false;
       }
     },
-    closeSelectBrand(carInfo) {
+    closeSelectBrand() {
       this.showChangeBrand = false;
     },
     handleOut() {
       let self = this;
       Dialog.confirm({
-        message: "是否退出登陆",
+        message: "是否退出登陆"
       })
         .then(() => {
           removeToken();
           self.$router.replace({ name: "login" });
         })
         .catch(() => {});
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -433,12 +432,5 @@ export default {
   &.disabled {
     opacity: 0.5;
   }
-}
-.out-btn {
-  position: absolute;
-  color: #fff;
-  top: 20px;
-  right: 15px;
-  padding: 10px;
 }
 </style>

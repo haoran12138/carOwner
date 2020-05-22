@@ -95,13 +95,13 @@ export default {
       isProtocol: true,
       time: 60 * 1000,
       // 推荐Id
-      rId: null,
+      rId: null
     };
   },
   computed: {
     isLogin: function() {
       return this.isTel && this.isCaptcha && this.isProtocol;
-    },
+    }
   },
   created() {
     let rid = this.$route.query.id;
@@ -186,7 +186,7 @@ export default {
       req.loginChannel = "3";
       let tLoading = Toast.loading({
         duration: 0, // 持续展示 toast
-        message: "正在登陆中",
+        message: "正在登陆中"
       });
       try {
         let res = await login(req, this.rId);
@@ -199,14 +199,14 @@ export default {
           // this.SET_USER_INFO({ userId: data.userId });
           Toast.loading({
             duration: 0,
-            message: "登陆成功,正在跳转",
+            message: "登陆成功,正在跳转"
           });
           // 登陆成功
           this.$router.replace({
-            name: "carList",
+            name: "carList"
           });
         } else {
-          console.log(res.code);
+          // console.log(res.code);
         }
       } catch (error) {
         Toast.fail("未知错误");
@@ -225,15 +225,15 @@ export default {
         appid: "wx19ce2dab89d8c1d6",
         redirect_uri: encodeURI("http://qcs.5gzvip.idcfengye.com/"),
         response_type: "code",
-        scope: "snsapi_base",
+        scope: "snsapi_base"
       };
       let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${data.appid}&redirect_uri=${data.redirect_uri}&response_type=${data.response_type}&scope=${data.scope}#wechat_redirect`;
 
-      let r =
-        "http://192.168.0.106:8080/?code=061snXuf1XD56u04govf1CJOuf1snXu4&state=#/";
+      // let r =
+      //   "http://192.168.0.106:8080/?code=061snXuf1XD56u04govf1CJOuf1snXu4&state=#/";
       window.location.replace(url);
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

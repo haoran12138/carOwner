@@ -77,8 +77,8 @@
 <script>
 import { Toast } from "vant";
 import { otherLoginApi, verifyCodeSendApi } from "@/api/user";
-import { setToken, getToken } from "@/utils/auth";
-import { mapMutations, mapState } from "vuex";
+import { setToken } from "@/utils/auth";
+import { mapMutations } from "vuex";
 import Cookies from "js-cookie";
 export default {
   name: "login",
@@ -199,7 +199,6 @@ export default {
             name: "carList"
           });
         } else {
-          console.log(res.code);
           throw "code not 200";
         }
       } catch (error) {
