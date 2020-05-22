@@ -5,7 +5,7 @@
       title="填写基础信息"
       routerName="carList"
     ></header-com>
-
+    <div class="out-btn" v-if="!noReturn" @click="handleOut">退出</div>
     <!--  right-icon="0"   错误图标不会显示 用于占位 -->
     <div class="center mform">
       <van-field
@@ -145,7 +145,8 @@ import selectBrand from "@/components/selectBrand";
 import headerCom from "@/components/headerCom";
 import homeTown from "@/components/homeTown";
 import { addUserCarApi } from "@/api/user";
-import { Toast } from "vant";
+import { Toast, Dialog } from "vant";
+import { removeToken } from "@/utils/auth";
 import { isNameReg, isTelReg, isPlateReg } from "@/utils/regTest";
 export default {
   name: "basicInfo",
@@ -161,7 +162,7 @@ export default {
         plate: "",
         carInfo: { brand: "", model: "" },
         city: "",
-        useType: ""
+        useType: "",
       },
       showChangeCity: false,
       showChangeHomeTown: false,
@@ -177,15 +178,15 @@ export default {
         isPlate: false,
         isBrand: false,
         isCity: false,
-        isUseType: false
+        isUseType: false,
       },
       userTypeList: [
         { name: "自驾租赁", color: "#000" },
         { name: "婚庆租赁", color: "#000" },
-        { name: "自驾租赁、婚庆租赁", color: "#000" }
+        { name: "自驾租赁、婚庆租赁", color: "#000" },
       ],
       submitLoading: false,
-      noReturn: true
+      noReturn: true,
     };
   },
   computed: {
@@ -198,7 +199,7 @@ export default {
         }
       }
       return res;
-    }
+    },
   },
   watch: {
     "info.carInfo.brand": function(val) {
@@ -207,7 +208,7 @@ export default {
       } else {
         this.isRuls.isBrand = false;
       }
-    }
+    },
   },
   activated() {
     let data = {
@@ -220,7 +221,7 @@ export default {
         plate: "",
         carInfo: { brand: "", model: "" },
         city: "",
-        userType: ""
+        userType: "",
       },
       showChangeCity: false,
       showChangeHomeTown: false,
@@ -234,13 +235,13 @@ export default {
         isPlate: false,
         isBrand: false,
         isCity: false,
-        isUseType: false
+        isUseType: false,
       },
       userTypeList: [
         { name: "自驾租赁", color: "#000" },
         { name: "婚庆租赁", color: "#000" },
-        { name: "自驾租赁、婚庆租赁", color: "#000" }
-      ]
+        { name: "自驾租赁、婚庆租赁", color: "#000" },
+      ],
     };
     Object.assign(this, data);
     this.init();
@@ -311,7 +312,7 @@ export default {
         isPlate,
         isBrand,
         isCity,
-        isUseType
+        isUseType,
       } = this.isRuls;
       if (!isRealName) {
         Toast.fail("姓名格式不合法");
@@ -345,7 +346,7 @@ export default {
       Toast.loading({
         duration: 0,
         message: "添加中...",
-        forbidClick: true
+        forbidClick: true,
       });
       try {
         let {
@@ -355,7 +356,7 @@ export default {
           plate,
           carInfo,
           city,
-          useType
+          useType,
         } = this.info;
 
         let fd = new FormData();
@@ -404,8 +405,19 @@ export default {
     },
     closeSelectBrand(carInfo) {
       this.showChangeBrand = false;
-    }
-  }
+    },
+    handleOut() {
+      let self = this;
+      Dialog.confirm({
+        message: "是否退出登陆",
+      })
+        .then(() => {
+          removeToken();
+          self.$router.replace({ name: "login" });
+        })
+        .catch(() => {});
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -421,5 +433,12 @@ export default {
   &.disabled {
     opacity: 0.5;
   }
+}
+.out-btn {
+  position: absolute;
+  color: #fff;
+  top: 20px;
+  right: 15px;
+  padding: 10px;
 }
 </style>

@@ -15,7 +15,7 @@
           :key="index"
         >
           <van-card
-            @click="handleClickCar(item.id)"
+            @click="handleClickCar(item.id, item.carStatus, item.failedReason)"
             :desc="item.plateNumber"
             :title="item.brand + ' ' + item.model"
             :centered="true"
@@ -124,7 +124,14 @@ export default {
     handleAdd() {
       this.$router.replace({ name: "basicInfo", query: { noReturn: true } });
     },
-    handleClickCar(id) {
+    handleClickCar(id, status, failedReason) {
+      if (status == 4) {
+        // 未通过 展示拒绝理由 不跳转
+        Dialog.confirm({
+          message: failedReason
+        });
+        return;
+      }
       this.$router.replace({ name: "perfectInfo" });
       this.SET_CAR_ID(id);
     },
