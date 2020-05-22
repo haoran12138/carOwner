@@ -10,16 +10,16 @@
           <header-com title="我的车辆"></header-com>
         </div>
         <van-swipe-cell
-          style="margin:10px 0"
           v-for="(item, index) in list"
           :key="index"
+          style="margin:10px 0"
         >
           <van-card
-            @click="handleClickCar(item.id, item.carStatus, item.failedReason)"
             :desc="item.plateNumber"
             :title="item.brand + ' ' + item.model"
             :centered="true"
             :thumb="item.carThumbPic || defaultUrl"
+            @click="handleClickCar(item.id, item.carStatus, item.failedReason)"
           >
             <template #tags>
               <van-tag plain type="danger">{{
@@ -60,7 +60,13 @@ import { mapMutations } from "vuex";
 // 车辆状态 0未审核 1上线 2下线 3审核通过 4未通过
 let statusList = ["未审核", "上线", "下线", "审核通过", "未通过"];
 export default {
-  name: "carList",
+  name: "CarList",
+  filters: {
+    formateStatus(status) {
+      return statusList[status];
+    }
+  },
+  components: { headerCom },
   data() {
     return {
       isLoading: false,
@@ -68,12 +74,6 @@ export default {
       defaultUrl: "http://image.jufengchaopao.com/JPIC15894607295541532.png"
     };
   },
-  filters: {
-    formateStatus(status) {
-      return statusList[status];
-    }
-  },
-  components: { headerCom },
   created() {
     this.init();
   },

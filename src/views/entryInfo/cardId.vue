@@ -16,9 +16,9 @@
         <div class="form-title">姓名</div>
         <div class="form-input">
           <van-field
+            v-model="cardName"
             @focus="focusCardName"
             @blur="blurCardName"
-            v-model="cardName"
             @input="changeCardName"
           />
         </div>
@@ -27,10 +27,10 @@
         <div class="form-title">身份证号</div>
         <div class="form-input">
           <van-field
+            v-model="cardIdNum"
             @input="changeCardIdNum"
             @focus="focusCardIdNum"
             @blur="blurCardIdNum"
-            v-model="cardIdNum"
           />
         </div>
       </div>
@@ -45,11 +45,11 @@
       </div>
     </div>
     <!--        v-if="showCropper" 使切割组件 重新加载 也可以在组件里设置 -->
-    <van-popup position="bottom" v-model="showCropper">
+    <van-popup v-model="showCropper" position="bottom">
       <i-cropper
         v-if="showCropper"
-        :aspectRatio="2"
-        :oriImg="oriImg"
+        :aspect-ratio="2"
+        :ori-img="oriImg"
         @cloesdCropper="cloesdCropper"
         @confirmCropper="confirmCropper"
       ></i-cropper>
@@ -71,7 +71,7 @@ import { isNameReg, isCardIdNumReg } from "@/utils/regTest";
 import { Toast } from "vant";
 import { mapState } from "vuex";
 export default {
-  name: "cardId",
+  name: "CardId",
   components: { iCropper },
   data() {
     return {

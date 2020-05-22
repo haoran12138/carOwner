@@ -13,11 +13,11 @@
         <van-button icon="photo" block type="primary">上传文件</van-button>
       </van-uploader>
     </div>
-    <van-popup position="bottom" style="width:100%" v-model="showCropper">
+    <van-popup v-model="showCropper" position="bottom" style="width:100%">
       <i-cropper
         v-if="showCropper"
-        :aspectRatio="aspectRatio"
-        :oriImg="oriImg"
+        :aspect-ratio="aspectRatio"
+        :ori-img="oriImg"
         @cloesdCropper="cloesdCropper"
         @confirmCropper="confirmCropper"
       ></i-cropper>
@@ -31,7 +31,8 @@ import { uploadApi } from "@/api/sys";
 import iCropper from "@/components/iCropper";
 import { Toast } from "vant";
 export default {
-  name: "guidePhoto",
+  name: "GuidePhoto",
+  components: { iCropper },
   props: {
     guideUrl: {
       type: String,
@@ -47,7 +48,6 @@ export default {
       required: true
     }
   },
-  components: { iCropper },
   data() {
     return {
       fileList: [],

@@ -7,15 +7,14 @@
     />
     <div class="center">
       <div
-        class="item"
-        @click="handleShowGuide(item, index)"
         v-for="(item, index) in showImgList"
         :key="index"
+        class="item"
+        @click="handleShowGuide(item, index)"
       >
         <show-upload
-          :imgUrl="item.imgUrl"
-          :defUrl="item.defUrl"
-          :guideUrl="item.guideUrl"
+          :img-url="item.imgUrl"
+          :def-url="item.defUrl"
           :title="item.title"
           :desc="item.desc"
           :width="width"
@@ -24,16 +23,16 @@
       </div>
     </div>
     <van-popup
+      v-model="showGuide"
       closeable
       close-icon-position="top-left"
       position="bottom"
-      v-model="showGuide"
     >
       <guide-photo
-        :guideUrl="guideUrl"
-        :aspectRatio="2"
-        @getImgUrl="getImgUrl"
+        :guide-url="guideUrl"
+        :aspect-ratio="2"
         :info="info"
+        @getImgUrl="getImgUrl"
       ></guide-photo>
     </van-popup>
   </div>
@@ -45,7 +44,7 @@ import { updateCarByIdApi } from "@/api/user";
 import { mapState } from "vuex";
 import { Toast } from "vant";
 export default {
-  name: "cardDrive",
+  name: "CardDrive",
   components: { showUpload, guidePhoto },
   data() {
     return {

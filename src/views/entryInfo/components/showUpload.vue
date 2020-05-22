@@ -1,11 +1,11 @@
 <template>
-  <div @click="showGuide = true" class="show-upload">
+  <div class="show-upload" @click="showGuide = true">
     <van-image
-      @click.native="handleShowImg"
       fit="cover"
       :width="width"
       :height="height"
       :src="imgUrl || defUrl"
+      @click.native="handleShowImg"
     >
       <template v-slot:loading>
         <van-loading type="spinner" size="20" />
@@ -13,8 +13,8 @@
     </van-image>
     <div class="txt">
       <div class="title">{{ title }}</div>
-      <div class="desc" v-if="desc == '未上传'">{{ desc }}</div>
-      <div class="isdesc" v-else>{{ desc }}</div>
+      <div v-if="desc == '未上传'" class="desc">{{ desc }}</div>
+      <div v-else class="isdesc">{{ desc }}</div>
       <div class=""></div>
     </div>
   </div>
@@ -22,20 +22,33 @@
 <script>
 import { ImagePreview } from "vant";
 export default {
-  name: "showUploadDrive",
+  name: "ShowUploadDrive",
   props: {
-    imgUrl: String,
-    // imgUrl 不存在时 展示用
+    imgUrl: {
+      type: String,
+      default: ""
+    },
+    // 默认图片 imgUrl 不存在时展示用
     defUrl: {
       type: String,
       default: ""
     },
-    //
-    guideUrl: String,
-    width: String,
-    height: String,
-    title: String,
-    desc: String
+    width: {
+      type: String,
+      required: true
+    },
+    height: {
+      type: String,
+      required: true
+    },
+    title: {
+      type: String,
+      required: true
+    },
+    desc: {
+      type: String,
+      required: true
+    }
   },
 
   data() {

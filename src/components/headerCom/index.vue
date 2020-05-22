@@ -3,19 +3,26 @@
     <van-icon
       v-if="routerName && noReturn"
       class="closed"
-      @click="closed"
       size="36"
       name="arrow-left"
+      @click="closed"
     />
     <div class="title">{{ title }}</div>
   </div>
 </template>
 <script>
 export default {
-  name: "headerCom",
+  name: "HeaderCom",
   props: {
-    title: String,
-    routerName: String,
+    title: {
+      type: String,
+      required: true
+    },
+
+    routerName: {
+      type: String,
+      required: true
+    },
     noReturn: {
       type: Boolean,
       default: true

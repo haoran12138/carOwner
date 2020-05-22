@@ -4,7 +4,7 @@
       <div class="txt">
         {{ txt }}
       </div>
-      <van-tag class="tag" v-if="isMust" plain type="danger">必填</van-tag>
+      <van-tag v-if="isMust" class="tag" plain type="danger">必填</van-tag>
     </div>
     <div class="right">
       <div class="txt">
@@ -12,13 +12,13 @@
         <span v-if="carryType == 1"> {{ carryTypeP }}</span>
         <span v-if="carryType == 2"> {{ carryTypeY }}</span>
       </div>
-      <van-icon style="line-height: 6vw;" name="arrow" v-if="carryType != 2" />
+      <van-icon v-if="carryType != 2" style="line-height: 6vw;" name="arrow" />
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: "perfectinfoItem",
+  name: "PerfectinfoItem",
   props: {
     // 填写完成情况 0 未上传  1 部分上传  2 完成上传
     carryType: {

@@ -5,10 +5,10 @@
     </div>
     <div class="main">
       <div
-        class="item"
-        :class="{ hover: item == homtown }"
         v-for="(item, index) in homeTownList"
         :key="index"
+        class="item"
+        :class="{ hover: item == homtown }"
         @click="handleChangeHomeTown(item)"
       >
         {{ item }}
@@ -19,7 +19,7 @@
 <script>
 import homeTownList from "@/assets/js/homeTownList.js";
 export default {
-  name: "homeTown",
+  name: "HomeTown",
   props: {
     value: {
       type: String,

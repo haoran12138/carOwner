@@ -9,7 +9,7 @@
 </template>
 <script>
 export default {
-  name: "loading",
+  name: "Loading",
   data() {
     return {};
   },
@@ -34,9 +34,9 @@ export default {
   height: 100%;
   border-radius: 4px;
   background: lightgreen;
-  -webkit-animation: load 1s ease infinite;
+  animation: load 1s ease infinite;
 }
-@-webkit-keyframes load {
+@keyframes load {
   0%,
   100% {
     height: 40px;
@@ -49,15 +49,15 @@ export default {
   }
 }
 .loading span:nth-child(2) {
-  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
 }
 .loading span:nth-child(3) {
-  -webkit-animation-delay: 0.4s;
+  animation-delay: 0.4s;
 }
 .loading span:nth-child(4) {
-  -webkit-animation-delay: 0.6s;
+  animation-delay: 0.6s;
 }
 .loading span:nth-child(5) {
-  -webkit-animation-delay: 0.8s;
+  animation-delay: 0.8s;
 }
 </style>

@@ -3,8 +3,10 @@
 
 var $protobuf = require("protobufjs/light");
 
-var $root = ($protobuf.roots["default"] || ($protobuf.roots["default"] = new $protobuf.Root()))
-.addJSON({
+var $root = (
+  $protobuf.roots["default"] ||
+  ($protobuf.roots["default"] = new $protobuf.Root())
+).addJSON({
   jfCloud_proto: {
     options: {
       java_package: "com.jf.cloud.proto.user",

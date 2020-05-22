@@ -27,18 +27,11 @@
 import { Toast } from "vant";
 import Cookie from "js-cookie";
 export default {
-  name: "app",
+  name: "App",
   data() {
     return {
       transitionName: ""
     };
-  },
-  created() {
-    Toast.setDefaultOptions({ duration: 1000 });
-    Toast.setDefaultOptions("loading", { forbidClick: true });
-  },
-  destroyed() {
-    Cookie.remove("recommendId");
   },
   watch: {
     $route(to, from) {
@@ -54,6 +47,13 @@ export default {
         this.transitionName = "slide-right";
       }
     }
+  },
+  created() {
+    Toast.setDefaultOptions({ duration: 1000 });
+    Toast.setDefaultOptions("loading", { forbidClick: true });
+  },
+  destroyed() {
+    Cookie.remove("recommendId");
   },
   methods: {}
 };

@@ -1,18 +1,18 @@
 <template>
   <div class="container">
     <header-com
-      :noReturn="noReturn"
+      :no-return="noReturn"
       title="填写基础信息"
-      routerName="carList"
+      router-name="carList"
     ></header-com>
-    <div class="out-btn" v-if="!noReturn" @click="handleOut">退出</div>
+    <div v-if="!noReturn" class="out-btn" @click="handleOut">退出</div>
     <!--  right-icon="0"   错误图标不会显示 用于占位 -->
     <div class="center mform">
       <van-field
+        v-model="info.realName"
         :border="false"
         type="text"
         input-align="right"
-        v-model="info.realName"
         label="真实姓名"
         placeholder="请输入"
         right-icon="0"
@@ -20,10 +20,10 @@
       >
       </van-field>
       <van-field
+        v-model="info.carTel"
         :border="false"
         type="tel"
         input-align="right"
-        v-model="info.carTel"
         label="车辆联系人电话"
         placeholder="请输入"
         right-icon="0"
@@ -43,27 +43,27 @@
       >
       </van-field>
       <van-field
+        v-model="info.plate"
         class="plate"
         :border="false"
         type="text"
         input-align="right"
-        v-model="info.plate"
         label="车牌号"
         placeholder="请输入"
         right-icon="0"
         @input="changePlate"
       >
-        <template class="hometown" #button>
-          <div @click="openHomeTown" class="hometown">
+        <template #button class="hometown">
+          <div class="hometown" @click="openHomeTown">
             {{ info.hometown }}
           </div>
         </template>
       </van-field>
       <van-field
+        v-model="info.useType"
         :border="false"
         type="text"
         input-align="right"
-        v-model="info.useType"
         label="车辆用途"
         right-icon="arrow"
         placeholder="请选择"
@@ -73,10 +73,10 @@
       </van-field>
 
       <van-field
+        v-model="info.city"
         :border="false"
         type="text"
         input-align="right"
-        v-model="info.city"
         label="交车城市"
         right-icon="arrow"
         placeholder="请选择"
@@ -96,32 +96,32 @@
     </div>
     <!-- 城市选择 -->
     <van-popup
-      :safe-area-inset-bottom="true"
       v-model="showChangeCity"
+      :safe-area-inset-bottom="true"
       round
       position="bottom"
     >
       <van-area
-        @cancel="handleCancelCity"
-        @confirm="handleConfirmCity"
         title="交车城市"
         :area-list="areaList"
         :columns-num="2"
+        @cancel="handleCancelCity"
+        @confirm="handleConfirmCity"
       />
     </van-popup>
     <!-- 车牌省份选择 -->
     <van-popup
-      :safe-area-inset-bottom="true"
       v-model="showChangeHomeTown"
+      :safe-area-inset-bottom="true"
       position="bottom"
     >
-      <home-town @hidePopup="hidePopup" v-model="info.hometown"></home-town>
+      <home-town v-model="info.hometown" @hidePopup="hidePopup"></home-town>
     </van-popup>
     <!-- 车型品牌 -->
     <van-popup
+      v-model="showChangeBrand"
       :close-on-popstate="true"
       :safe-area-inset-bottom="true"
-      v-model="showChangeBrand"
       position="bottom"
       :style="{ height: '100%' }"
     >
@@ -132,8 +132,8 @@
     </van-popup>
     <!-- 车辆用途 -->
     <van-action-sheet
-      :safe-area-inset-bottom="true"
       v-model="showChangeUserType"
+      :safe-area-inset-bottom="true"
       :actions="userTypeList"
       @select="handleSelectUserType"
     />
@@ -149,7 +149,7 @@ import { Toast, Dialog } from "vant";
 import { removeToken } from "@/utils/auth";
 import { isNameReg, isTelReg, isPlateReg } from "@/utils/regTest";
 export default {
-  name: "basicInfo",
+  name: "BasicInfo",
   components: { selectBrand, headerCom, homeTown },
   data() {
     return {

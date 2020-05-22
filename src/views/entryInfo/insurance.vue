@@ -2,14 +2,13 @@
   <div class="container">
     <van-nav-bar title="交强险或商业险" left-arrow @click-left="onClickLeft" />
     <div
-      class="item"
-      @click="handleShowGuide(item, index)"
       v-for="(item, index) in showImgList"
       :key="index"
+      class="item"
+      @click="handleShowGuide(item, index)"
     >
       <show-upload
-        :imgUrl="item.imgUrl"
-        :guideUrl="item.guideUrl"
+        :img-url="item.imgUrl"
         :title="item.title"
         :desc="item.desc"
         :width="item.width"
@@ -17,16 +16,16 @@
       ></show-upload>
     </div>
     <van-popup
+      v-model="showGuide"
       closeable
       close-icon-position="top-left"
       position="bottom"
-      v-model="showGuide"
     >
       <guide-photo
-        :guideUrl="guideUrl"
-        :aspectRatio="1"
-        @getImgUrl="getImgUrl"
+        :guide-url="guideUrl"
+        :aspect-ratio="1"
         :info="info"
+        @getImgUrl="getImgUrl"
       ></guide-photo>
     </van-popup>
   </div>
@@ -38,7 +37,7 @@ import { updateCarByIdApi } from "@/api/user";
 import { mapState } from "vuex";
 import { Toast } from "vant";
 export default {
-  name: "insurance",
+  name: "Insurance",
   components: { showUpload, guidePhoto },
   data() {
     return {
@@ -124,7 +123,6 @@ export default {
           throw "code not 200";
         }
       } catch (error) {
-        console.log(error);
         Toast.fail("未知错误");
       }
     }

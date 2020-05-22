@@ -3,14 +3,14 @@
     <div id="icropper">
       <vue-cropper
         ref="cropper"
-        :viewMode="0"
-        dragMode="move"
+        :view-mode="0"
+        drag-mode="move"
         :src="oriImg"
         :rotatable="true"
-        :cropBoxResizable="false"
-        :cropBoxMovable="false"
-        :aspectRatio="aspectRatio"
-        :autoCropArea="1"
+        :crop-box-resizable="false"
+        :crop-box-movable="false"
+        :aspect-ratio="aspectRatio"
+        :auto-crop-area="1"
         alt="Source Image"
       >
       </vue-cropper>
@@ -72,7 +72,7 @@ export default {
           Toast.clear();
           self.$emit("confirmCropper", f);
         },
-        error(err) {
+        error() {
           Toast.fail("压缩错误");
           self.handleCancel();
           // console.log(err.message);

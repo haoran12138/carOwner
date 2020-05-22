@@ -1,7 +1,7 @@
 <template>
   <div class="selec-brand">
     <div class="header">
-      <div @click="closed" class="closed">
+      <div class="closed" @click="closed">
         <van-icon name="arrow-down" />
       </div>
       <div class="title">品牌与车系</div>
@@ -16,11 +16,11 @@
           <div v-for="(item, index) in initialsList" :key="index">
             <van-index-anchor :index="item" />
             <div
+              v-for="(a, b) in brandObj[item]"
+              :key="b"
               class="brand-item"
               :class="{ hover: a.brandId == changeBrandId }"
-              v-for="(a, b) in brandObj[item]"
               :title="a.brandName"
-              :key="b"
               @click="handleClickBrand(a)"
             >
               <img :src="a.brandImg" alt="" />
@@ -32,11 +32,11 @@
       <div class="right">
         <div v-show="!isError">
           <div
-            @click="handleClickModel(item.modelName)"
+            v-for="(item, index) in modelList"
+            :key="index"
             class="model-item"
             :class="{ hover: changeModel == item.modelName }"
-            :key="index"
-            v-for="(item, index) in modelList"
+            @click="handleClickModel(item.modelName)"
           >
             {{ carInfo.brand }} {{ item.modelName }}
           </div>
@@ -60,12 +60,10 @@
 <script>
 import loading from "@/components/loading";
 import { modelListApi, brandListApi } from "@/api/car";
-import { mapState, mapActions } from "vuex";
 import { getInitials } from "@/utils/index";
 import { Toast } from "vant";
 export default {
-  name: "selectBrand",
-  props: ["value"],
+  name: "SelectBrand",
   components: { loading },
   data() {
     return {
@@ -143,7 +141,6 @@ export default {
         }
       } catch (error) {
         Toast.fail("未知错误");
-        console.log(error);
       }
     },
     async getModelList(brandId) {

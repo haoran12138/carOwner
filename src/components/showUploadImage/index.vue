@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-  name: "showUploadImage",
+  name: "ShowUploadImage",
   data() {
     return {};
   },

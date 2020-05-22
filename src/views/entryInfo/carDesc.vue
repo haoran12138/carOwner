@@ -24,7 +24,7 @@ import { mapState } from "vuex";
 import { Toast } from "vant";
 import { updateCarByIdApi } from "@/api/user";
 export default {
-  name: "carDesc",
+  name: "CarDesc",
   data() {
     return {
       message: ""

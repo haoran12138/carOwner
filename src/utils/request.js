@@ -8,24 +8,24 @@ const serviceApi = axios.create({
   headers: {
     accept: "*/*",
     "jf-appdevice": "h5",
-    "jf-appversion": "3.0.2",
+    "jf-appversion": "3.0.2"
   },
   validateStatus: function(status) {
     return status < 500; // 状态码在大于或等于500时才会 reject
-  },
+  }
 });
 
 serviceApi.interceptors.request.use(
-  (config) => {
+  config => {
     return config;
   },
-  (error) => {
+  error => {
     Promise.reject(error);
   }
 );
 
 serviceApi.interceptors.response.use(
-  (res) => {
+  res => {
     console.log(res);
     if (res.data) {
       if (res.data.code == 401 || res.data.code == 407) {
@@ -43,7 +43,7 @@ serviceApi.interceptors.response.use(
 
     // if the custom code is not 20000, it is judged as an error.
   },
-  (error) => {
+  error => {
     Toast.fail("网络错误 请稍后重试");
     return false;
   }
@@ -57,7 +57,7 @@ function service({
   isToken = true,
   // 该接口 的 contentType
   contentType = "",
-  timeout = 8000,
+  timeout = 8000
 }) {
   //异步 不在拦截器里处理
   let headers = {};

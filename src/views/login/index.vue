@@ -7,9 +7,9 @@
       </div>
       <div class="center mform">
         <van-field
+          v-model="tel"
           :border="false"
           type="tel"
-          v-model="tel"
           placeholder="请输入手机号"
           @input="changeTel"
         >
@@ -18,11 +18,11 @@
           </template>
         </van-field>
         <van-field
+          v-model="captcha"
           size="large"
           :border="false"
-          v-model="captcha"
           type="number"
-          :maxLength="4"
+          :max-length="4"
           placeholder="请输入验证码"
           @input="changeCaptcha"
         >
@@ -30,11 +30,11 @@
             <img class="input-icon" src="@/assets/image/captcha.png" />
           </template>
           <template #button>
-            <div class="time-down" v-if="captchaLoading">
+            <div v-if="captchaLoading" class="time-down">
               <van-count-down
-                @finish="finishTime"
                 :time="time"
                 format="重新获取(ss)"
+                @finish="finishTime"
               />
             </div>
             <div
@@ -58,7 +58,7 @@
       </div>
 
       <div class="protocol">
-        <div @click="changeProtocol" class="switch">
+        <div class="switch" @click="changeProtocol">
           <div v-if="isProtocol" class="btn on"></div>
           <div v-else class="btn off"></div>
         </div>
@@ -80,7 +80,7 @@ import { login, verifyCodeSendApi } from "@/api/user";
 import { setToken, getToken } from "@/utils/auth";
 import Cookies from "js-cookie";
 export default {
-  name: "login",
+  name: "Login",
   data() {
     return {
       tel: "",

@@ -3,8 +3,8 @@
     <van-nav-bar
       title="车量基本信息"
       left-arrow
-      @click-left="onClickLeft"
       right-text="保存"
+      @click-left="onClickLeft"
       @click-right="onClickRight"
     />
     <div class="entry-info-desc">
@@ -13,17 +13,17 @@
     <!--  right-icon="0"   错误图标不会显示 用于占位 -->
     <div class="center mform">
       <van-field
+        v-model="info.plate"
         class="plate"
         :border="false"
         type="text"
         input-align="right"
-        v-model="info.plate"
         label="车牌号"
         placeholder="请输入"
         right-icon="0"
       >
-        <template class="hometown" #button>
-          <div @click="openHomeTown" class="hometown">
+        <template #button class="hometown">
+          <div class="hometown" @click="openHomeTown">
             {{ info.hometown }}
           </div>
         </template>
@@ -41,10 +41,10 @@
       >
       </van-field>
       <van-field
+        v-model="info.city"
         :border="false"
         type="text"
         input-align="right"
-        v-model="info.city"
         label="交车城市"
         right-icon="arrow"
         placeholder="请选择"
@@ -65,10 +65,10 @@
       >
       </van-field>
       <van-field
+        v-model="info.color"
         :border="false"
         type="text"
         input-align="right"
-        v-model="info.color"
         label="颜色"
         right-icon="0"
         placeholder="请输入"
@@ -87,10 +87,10 @@
       >
       </van-field>
       <van-field
+        v-model="info.output"
         :border="false"
         type="number"
         input-align="right"
-        v-model="info.output"
         label="排量"
         placeholder="请输入"
       >
@@ -99,10 +99,10 @@
         </template>
       </van-field>
       <van-field
+        v-model="info.seatNum"
         :border="false"
         type="digit"
         input-align="right"
-        v-model="info.seatNum"
         label="座位数"
         placeholder="请输入"
       >
@@ -137,32 +137,32 @@
     </div>
     <!-- 交车城市 -->
     <van-popup
-      :safe-area-inset-bottom="true"
       v-model="showChangeCity"
+      :safe-area-inset-bottom="true"
       round
       position="bottom"
     >
       <van-area
-        @cancel="handleCancelCity"
-        @confirm="handleConfirmCity"
         title="交车城市"
         :area-list="areaList"
         :columns-num="2"
+        @cancel="handleCancelCity"
+        @confirm="handleConfirmCity"
       />
     </van-popup>
     <!-- 车牌省份选择 -->
     <van-popup
-      :safe-area-inset-bottom="true"
       v-model="showChangeHomeTown"
+      :safe-area-inset-bottom="true"
       position="bottom"
     >
-      <home-town @hidePopup="hidePopup" v-model="info.hometown"></home-town>
+      <home-town v-model="info.hometown" @hidePopup="hidePopup"></home-town>
     </van-popup>
     <!-- 车型品牌 -->
     <van-popup
+      v-model="showChangeBrand"
       :close-on-popstate="true"
       :safe-area-inset-bottom="true"
-      v-model="showChangeBrand"
       position="bottom"
       :style="{ height: '100%' }"
     >
@@ -173,17 +173,17 @@
     </van-popup>
     <!-- 意向租金 -->
     <van-popup
+      v-model="showChangeWantRent"
       :safe-area-inset-bottom="true"
       :style="{ height: '35vh' }"
-      v-model="showChangeWantRent"
       position="bottom"
       @close="confirmChangeWantRent"
     >
       <div class="wantRent-box">
         <div
           :class="{ hover: wantRentType == 0 }"
-          @click="changeRentType(0)"
           class="left"
+          @click="changeRentType(0)"
         >
           <div class="title">由平台智能定价</div>
           <div class="desc">
@@ -192,14 +192,14 @@
         </div>
         <div
           :class="{ hover: wantRentType != 0 }"
-          @click="changeRentType(1)"
           class="right"
+          @click="changeRentType(1)"
         >
           <div class="title">自定义</div>
           <div class="inp">
             <van-field
-              :border="false"
               v-model="wantRentNum"
+              :border="false"
               type="number"
               input-align="right"
               min="1"
@@ -239,7 +239,7 @@ import selectBrand from "@/components/selectBrand";
 import homeTown from "@/components/homeTown";
 import { isPlateReg } from "@/utils/regTest";
 export default {
-  name: "carInfo",
+  name: "CarInfo",
   components: { selectBrand, homeTown },
   data() {
     return {
@@ -289,6 +289,14 @@ export default {
   computed: {
     ...mapState(["carInfo", "carId"])
   },
+  watch: {
+    info: {
+      handler() {
+        this.isChange = true;
+      },
+      deep: true // 监听这个对象中的每一个属性变化
+    }
+  },
   created() {
     this.areaList = area;
     this.init();
@@ -298,14 +306,6 @@ export default {
     setTimeout(() => {
       this.isChange = false;
     }, 500);
-  },
-  watch: {
-    info: {
-      handler(val) {
-        this.isChange = true;
-      },
-      deep: true // 监听这个对象中的每一个属性变化
-    }
   },
   methods: {
     init() {
@@ -389,14 +389,12 @@ export default {
     hidePopup() {
       this.showChangeHomeTown = false;
     },
-    changePlate(val) {},
     // 意向租金
     openWantRent() {
       this.showChangeWantRent = true;
     },
     changeRentType(type) {
       this.wantRentType = type;
-      console.log(type);
     },
     confirmChangeWantRent() {
       let { wantRentNum, wantRentType } = this;

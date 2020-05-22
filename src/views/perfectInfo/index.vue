@@ -1,48 +1,48 @@
 <template>
   <div class="container">
-    <header-com title="完善车辆信息" routerName="carList"></header-com>
+    <header-com title="完善车辆信息" router-name="carList"></header-com>
     <div class="center">
       <div class="info-title">
         资料照片
       </div>
       <info-item
-        routerName="cardId"
-        :carryType="carrType.cardId"
+        router-name="cardId"
+        :carry-type="carrType.cardId"
         txt="身份证"
-        :isMust="true"
+        :is-must="true"
       ></info-item>
       <info-item
-        routerName="cardDrive"
-        :carryType="carrType.cardDrive"
+        router-name="cardDrive"
+        :carry-type="carrType.cardDrive"
         txt="行驶证"
-        :isMust="true"
+        :is-must="true"
       ></info-item>
       <info-item
-        routerName="insurance"
-        :carryType="carrType.insurance"
+        router-name="insurance"
+        :carry-type="carrType.insurance"
         txt="交强险或商业险"
       ></info-item>
       <div class="info-title">
         车辆信息
       </div>
       <info-item
-        routerName="carInfo"
-        :carryType="carrType.carInfo"
+        router-name="carInfo"
+        :carry-type="carrType.carInfo"
         txt="车辆基本信息"
-        :isMust="true"
+        :is-must="true"
       ></info-item>
       <info-item
-        routerName="carImgs"
-        :carryType="carrType.carImgs"
-        :carryTypeP="`待完善(${imgsLength}/6)`"
+        router-name="carImgs"
+        :carry-type="carrType.carImgs"
+        :carry-type-p="`待完善(${imgsLength}/6)`"
         txt="车辆照片"
       ></info-item>
       <info-item
-        routerName="carDesc"
-        :carryType="carrType.carDesc"
-        carryTypeY="已填写"
+        router-name="carDesc"
+        :carry-type="carrType.carDesc"
+        carry-type-y="已填写"
         txt="车辆描述"
-        carryTypeN="请填写"
+        carry-type-n="请填写"
       ></info-item>
     </div>
     <van-overlay :show="mainLoading">
@@ -58,7 +58,7 @@ import { getCarByIdApi } from "@/api/user";
 import { Toast } from "vant";
 import { mapMutations, mapState } from "vuex";
 export default {
-  name: "perfectInfo",
+  name: "PerfectInfo",
   components: { headerCom, infoItem, loading },
   data() {
     return {

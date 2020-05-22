@@ -8,7 +8,7 @@ import { setToken } from "@/utils/auth";
 import Cookies from "js-cookie";
 import { Toast } from "vant";
 export default {
-  name: "loging",
+  name: "Loging",
   data() {
     return {
       recommendId: null
